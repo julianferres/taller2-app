@@ -1,13 +1,14 @@
 import React from "react";
-import {
-  StyleSheet,
-  TextInput,
-  Text,
-  View,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, TextInput, Text, View, TouchableOpacity } from "react-native";
 
-export default class App extends React.Component {
+export default class Login extends React.Component {
+  constructor(props) {
+    super (props);
+    this.state = {
+        email: "",
+        password: "",
+    }
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -23,6 +24,7 @@ export default class App extends React.Component {
         <View style={styles.inputView}>
           <TextInput
             style={styles.inputText}
+            secureTextEntry={true}
             placeholder="Password"
             placeholderTextColor="#cad6eb"
             onChangeText={(text) => this.setState({ email: text })}
