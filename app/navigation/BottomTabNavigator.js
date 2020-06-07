@@ -4,8 +4,10 @@ import * as React from 'react';
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
-import Login from '../screens/Login';
-import Signup from '../screens/Signup';
+import Login from '../screens/loginScreens/Login';
+import Signup from '../screens/loginScreens/Signup';
+import ForgotPassword from "../screens/loginScreens/ForgotPassword";
+import NewPassword from "../screens/loginScreens/NewPassword";
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
@@ -50,6 +52,23 @@ export default function BottomTabNavigator({ navigation, route }) {
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
         }}
       />
+    <BottomTab.Screen
+    name="ForgotPassword"
+    component={ForgotPassword}
+    options={{
+
+        title: 'ForgotPassword',
+            tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
+        }}
+    />
+    <BottomTab.Screen
+        name="NewPassword"
+        component={NewPassword}
+        options={{
+            title: 'NewPassword',
+            tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
+        }}
+    />
     </BottomTab.Navigator>
   );
 }
