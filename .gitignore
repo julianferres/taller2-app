@@ -1,1 +1,3 @@
-app/.idea/
+.idea/
+.expo/
+node_modules/
