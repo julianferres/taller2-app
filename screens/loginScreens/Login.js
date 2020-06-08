@@ -1,5 +1,7 @@
 import React from "react";
-import { StyleSheet, TextInput, Text, View, TouchableOpacity } from "react-native";
+import { TextInput, Text, View, TouchableOpacity, Alert} from "react-native";
+import {styles} from "../../constants/InitStackStylesheet";
+import {app} from "../../app/app";
 
 export default class Login extends React.Component {
   constructor(props) {
@@ -9,6 +11,25 @@ export default class Login extends React.Component {
         password: "",
     }
   }
+
+  alertLogin(errorMessage){
+      Alert.alert(
+          "Login error",
+          errorMessage,
+          [{text: "Close", style: "cancel"}],
+          { cancelable: false }
+      )
+  }
+
+  onResponse(response){
+      console.log(response);
+      this.alertLogin("Muchos errores huevon");
+  }
+
+  handleSubmit(){
+      app.apiClient().login(this.state, this.onResponse.bind(this))
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -33,7 +54,7 @@ export default class Login extends React.Component {
         <TouchableOpacity  onPress={() => this.props.navigation.navigate("Forgot password")}>
           <Text style={styles.forgot}>Forgot Password?</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.loginBtn}>
+        <TouchableOpacity style={styles.loginBtn} onPress={() => this.handleSubmit()}>
           <Text style={styles.loginText}>LOGIN</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => this.props.navigation.navigate("Sign up")}>
@@ -43,49 +64,3 @@ export default class Login extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#00335c",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  inputView: {
-    width: "80%",
-    backgroundColor: "#465881",
-    borderRadius: 25,
-    height: 50,
-    marginBottom: 20,
-    justifyContent: "center",
-    padding: 20,
-  },
-  logo: {
-    fontWeight: "bold",
-    fontSize: 50,
-    color: "white",
-    marginBottom: 40,
-  },
-  inputText: {
-    height: 50,
-    color: "white",
-  },
-  forgot: {
-    color: "white",
-    fontSize: 12,
-  },
-  loginBtn: {
-    width: "80%",
-    backgroundColor: "#fb5b5a",
-    borderRadius: 25,
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 40,
-    marginBottom: 10,
-  },
-  loginText: {
-    color: "white",
-    fontSize: 16,
-  },
-});
