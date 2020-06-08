@@ -30,13 +30,13 @@ export default class Login extends React.Component {
             onChangeText={(text) => this.setState({ password: text })}
           />
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity  onPress={() => this.props.navigation.navigate("Forgot password")}>
           <Text style={styles.forgot}>Forgot Password?</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.loginBtn}>
           <Text style={styles.loginText}>LOGIN</Text>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate("Sign up")}>
           <Text style={styles.loginText}>Signup</Text>
         </TouchableOpacity>
       </View>

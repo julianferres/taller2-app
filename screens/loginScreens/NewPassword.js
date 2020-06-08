@@ -35,6 +35,7 @@ export default class NewPassword extends React.Component {
                         style={styles.inputText}
                         placeholder="Enter your new password"
                         placeholderTextColor="#cad6eb"
+                        secureTextEntry={true}
                         onChangeText={(text) => this.setState({ newPassword: text })}
                     />
                 </View>

@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, TextInput, Text, View, TouchableOpacity } from "react-native";
 
-export default class Login extends React.Component {
+export default class SignUp extends React.Component {
     constructor(props) {
         super (props);
         this.state = {
@@ -51,9 +51,6 @@ export default class Login extends React.Component {
                 </View>
                 <TouchableOpacity style={styles.loginBtn}>
                 <Text style={styles.loginText}>SIGNUP</Text>
-                </TouchableOpacity>
-                <TouchableOpacity>
-                <Text style={styles.loginText}>Already Registered? Login</Text>
                 </TouchableOpacity>
             </View>
         );
