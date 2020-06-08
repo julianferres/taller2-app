@@ -19,7 +19,6 @@ class App {
     _setUpApiClient() {
         const requester = this._setUpRequester();
         this._apiClient = new ApiClient(requester);
-        console.log("aps", this._apiClient)
     }
 
     _setUpRequester() {
