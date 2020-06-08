@@ -1,4 +1,4 @@
 export const ENV = {
-    usingFakeApi: true,
+    usingFakeApi: false,
     apiUrl: 'https://chotuve-app-serv.herokuapp.com/'
 }

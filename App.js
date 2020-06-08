@@ -1,26 +1,29 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import {NavigationContainer} from '@react-navigation/native';
 import * as React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-
+import {Platform, StatusBar, StyleSheet, View} from 'react-native';
+import {Provider} from 'react-redux';
 import useCachedResources from './hooks/useCachedResources';
 import InitStack from "./navigation/InitStack";
-
-const Stack = createStackNavigator();
+import {combineReducers, createStore} from "redux";
+import {appReducer} from "./reducers/appReducer";
 
 export default function App(props) {
   const isLoadingComplete = useCachedResources();
+  const reducers = combineReducers({appReducer});
+  const store = createStore(reducers);
 
   if (!isLoadingComplete) {
     return null;
   } else {
     return (
-      <View style={styles.container}>
-        {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
-        <NavigationContainer >
-          <InitStack />
-        </NavigationContainer>
-      </View>
+      <Provider store={store}>
+        <View style={styles.container}>
+          {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
+          <NavigationContainer >
+            <InitStack />
+          </NavigationContainer>
+        </View>
+      </Provider>
     );
   }
 }

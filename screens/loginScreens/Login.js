@@ -1,9 +1,12 @@
 import React from "react";
-import { TextInput, Text, View, TouchableOpacity, Alert} from "react-native";
+import { TextInput, Text, View, TouchableOpacity, Alert, ActivityIndicator} from "react-native";
 import {styles} from "../../constants/InitStackStylesheet";
 import {app} from "../../app/app";
+import {ADD_TOKEN, WAITING_RESPONSE} from "../../reducers/appReducer";
+import {connect} from "react-redux";
+import {BarIndicator, MaterialIndicator, PulseIndicator, WaveIndicator} from "react-native-indicators";
 
-export default class Login extends React.Component {
+class Login extends React.Component {
   constructor(props) {
     super (props);
     this.state = {
@@ -22,11 +25,21 @@ export default class Login extends React.Component {
   }
 
   onResponse(response){
-      console.log(response);
-      this.alertLogin("Muchos errores huevon");
+      //console.log(response)
+      if(response.ok){
+        response.json()
+            .then(json => this.props.setToken(json.token))
+        } else {
+        response.json()
+            .then(json => {
+                this.alertLogin(json.message)
+            })
+        }
+        this.props.setWaitingResponse(false);
   }
 
   handleSubmit(){
+      this.props.setWaitingResponse(true);
       app.apiClient().login(this.state, this.onResponse.bind(this))
   }
 
@@ -54,6 +67,7 @@ export default class Login extends React.Component {
         <TouchableOpacity  onPress={() => this.props.navigation.navigate("Forgot password")}>
           <Text style={styles.forgot}>Forgot Password?</Text>
         </TouchableOpacity>
+        <ActivityIndicator size={55} animating={this.props.showWaitingResponse} />
         <TouchableOpacity style={styles.loginBtn} onPress={() => this.handleSubmit()}>
           <Text style={styles.loginText}>LOGIN</Text>
         </TouchableOpacity>
@@ -64,3 +78,20 @@ export default class Login extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        showWaitingResponse: state.appReducer.waitingResponse
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setWaitingResponse: value => dispatch({ type: WAITING_RESPONSE, payload: value }),
+        setToken: token => dispatch({ type: ADD_TOKEN, payload: token })
+    }
+}
+
+const LoginContainer = connect(mapStateToProps, mapDispatchToProps)(Login);
+
+export default LoginContainer;

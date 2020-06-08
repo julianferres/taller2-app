@@ -14,10 +14,7 @@ class RemoteRequester extends Requester {
         }
 
         return fetch(this._baseUrl + url, request)
-            .then(result => result.json())
-            .then(jsonResponse => {
-                return onResponse(jsonResponse);
-            })
+            .then(response => onResponse(response))
             .catch(exception => {
                 console.log("Exception in API request: ", exception);
             })
