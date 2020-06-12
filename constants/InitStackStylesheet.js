@@ -45,4 +45,11 @@ export const styles = StyleSheet.create({
         color: "white",
         fontSize: 16,
     },
+    forgotPasswordLogo:{
+        justifyContent: "center",
+        fontWeight: "bold",
+        fontSize: 35,
+        color: "white",
+        marginBottom: 40,
+    }
 });

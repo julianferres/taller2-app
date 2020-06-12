@@ -12,7 +12,7 @@ export default class ForgotPassword extends React.Component {
     render() {
         return (
           <View style={styles.container}>
-              <Text style={styles.logo}>Password Recovery</Text>
+              <Text style={styles.forgotPasswordLogo}>Password Recovery</Text>
               <View style={styles.inputView}>
                   <TextInput
                       style={styles.inputText}

@@ -1,10 +1,9 @@
 import React from "react";
-import { TextInput, Text, View, TouchableOpacity, Alert, ActivityIndicator} from "react-native";
+import {ActivityIndicator, Alert, Text, TextInput, TouchableOpacity, View} from "react-native";
 import {styles} from "../../constants/InitStackStylesheet";
 import {app} from "../../app/app";
 import {ADD_TOKEN, WAITING_RESPONSE} from "../../reducers/appReducer";
 import {connect} from "react-redux";
-import {BarIndicator, MaterialIndicator, PulseIndicator, WaveIndicator} from "react-native-indicators";
 
 class Login extends React.Component {
   constructor(props) {
@@ -14,6 +13,15 @@ class Login extends React.Component {
         password: "",
     }
   }
+  static options = {
+      headerStyle: {
+          backgroundColor: '#f4511e',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+          fontWeight: 'bold',
+      },
+  };
 
   alertLogin(errorMessage){
       Alert.alert(
@@ -46,7 +54,7 @@ class Login extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.logo}>Chotuve App</Text>
+         <Text style={styles.logo}>Chotuve App</Text>
         <View style={styles.inputView}>
           <TextInput
             style={styles.inputText}
@@ -68,7 +76,8 @@ class Login extends React.Component {
           <Text style={styles.forgot}>Forgot Password?</Text>
         </TouchableOpacity>
         <ActivityIndicator size={55} animating={this.props.showWaitingResponse} />
-        <TouchableOpacity style={styles.loginBtn} onPress={() => this.handleSubmit()}>
+          {/*<TouchableOpacity style={styles.loginBtn} onPress={() => this.handleSubmit()}>*/}
+        <TouchableOpacity style={styles.loginBtn} onPress={() => this.props.setToken("laksdmldkacmlk")}>
           <Text style={styles.loginText}>LOGIN</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => this.props.navigation.navigate("Sign up")}>
