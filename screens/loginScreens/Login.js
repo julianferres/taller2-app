@@ -22,11 +22,11 @@ class Login extends React.Component {
       headerStyle: {
           backgroundColor: '#f4511e',
       },
-      headerTintColor: '#fff',
+      headerTintColor: '#ffffff',
       headerTitleStyle: {
           fontWeight: 'bold',
       },
-  };
+  }
 
   validateEmail() {
        return this.emailRegex.test(this.state.email);

@@ -1,12 +1,12 @@
 import React from "react";
-import HomeStack from "./HomeStack";
+import HomeStackContainer from "./HomeStack";
 import AuthStack from "./AuthStack";
 import {connect} from "react-redux";
 import { Header } from "@react-navigation/stack";
 
 class Navigator extends React.Component {
     render() {
-        return this.props.loggedIn ? <HomeStack /> : <AuthStack />;
+        return this.props.loggedIn ? <HomeStackContainer /> : <AuthStack />;
     }
 }
 
