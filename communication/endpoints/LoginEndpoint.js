@@ -9,7 +9,7 @@ export class LoginEndpoint extends Endpoint {
         return 'POST'
     }
 
-    needsAuthorization() {
-        return false;
+    contentType() {
+        return 'application/json';
     }
 }

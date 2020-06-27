@@ -1,5 +1,5 @@
 import React from "react";
-import {ActivityIndicator, Alert, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {ActivityIndicator, Alert, Text, TextInput, TouchableOpacity, View, Keyboard} from "react-native";
 import {styles} from "../../constants/InitStackStylesheet";
 import {app} from "../../app/app";
 import {ADD_TOKEN, WAITING_RESPONSE} from "../../reducers/appReducer";
@@ -12,6 +12,11 @@ class Login extends React.Component {
         email: "",
         password: "",
     }
+    this.errorMessages = {
+        "Incorrect password when trying to log in": "Invalid username and password"
+    }
+    this.emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
   }
   static options = {
       headerStyle: {
@@ -23,6 +28,10 @@ class Login extends React.Component {
       },
   };
 
+  validateEmail() {
+       return this.emailRegex.test(this.state.email);
+  }
+
   alertLogin(errorMessage){
       Alert.alert(
           "Login error",
@@ -33,20 +42,23 @@ class Login extends React.Component {
   }
 
   onResponse(response){
-      //console.log(response)
       if(response.ok){
         response.json()
             .then(json => this.props.setToken(json.token))
         } else {
         response.json()
             .then(json => {
-                this.alertLogin(json.message)
+                this.alertLogin(this.errorMessages[json.message])
             })
         }
         this.props.setWaitingResponse(false);
   }
 
   handleSubmit(){
+      if(!this.validateEmail(this.state.email)){
+          this.alertLogin("Please enter a valid email");
+          return;
+      }
       this.props.setWaitingResponse(true);
       app.apiClient().login(this.state, this.onResponse.bind(this))
   }
@@ -76,10 +88,12 @@ class Login extends React.Component {
           <Text style={styles.forgot}>Forgot Password?</Text>
         </TouchableOpacity>
         <ActivityIndicator size={55} animating={this.props.showWaitingResponse} />
-          {/*<TouchableOpacity style={styles.loginBtn} onPress={() => this.handleSubmit()}>*/}
-        <TouchableOpacity style={styles.loginBtn} onPress={() => this.props.setToken("laksdmldkacmlk")}>
-          <Text style={styles.loginText}>LOGIN</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.loginBtn} onPress={() => {
+              Keyboard.dismiss()
+              this.handleSubmit()
+          }}>
+            <Text style={styles.loginText}>LOGIN</Text>
+          </TouchableOpacity>
         <TouchableOpacity onPress={() => this.props.navigation.navigate("Sign up")}>
           <Text style={styles.loginText}>Signup</Text>
         </TouchableOpacity>

@@ -14,8 +14,4 @@ export class Endpoint {
     method() {
         throw new Error("You have to implement the method");
     }
-
-    needsAuthorization() {
-        throw new Error("You have to implement the method");
-    }
 }
