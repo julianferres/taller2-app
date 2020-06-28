@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {View, ScrollView, Text, TouchableOpacity} from "react-native";
+import {View, ScrollView, Text, TouchableOpacity, StatusBar} from "react-native";
 import {SimpleLineIcons, MaterialCommunityIcons} from "@expo/vector-icons";
 
 export default function CustomDrawer(props){
     return(
-        <View style={{flex: 1, paddingTop: 25}}>
+        <View style={{flex: 1, paddingTop: StatusBar.currentHeight}}>
             <ScrollView style={{marginLeft: 10}}>
                 <TouchableOpacity style={{marginTop: 20, flex: 1, justifyContent: "center", flexDirection: "row"}}>
                     <MaterialCommunityIcons name="account-circle-outline" size={50} color="black" />
