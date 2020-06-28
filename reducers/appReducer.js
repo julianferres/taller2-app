@@ -5,7 +5,7 @@ export const EXPAND_SIDEBAR = "EXPAND_SIDEBAR"
 
 const initialState = {
     token: "",
-    loggedIn: true,
+    loggedIn: false,
     waitingResponse: false,
     expandSidebar: false
 };
