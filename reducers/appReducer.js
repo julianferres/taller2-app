@@ -5,9 +5,10 @@ export const EMAIL_TO_RECOVER = "EMAIL_TO_RECOVER";
 
 const initialState = {
     token: "",
-    loggedIn: false,
+    loggedIn: true,
     waitingResponse: false,
-    emailToRecover: ""
+    emailToRecover: "",
+    expandSidebar: false
 };
 
 export const appReducer = (state = initialState, action) => {
@@ -17,10 +18,10 @@ export const appReducer = (state = initialState, action) => {
         case REMOVE_TOKEN:
             return { ...state, token: null, loggedIn: false };
         case WAITING_RESPONSE:
-            return { ...state, waitingResponse: action.payload}
+            return { ...state, waitingResponse: action.payload};
         case EMAIL_TO_RECOVER:
-            return { ...state, emailToRecover: action.payload}
-        default:
+            return { ...state, emailToRecover: action.payload};
+          default:
             return state;
     }
 };

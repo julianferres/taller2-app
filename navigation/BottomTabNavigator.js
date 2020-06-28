@@ -2,9 +2,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import * as React from 'react';
 
 import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/bottomScreens/HomeScreen';
-import LinksScreen from '../screens/bottomScreens/LinksScreen';
-import TabHeader from './TabHeader'
+import ChatStackNavigator from "../screens/bottomScreens/chat/ChatStack";
+import VideoStackNavigator from "../screens/bottomScreens/video/VideoStack";
 
 const BottomTab = createBottomTabNavigator();
 
@@ -14,23 +13,12 @@ export default class BottomTabNavigator extends React.Component{
         this.initialRoutName = "Home";
     }
 
-    getHeaderTitle(route) {
-        const routeName = route.state?.routes[route.state.index]?.name ?? this.initialRoutName;
-        switch (routeName) {
-            case 'Home':
-                return <TabHeader headerTitle="Chotuve"/>
-            case 'Messages':
-                return <TabHeader headerTitle="Conversations"/>
-        }
-    }
-
     render() {
-        this.props.navigation.setOptions({ headerTitle: this.getHeaderTitle(this.props.route) });
         return (
             <BottomTab.Navigator initialRouteName={this.initialRoutName}>
                 <BottomTab.Screen
                     name="Home"
-                    component={HomeScreen}
+                    component={VideoStackNavigator}
                     options={{
                         title: 'Home',
                         tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-home" />,
@@ -38,7 +26,7 @@ export default class BottomTabNavigator extends React.Component{
                 />
                 <BottomTab.Screen
                     name="Messages"
-                    component={LinksScreen}
+                    component={ChatStackNavigator}
                     options={{
                         title: 'Chat',
                         tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-chatboxes" />,
