@@ -56,7 +56,6 @@ class ForgotPassword extends React.Component {
     }
 
     render() {
-        const newLocal = this;
         return (
           <View style={styles.container}>
               <Text style={styles.forgotPasswordLogo}>Password Recovery</Text>

@@ -1,5 +1,6 @@
 import {LoginEndpoint} from "../endpoints/LoginEndpoint";
 import {ForgotPasswordEndpoint} from "../endpoints/ForgotPasswordEndpoint";
+import {NewPasswordEndpoint} from "../endpoints/NewPasswordEndpoint";
 
 
 class ApiClient {
@@ -17,6 +18,13 @@ class ApiClient {
     forgotPassword(data, onResponse) {
         return this._requester.call({
             endpoint: new ForgotPasswordEndpoint(),
+            onResponse: response => onResponse(response),
+            data: data
+        });
+    }
+    newPassword(data, onResponse) {
+        return this._requester.call({
+            endpoint: new NewPasswordEndpoint(),
             onResponse: response => onResponse(response),
             data: data
         });
