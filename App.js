@@ -6,6 +6,8 @@ import useCachedResources from './hooks/useCachedResources';
 import {combineReducers, createStore} from "redux";
 import {appReducer} from "./reducers/appReducer";
 import CurrentNavigator from "./navigation/CurrentNavigator";
+import FlashMessage from "react-native-flash-message";
+
 
 export default function App(props) {
   const isLoadingComplete = useCachedResources();
@@ -23,6 +25,7 @@ export default function App(props) {
             <CurrentNavigator />
           </NavigationContainer>
         </View>
+        <FlashMessage position="bottom" />
       </Provider>
     );
   }
