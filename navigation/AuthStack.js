@@ -8,7 +8,7 @@ import NewPassword from "../screens/loginScreens/NewPassword";
 const Stack = createStackNavigator();
 
 
-export default function     AuthStack() {
+export default function AuthStack() {
 
     return (
         <Stack.Navigator initialRouteName={"Login"} >

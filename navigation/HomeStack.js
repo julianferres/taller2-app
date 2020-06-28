@@ -1,12 +1,10 @@
 import * as React from 'react';
 import BottomTabNavigator from "./BottomTabNavigator";
-import {connect} from "react-redux";
 import {createStackNavigator} from "@react-navigation/stack";
-import TabHeader from "./TabHeader";
 
 const Stack = createStackNavigator();
 
-class HomeStack extends React.Component{
+export default class HomeStack extends React.Component{
     constructor(props) {
         super(props);
     }
@@ -14,7 +12,7 @@ class HomeStack extends React.Component{
     render() {
         return (
             <Stack.Navigator>
-                <Stack.Screen name="Root" component={BottomTabNavigator} />
+                <Stack.Screen name="Root" component={BottomTabNavigator}  />
             </Stack.Navigator>
         );
     }

@@ -2,8 +2,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import * as React from 'react';
 
 import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
+import HomeScreen from '../screens/bottomScreens/HomeScreen';
+import LinksScreen from '../screens/bottomScreens/LinksScreen';
 import TabHeader from './TabHeader'
 
 const BottomTab = createBottomTabNavigator();
@@ -20,7 +20,7 @@ export default class BottomTabNavigator extends React.Component{
             case 'Home':
                 return <TabHeader headerTitle="Chotuve"/>
             case 'Messages':
-                return <TabHeader headerTitle="Chotuvecin"/>
+                return <TabHeader headerTitle="Conversations"/>
         }
     }
 
