@@ -1,11 +1,13 @@
 export const ADD_TOKEN = "ADD_TOKEN";
 export const REMOVE_TOKEN = "REMOVE_TOKEN";
 export const WAITING_RESPONSE = "WAITING_RESPONSE";
+export const EXPAND_SIDEBAR = "EXPAND_SIDEBAR"
 
 const initialState = {
     token: "",
-    loggedIn: false,
+    loggedIn: true,
     waitingResponse: false,
+    expandSidebar: false
 };
 
 export const appReducer = (state = initialState, action) => {
@@ -16,6 +18,8 @@ export const appReducer = (state = initialState, action) => {
             return { ...state, token: null, loggedIn: false };
         case WAITING_RESPONSE:
             return { ...state, waitingResponse: action.payload}
+        case EXPAND_SIDEBAR:
+            return {...state, expandSidebar: action.payload}
         default:
             return state;
     }
