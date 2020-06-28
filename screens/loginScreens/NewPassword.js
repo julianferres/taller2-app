@@ -1,16 +1,19 @@
 import React from "react";
 import {Text, TextInput, TouchableOpacity, View} from "react-native";
 import {styles} from "../../constants/InitStackStylesheet";
+import {connect} from "react-redux";
 
-export default class NewPassword extends React.Component {
+
+class NewPassword extends React.Component {
     constructor(props) {
         super (props);
         this.state = {
-            email: "",
+            email: this.props.targetEmail,
             token: "",
             newPassword: ""
         }
     }
+
     render() {
         return (
             <View style={styles.container}>
@@ -18,9 +21,9 @@ export default class NewPassword extends React.Component {
                 <View style={styles.inputView}>
                     <TextInput
                         style={styles.inputText}
-                        placeholder="Enter Email to recover your password"
+                        value={this.state.email}
                         placeholderTextColor="#cad6eb"
-                        onChangeText={(text) => this.setState({ email: text })}
+                        onChangeText={(text) => this.setState({email : text})}
                     />
                 </View>
                 <View style={styles.inputView}>
@@ -47,3 +50,16 @@ export default class NewPassword extends React.Component {
         );
     }
 }
+
+
+const mapStateToProps = (state) => {
+    return {
+        showWaitingResponse : state.appReducer.waitingResponse,
+        targetEmail : state.appReducer.emailToRecover
+    }
+}
+
+
+const NewPasswordContainer = connect(mapStateToProps,)(NewPassword);
+
+export default NewPasswordContainer;
