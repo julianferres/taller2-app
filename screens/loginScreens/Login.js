@@ -1,5 +1,5 @@
 import React from "react";
-import {ActivityIndicator, Alert, Text, TextInput, TouchableOpacity, View, Keyboard} from "react-native";
+import {ActivityIndicator, Text, TextInput, TouchableOpacity, View, Keyboard} from "react-native";
 import {styles} from "../../constants/InitStackStylesheet";
 import { showMessage } from "react-native-flash-message";
 import {app} from "../../app/app";

@@ -1,10 +1,12 @@
 import React from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
-import { showMessage } from "react-native-flash-message";
-
+import { ActivityIndicator, Text, TextInput, TouchableOpacity, View, Keyboard } from "react-native";
 import { styles } from "../../constants/InitStackStylesheet";
+import { showMessage } from "react-native-flash-message";
+import { app } from "../../app/app";
+import { WAITING_RESPONSE } from "../../reducers/appReducer";
+import { connect } from "react-redux";
 
-export default class SignUp extends React.Component {
+class SignUp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -39,30 +41,28 @@ export default class SignUp extends React.Component {
             icon: "success"
         });
     }
-    
-    onResponse(response){
-        if(response.ok){
-          response.json()
-              .then(json => this.props.setToken(json.token))
-          } else {
-          response.json()
-              .then(json => {
-                  this.alertSignup(this.errorMessages[json.message])
-              })
-          }
-          this.props.setWaitingResponse(false);
+
+    onResponse(response) {
+        if (response.ok) {
+            this.showSuccessfulMessage()
+            this.props.navigation.popToTop()
+        } else {
+            response.json()
+                .then(json => {
+                    this.alertSignup(this.errorMessages[json.message])
+                })
+        }
+        this.props.setWaitingResponse(false);
     }
-  
-    handleSubmit(){
-        if(!this.validateEmail(this.state.email)){
+
+    handleSubmit() {
+        if (!this.validateEmail(this.state.email)) {
             this.alertSignup("Please enter a valid email");
             return;
         }
         this.props.setWaitingResponse(true);
         app.apiClient().signUp(this.state, this.onResponse.bind(this))
     }
-  
-
 
 
 
@@ -101,13 +101,33 @@ export default class SignUp extends React.Component {
                         placeholder="Photo"
                         placeholderTextColor="#cad6eb"
                         onChangeText={(text) => this.setState({ photo: text })}
-                    // TODO: ver esto porque no tiene que ser texto
                     />
                 </View>
-                <TouchableOpacity style={styles.loginBtn}>
+                <ActivityIndicator size={55} animating={this.props.showWaitingResponse} />
+                <TouchableOpacity style={styles.loginBtn}
+                    onPress={() => {
+                        Keyboard.dismiss()
+                        this.handleSubmit()
+                    }}>
                     <Text style={styles.loginText}>SIGNUP</Text>
                 </TouchableOpacity>
             </View>
         );
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        showWaitingResponse: state.appReducer.waitingResponse
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setWaitingResponse: value => dispatch({ type: WAITING_RESPONSE, payload: value })
+    }
+}
+
+const SignUpContainer = connect(mapStateToProps, mapDispatchToProps)(SignUp);
+
+export default SignUpContainer;
