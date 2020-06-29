@@ -26,17 +26,42 @@ export default class SignUp extends React.Component {
         showMessage({
             message: errorMessage,
             type: "danger",
+            icon: "danger",
             animationDuration: 500
         });
     }
+
     showSuccessfulMessage() {
         showMessage({
             message: "User Successfully Created",
             type: "success",
             animationDuration: 500,
-            icon: "warning"
+            icon: "success"
         });
     }
+    
+    onResponse(response){
+        if(response.ok){
+          response.json()
+              .then(json => this.props.setToken(json.token))
+          } else {
+          response.json()
+              .then(json => {
+                  this.alertSignup(this.errorMessages[json.message])
+              })
+          }
+          this.props.setWaitingResponse(false);
+    }
+  
+    handleSubmit(){
+        if(!this.validateEmail(this.state.email)){
+            this.alertSignup("Please enter a valid email");
+            return;
+        }
+        this.props.setWaitingResponse(true);
+        app.apiClient().signUp(this.state, this.onResponse.bind(this))
+    }
+  
 
 
 
