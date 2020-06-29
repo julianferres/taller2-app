@@ -1,10 +1,16 @@
 import React from "react";
 import { ActivityIndicator, Text, TextInput, TouchableOpacity, View, Keyboard } from "react-native";
+import { Ionicons } from '@expo/vector-icons';
 import { styles } from "../../constants/InitStackStylesheet";
 import { showMessage } from "react-native-flash-message";
 import { app } from "../../app/app";
 import { WAITING_RESPONSE } from "../../reducers/appReducer";
 import { connect } from "react-redux";
+
+//Photo
+import * as ImagePicker from 'expo-image-picker';
+import Constants from 'expo-constants';
+import * as Permissions from 'expo-permissions';
 
 class SignUp extends React.Component {
     constructor(props) {
@@ -13,7 +19,8 @@ class SignUp extends React.Component {
             email: "",
             password: "",
             fullName: "",
-            photo: ""
+            photo: "",
+            image: null
         }
         this.errorMessages = {
             "Incorrect Email when trying to recover password.": "Invalid Email"
@@ -64,7 +71,32 @@ class SignUp extends React.Component {
         app.apiClient().signUp(this.state, this.onResponse.bind(this))
     }
 
-
+    componentDidMount() {
+        this.getPermissionAsync();
+    }
+    getPermissionAsync = async () => {
+        if (Constants.platform.ios) {
+            const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+            if (status !== 'granted') {
+                this.alertSignup('Sorry, we need camera roll permissions to make this work!');
+            }
+        }
+    };
+    _pickImage = async () => {
+        try {
+            let result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: true,
+                quality: 1,
+            });
+            if (!result.cancelled) {
+                this.setState({ image: result.uri });
+            }
+            console.log(result);
+        } catch (E) {
+            console.log(E);
+        }
+    };
 
     render() {
         return (
@@ -95,14 +127,12 @@ class SignUp extends React.Component {
                         onChangeText={(text) => this.setState({ fullName: text })}
                     />
                 </View>
-                <View style={styles.inputView}>
-                    <TextInput
-                        style={styles.inputText}
-                        placeholder="Photo"
-                        placeholderTextColor="#cad6eb"
-                        onChangeText={(text) => this.setState({ photo: text })}
-                    />
-                </View>
+                <TouchableOpacity style={styles.pickImage} onPress={this._pickImage}>
+                    {!this.state.image && <Text style={styles.imagePickerText}>Pick an image</Text>}
+                    {!this.state.image && <Ionicons name="md-image" color={"white"} size={25}/>}
+                    { this.state.image && <Text style={styles.imagePickerText}>Image Selected</Text>}
+                    {this.state.image && <Ionicons name="ios-checkmark-circle-outline" color={"white"} size={25}/>}
+                </TouchableOpacity>
                 <ActivityIndicator size={55} animating={this.props.showWaitingResponse} />
                 <TouchableOpacity style={styles.loginBtn}
                     onPress={() => {
