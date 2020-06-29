@@ -18,9 +18,9 @@ class SignUp extends React.Component {
         this.state = {
             email: "",
             password: "",
-            fullName: "",
-            photo: "",
-            image: null
+            fullname: "",
+            phone_number: "1234-5678",
+            photo: null,
         }
         this.errorMessages = {
             "Incorrect Email when trying to recover password.": "Invalid Email"
@@ -33,7 +33,7 @@ class SignUp extends React.Component {
 
     alertSignup(errorMessage) {
         showMessage({
-            message: errorMessage,
+            message: "Error",
             type: "danger",
             icon: "danger",
             animationDuration: 500
@@ -56,7 +56,7 @@ class SignUp extends React.Component {
         } else {
             response.json()
                 .then(json => {
-                    this.alertSignup(this.errorMessages[json.message])
+                    this.alertSignup("Sign up problem, try again!")
                 })
         }
         this.props.setWaitingResponse(false);
@@ -66,7 +66,7 @@ class SignUp extends React.Component {
         if (!this.validateEmail(this.state.email)) {
             this.alertSignup("Please enter a valid email");
             return;
-        }
+        } 
         this.props.setWaitingResponse(true);
         app.apiClient().signUp(this.state, this.onResponse.bind(this))
     }
@@ -90,9 +90,13 @@ class SignUp extends React.Component {
                 quality: 1,
             });
             if (!result.cancelled) {
-                this.setState({ image: result.uri });
+                let localUri = result.uri;
+                let filename = localUri.split('/').pop();
+                let match = /\.(\w+)$/.exec(filename);
+                let type = match ? `image/${match[1]}` : `image`;
+                
+                this.setState({ photo: { uri: localUri, name: filename, type } });
             }
-            console.log(result);
         } catch (E) {
             console.log(E);
         }
@@ -124,14 +128,14 @@ class SignUp extends React.Component {
                         style={styles.inputText}
                         placeholder="Full Name"
                         placeholderTextColor="#cad6eb"
-                        onChangeText={(text) => this.setState({ fullName: text })}
+                        onChangeText={(text) => this.setState({ fullname: text })}
                     />
                 </View>
                 <TouchableOpacity style={styles.pickImage} onPress={this._pickImage}>
-                    {!this.state.image && <Text style={styles.imagePickerText}>Pick an image</Text>}
-                    {!this.state.image && <Ionicons name="md-image" color={"white"} size={25}/>}
-                    { this.state.image && <Text style={styles.imagePickerText}>Image Selected</Text>}
-                    {this.state.image && <Ionicons name="ios-checkmark-circle-outline" color={"white"} size={25}/>}
+                    {!this.state.photo && <Text style={styles.imagePickerText}>Pick an Image</Text>}
+                    {!this.state.photo && <Ionicons name="md-image" color={"white"} size={25}/>}
+                    { this.state.photo && <Text style={styles.imagePickerText}>Image Selected</Text>}
+                    {this.state.photo && <Ionicons name="ios-checkmark-circle-outline" color={"white"} size={25}/>}
                 </TouchableOpacity>
                 <ActivityIndicator size={55} animating={this.props.showWaitingResponse} />
                 <TouchableOpacity style={styles.loginBtn}

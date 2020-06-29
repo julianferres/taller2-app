@@ -1,6 +1,6 @@
-import {LoginEndpoint} from "../endpoints/LoginEndpoint";
-import {ForgotPasswordEndpoint} from "../endpoints/ForgotPasswordEndpoint";
-import {NewPasswordEndpoint} from "../endpoints/NewPasswordEndpoint";
+import { LoginEndpoint } from "../endpoints/LoginEndpoint";
+import { ForgotPasswordEndpoint } from "../endpoints/ForgotPasswordEndpoint";
+import { NewPasswordEndpoint } from "../endpoints/NewPasswordEndpoint";
 import { SignUpEndpoint } from "../endpoints/SignUpEndpoint";
 
 
@@ -16,7 +16,7 @@ class ApiClient {
             data: data
         });
     }
-    signup(data, onResponse) {
+    signUp(data, onResponse) {
         return this._requester.call({
             endpoint: new SignUpEndpoint(),
             onResponse: response => onResponse(response),
