@@ -38,7 +38,8 @@ class Login extends React.Component {
       message: "Login Error",
       description: errorMessage,
       type: "danger",
-      animationDuration: 500
+      animationDuration: 500,
+      icon: "warning"
     });
   }
 

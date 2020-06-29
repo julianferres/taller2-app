@@ -33,7 +33,8 @@ export default class SignUp extends React.Component {
         showMessage({
             message: "User Successfully Created",
             type: "success",
-            animationDuration: 500
+            animationDuration: 500,
+            icon: "warning"
         });
     }
 

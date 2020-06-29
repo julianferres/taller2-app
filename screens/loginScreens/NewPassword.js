@@ -28,7 +28,8 @@ class NewPassword extends React.Component {
         showMessage({
             message: errorMessage,
             type: "danger",
-            animationDuration: 500
+            animationDuration: 500,
+            icon: "warning"
         });
     }
 
@@ -36,6 +37,7 @@ class NewPassword extends React.Component {
         showMessage({
             message: "Password Successfully Updated",
             type: "success",
+            icon: "success"
         });
     }
 

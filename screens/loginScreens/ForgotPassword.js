@@ -27,7 +27,8 @@ class ForgotPassword extends React.Component {
         showMessage({
             message: errorMessage,
             type: "danger",
-            animationDuration: 500
+            animationDuration: 500,
+            icon: "warning"
         });
     }
 
