@@ -4,6 +4,7 @@ import {styles} from "../../constants/InitStackStylesheet";
 import {app} from "../../app/app";
 import {WAITING_RESPONSE, EMAIL_TO_RECOVER} from "../../reducers/appReducer";
 import {connect} from "react-redux";
+import { showMessage } from "react-native-flash-message";
 
 
 class ForgotPassword extends React.Component {
@@ -23,12 +24,11 @@ class ForgotPassword extends React.Component {
     }
 
     alertForgotPassword(errorMessage){
-        Alert.alert(
-            "Recover error",
-            errorMessage,
-            [{text: "Close", style: "cancel"}],
-            { cancelable: false }
-        )
+        showMessage({
+            message: errorMessage,
+            type: "danger",
+            animationDuration: 500
+        });
     }
 
     onResponse(response){
