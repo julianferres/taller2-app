@@ -1,15 +1,15 @@
 import React from "react";
-import {ActivityIndicator, Alert, TextInput, Text, View, TouchableOpacity, Keyboard } from "react-native";
-import {styles} from "../../constants/InitStackStylesheet";
-import {app} from "../../app/app";
-import {WAITING_RESPONSE, EMAIL_TO_RECOVER} from "../../reducers/appReducer";
-import {showMessage} from "react-native-flash-message";
-import {connect} from "react-redux";
+import { ActivityIndicator, Alert, TextInput, Text, View, TouchableOpacity, Keyboard } from "react-native";
+import { styles } from "../../constants/InitStackStylesheet";
+import { app } from "../../app/app";
+import { WAITING_RESPONSE, EMAIL_TO_RECOVER } from "../../reducers/appReducer";
+import { showMessage } from "react-native-flash-message";
+import { connect } from "react-redux";
 
 
 class NewPassword extends React.Component {
     constructor(props) {
-        super (props);
+        super(props);
         this.state = {
             email: this.props.targetEmail,
             token: "",
@@ -24,40 +24,41 @@ class NewPassword extends React.Component {
         return this.emailRegex.test(this.state.email);
     }
 
-    alertNewPassword(errorMessage){
-        Alert.alert(
-            "Recover error",
-            errorMessage,
-            [{text: "Close", style: "cancel"}],
-            { cancelable: false }
-        )
-    }
-
-    showSuccessfulMessage(){
+    alertNewPassword(errorMessage) {
         showMessage({
-            message: "Password Successfully Updated",
-            type: "success",
+            message: errorMessage,
+            type: "danger",
+            animationDuration: 500,
+            icon: "warning"
         });
     }
 
-    onResponse(response){
-        if(response.ok){
-          response.json()
-              .then(json => console.log(json))
+    showSuccessfulMessage() {
+        showMessage({
+            message: "Password Successfully Updated",
+            type: "success",
+            icon: "success"
+        });
+    }
+
+    onResponse(response) {
+        if (response.ok) {
+            response.json()
+                .then(json => console.log(json))
             this.showSuccessfulMessage()
             this.props.setEmailToRecover("")
             this.props.navigation.popToTop()
-          } else {
-          response.json()
-              .then(json => {
-                  this.alertNewPassword(this.errorMessages[json.message])
-              })
-          }
-          this.props.setWaitingResponse(false);
+        } else {
+            response.json()
+                .then(json => {
+                    this.alertNewPassword(this.errorMessages[json.message])
+                })
+        }
+        this.props.setWaitingResponse(false);
     }
 
-    handleSubmit(){
-        if(!this.validateEmail(this.state.email)){
+    handleSubmit() {
+        if (!this.validateEmail(this.state.email)) {
             this.alertNewPassword("Please enter a valid email");
             return;
         }
@@ -75,7 +76,7 @@ class NewPassword extends React.Component {
                         style={styles.inputText}
                         value={this.state.email}
                         placeholderTextColor="#cad6eb"
-                        onChangeText={(text) => this.setState({email : text})}
+                        onChangeText={(text) => this.setState({ email: text })}
                     />
                 </View>
                 <View style={styles.inputView}>
@@ -96,12 +97,12 @@ class NewPassword extends React.Component {
                     />
                 </View>
                 <ActivityIndicator size={55} animating={this.props.showWaitingResponse} />
-                <TouchableOpacity style={styles.loginBtn} 
-                                  onPress={ () => {
-                                            Keyboard.dismiss()
-                                            this.handleSubmit()
-                                           }}>
-                                    
+                <TouchableOpacity style={styles.loginBtn}
+                    onPress={() => {
+                        Keyboard.dismiss()
+                        this.handleSubmit()
+                    }}>
+
                     <Text style={styles.loginText}>Submit</Text>
                 </TouchableOpacity>
             </View>
@@ -112,18 +113,18 @@ class NewPassword extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        showWaitingResponse : state.appReducer.waitingResponse,
-        targetEmail : state.appReducer.emailToRecover
+        showWaitingResponse: state.appReducer.waitingResponse,
+        targetEmail: state.appReducer.emailToRecover
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         setWaitingResponse: value => dispatch({ type: WAITING_RESPONSE, payload: value }),
-        setEmailToRecover: value => dispatch({ type: EMAIL_TO_RECOVER, payload: value})
+        setEmailToRecover: value => dispatch({ type: EMAIL_TO_RECOVER, payload: value })
     }
 }
 
-const NewPasswordContainer = connect(mapStateToProps,mapDispatchToProps)(NewPassword);
+const NewPasswordContainer = connect(mapStateToProps, mapDispatchToProps)(NewPassword);
 
 export default NewPasswordContainer;

@@ -1,4 +1,4 @@
-import {Requester} from "./Requester.js";
+import { Requester } from "./Requester.js";
 
 class RemoteRequester extends Requester {
     constructor(url) {
@@ -6,7 +6,7 @@ class RemoteRequester extends Requester {
         this._baseUrl = url;
     }
 
-    call({endpoint, onResponse, data = undefined}) {
+    call({ endpoint, onResponse, data = undefined }) {
         const request = this._buildRequest(endpoint, data);
         let url = endpoint.url();
         if (endpoint.method() === 'GET' && data) {
@@ -30,7 +30,7 @@ class RemoteRequester extends Requester {
         if (endpoint.method() !== 'GET') {
             let encoder = this._encoderFor(endpoint.contentType());
             Object.assign(headers, encoder.headers());
-            Object.assign(requestOptions, {body: encoder.encode(data)});
+            Object.assign(requestOptions, { body: encoder.encode(data) });
         }
         return requestOptions;
     }
@@ -40,7 +40,6 @@ class RemoteRequester extends Requester {
         if (endpoint.contentType() && endpoint.contentType() !== "multipart/form-data") {
             headers['Content-Type'] = endpoint.contentType();
         }
-
         return headers;
     }
 
@@ -69,7 +68,7 @@ class Encoder {
 
     headers() {
         throw new Error("You have to implement the method");
-    }s
+    } s
 
     encode(requestBody) {
         throw new Error("You have to implement the method");
@@ -82,7 +81,7 @@ class MultiPartEncoder extends Encoder {
     }
 
     headers() {
-        return {}
+        return { Accept: "application/json", "Content-Type" : "multipart/form-data" }
     }
 
     encode(requestBody) {
@@ -115,7 +114,7 @@ class JsonEncoder extends Encoder {
     }
 
     headers() {
-        return {'Content-Type': 'application/json'}
+        return { 'Content-Type': 'application/json' }
     }
 
     encode(requestBody) {

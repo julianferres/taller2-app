@@ -1,6 +1,7 @@
 import React from "react";
-import {ActivityIndicator, Alert, Text, TextInput, TouchableOpacity, View, Keyboard} from "react-native";
+import {ActivityIndicator, Text, TextInput, TouchableOpacity, View, Keyboard} from "react-native";
 import {styles} from "../../constants/InitStackStylesheet";
+import { showMessage } from "react-native-flash-message";
 import {app} from "../../app/app";
 import {ADD_TOKEN, WAITING_RESPONSE} from "../../reducers/appReducer";
 import {connect} from "react-redux";
@@ -33,12 +34,13 @@ class Login extends React.Component {
   }
 
   alertLogin(errorMessage){
-      Alert.alert(
-          "Login error",
-          errorMessage,
-          [{text: "Close", style: "cancel"}],
-          { cancelable: false }
-      )
+    showMessage({
+      message: "Login Error",
+      description: errorMessage,
+      type: "danger",
+      animationDuration: 500,
+      icon: "warning"
+    });
   }
 
   onResponse(response){
