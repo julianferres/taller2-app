@@ -3,7 +3,7 @@ import {ActivityIndicator, Text, TextInput, TouchableOpacity, View, Keyboard} fr
 import {styles} from "../../constants/InitStackStylesheet";
 import { showMessage } from "react-native-flash-message";
 import {app} from "../../app/app";
-import {ADD_TOKEN, WAITING_RESPONSE} from "../../reducers/appReducer";
+import {ADD_TOKEN, USER_EMAIL, WAITING_RESPONSE} from "../../reducers/appReducer";
 import {connect} from "react-redux";
 
 class Login extends React.Component {
@@ -46,7 +46,10 @@ class Login extends React.Component {
   onResponse(response){
       if(response.ok){
         response.json()
-            .then(json => this.props.setToken(json.token))
+            .then(json => {
+                this.props.setUserEmail(this.state.email)
+                this.props.setToken(json.login_token)
+            })
         } else {
         response.json()
             .then(json => {
@@ -113,7 +116,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         setWaitingResponse: value => dispatch({ type: WAITING_RESPONSE, payload: value }),
-        setToken: token => dispatch({ type: ADD_TOKEN, payload: token })
+        setToken: token => dispatch({ type: ADD_TOKEN, payload: token }),
+        setUserEmail: email => dispatch({ type: USER_EMAIL, payload: email})
     }
 }
 
