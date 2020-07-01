@@ -18,7 +18,7 @@ export default function CustomDrawer(props){
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={{marginTop: 20, flex: 1, flexDirection: "row"}}
-                    onPress={() => props.navigation.navigate("Profile")}
+                    onPress={() => props.navigation.navigate("UploadVideo")}
                 >
                     <SimpleLineIcons name="cloud-upload" size={30} color="black" />
                     <Text style={{fontSize: 20, paddingLeft: 10}}>Upload new video</Text>
