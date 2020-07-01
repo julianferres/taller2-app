@@ -1,5 +1,4 @@
-import { Requester } from "./Requester.js";
-import {store} from "../../reducers/appReducer";
+import {Requester} from "./Requester.js";
 
 class RemoteRequester extends Requester {
     constructor(url) {
@@ -7,15 +6,13 @@ class RemoteRequester extends Requester {
         this._baseUrl = url;
     }
 
-    call({ endpoint, onResponse, data = undefined, needsAuthorization = false }) {
-        const request = this._buildRequest(endpoint, data, needsAuthorization);
+    call({endpoint, onResponse, data = undefined}) {
+        const request = this._buildRequest(endpoint, data);
         let url = endpoint.url();
         if (endpoint.method() === 'GET' && data) {
             url += "?" + this._dataToQueryString(data);
         }
 
-        console.log(this._baseUrl + url)
-        console.log(request)
         return fetch(this._baseUrl + url, request)
             .then(response => onResponse(response))
             .catch(exception => {
@@ -23,8 +20,8 @@ class RemoteRequester extends Requester {
             })
     }
 
-    _buildRequest(endpoint, data, needsAuthorization) {
-        let headers = this._buildHeadersFor(endpoint, needsAuthorization);
+    _buildRequest(endpoint, data) {
+        let headers = this._buildHeadersFor(endpoint);
         let requestOptions = {
             method: endpoint.method(),
             headers: headers
@@ -33,20 +30,17 @@ class RemoteRequester extends Requester {
         if (endpoint.method() !== 'GET') {
             let encoder = this._encoderFor(endpoint.contentType());
             Object.assign(headers, encoder.headers());
-            Object.assign(requestOptions, { body: encoder.encode(data) });
+            Object.assign(requestOptions, {body: encoder.encode(data)});
         }
         return requestOptions;
     }
 
-    _buildHeadersFor(endpoint, needsAuthorization) {
+    _buildHeadersFor(endpoint) {
         let headers = {};
         if (endpoint.contentType() && endpoint.contentType() !== "multipart/form-data") {
             headers['Content-Type'] = endpoint.contentType();
         }
-        if(needsAuthorization){
-            console.log("token", store.getState().appReducer.token)
-            headers['Authorization'] = `Bearer ${store.getState().appReducer.token}`
-        }
+
         return headers;
     }
 
@@ -75,7 +69,7 @@ class Encoder {
 
     headers() {
         throw new Error("You have to implement the method");
-    } s
+    }s
 
     encode(requestBody) {
         throw new Error("You have to implement the method");
@@ -88,7 +82,7 @@ class MultiPartEncoder extends Encoder {
     }
 
     headers() {
-        return { Accept: "application/json", "Content-Type" : "multipart/form-data" }
+        return {}
     }
 
     encode(requestBody) {
@@ -121,7 +115,7 @@ class JsonEncoder extends Encoder {
     }
 
     headers() {
-        return { 'Content-Type': 'application/json' }
+        return {'Content-Type': 'application/json'}
     }
 
     encode(requestBody) {

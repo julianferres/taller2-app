@@ -3,14 +3,14 @@ import * as React from 'react';
 import {Platform, StatusBar, StyleSheet, View} from 'react-native';
 import {Provider} from 'react-redux';
 import useCachedResources from './hooks/useCachedResources';
-import {store} from "./reducers/appReducer";
-import CurrentNavigator from "./navigation/CurrentNavigator";
-import FlashMessage from "react-native-flash-message";
-
+import InitStack from "./navigation/InitStack";
+import {combineReducers, createStore} from "redux";
+import {appReducer} from "./reducers/appReducer";
 
 export default function App(props) {
   const isLoadingComplete = useCachedResources();
-
+  const reducers = combineReducers({appReducer});
+  const store = createStore(reducers);
 
   if (!isLoadingComplete) {
     return null;
@@ -20,10 +20,9 @@ export default function App(props) {
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
           <NavigationContainer >
-            <CurrentNavigator />
+            <InitStack />
           </NavigationContainer>
         </View>
-        <FlashMessage position="bottom" />
       </Provider>
     );
   }
