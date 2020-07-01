@@ -45,4 +45,26 @@ export const styles = StyleSheet.create({
         color: "white",
         fontSize: 16,
     },
+    forgotPasswordLogo:{
+        justifyContent: "center",
+        fontWeight: "bold",
+        fontSize: 35,
+        color: "white",
+        marginBottom: 40,
+    },
+    pickImage:{
+        width: "80%",
+        backgroundColor: "#265881",
+        borderRadius: 25,
+        height: 50,
+        alignItems: "center",
+        justifyContent: "center",
+        marginBottom: 20,
+        flexDirection: "row"
+    },
+    imagePickerText: {
+        color: "white",
+        fontSize: 16,
+        paddingRight: 10
+    },
 });

@@ -1,8 +1,8 @@
 import {Endpoint} from "./Endpoint.js";
 
-export class LoginEndpoint extends Endpoint {
+export class SignUpEndpoint extends Endpoint {
     static url() {
-        return '/user/login'
+        return 'user'
     }
 
     method() {
@@ -10,6 +10,6 @@ export class LoginEndpoint extends Endpoint {
     }
 
     contentType() {
-        return 'application/json';
+        return 'multipart/form-data';
     }
 }

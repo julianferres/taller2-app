@@ -1,22 +1,40 @@
+import {combineReducers, createStore} from "redux";
+
 export const ADD_TOKEN = "ADD_TOKEN";
 export const REMOVE_TOKEN = "REMOVE_TOKEN";
 export const WAITING_RESPONSE = "WAITING_RESPONSE";
+export const EMAIL_TO_RECOVER = "EMAIL_TO_RECOVER";
+export const VIDEO_TO_UPLOAD = "VIDEO_TO_UPLOAD";
+export const USER_EMAIL = "USER_EMAIL";
 
 const initialState = {
     token: "",
     loggedIn: false,
-    waitingResponse: false
+    waitingResponse: false,
+    emailToRecover: "",
+    expandSidebar: false,
+    videoToUpload: undefined,
+    userEmail: ""
 };
 
-export const appReducer = (state = initialState, action) => {
+const appReducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_TOKEN:
             return { ...state, token: action.payload, loggedIn: true };
         case REMOVE_TOKEN:
             return { ...state, token: null, loggedIn: false };
         case WAITING_RESPONSE:
-            return { ...state, waitingResponse: action.payload}
-        default:
+            return { ...state, waitingResponse: action.payload};
+        case EMAIL_TO_RECOVER:
+            return { ...state, emailToRecover: action.payload};
+        case VIDEO_TO_UPLOAD:
+            return {...state, videoToUpload: action.payload}
+        case USER_EMAIL:
+            return {...state, userEmail: action.payload}
+          default:
             return state;
     }
 };
+
+const reducers = combineReducers({appReducer});
+export const store = createStore(reducers);

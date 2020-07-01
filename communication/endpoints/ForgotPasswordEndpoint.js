@@ -1,8 +1,8 @@
 import {Endpoint} from "./Endpoint.js";
 
-export class LoginEndpoint extends Endpoint {
+export class ForgotPasswordEndpoint extends Endpoint {
     static url() {
-        return '/user/login'
+        return '/user/recover_password'
     }
 
     method() {
