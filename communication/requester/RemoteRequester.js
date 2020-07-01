@@ -14,8 +14,6 @@ class RemoteRequester extends Requester {
             url += "?" + this._dataToQueryString(data);
         }
 
-        console.log(this._baseUrl + url)
-        console.log(request)
         return fetch(this._baseUrl + url, request)
             .then(response => onResponse(response))
             .catch(exception => {
@@ -44,7 +42,6 @@ class RemoteRequester extends Requester {
             headers['Content-Type'] = endpoint.contentType();
         }
         if(needsAuthorization){
-            console.log("token", store.getState().appReducer.token)
             headers['Authorization'] = `Bearer ${store.getState().appReducer.token}`
         }
         return headers;

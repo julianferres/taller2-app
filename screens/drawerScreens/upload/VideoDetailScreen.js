@@ -37,7 +37,6 @@ class _VideoDetailScreen extends React.Component{
 
     onResponse(response){
         if(response.ok){
-            response.json().then(json => console.log(json))
             showMessage({
                     message: "Video uploaded!",
                     type: "success",
@@ -105,7 +104,6 @@ class _VideoDetailScreen extends React.Component{
     }
 
     render() {
-        console.log(this.props.video)
         return(
             <View style={{flex: 1, paddingTop: StatusBar.currentHeight}}>
                 <CustomHeader title="Video detail" navigation={this.props.navigation}/>
