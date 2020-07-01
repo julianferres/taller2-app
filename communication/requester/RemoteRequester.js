@@ -1,4 +1,5 @@
 import { Requester } from "./Requester.js";
+import {store} from "../../reducers/appReducer";
 
 class RemoteRequester extends Requester {
     constructor(url) {
@@ -6,13 +7,15 @@ class RemoteRequester extends Requester {
         this._baseUrl = url;
     }
 
-    call({ endpoint, onResponse, data = undefined }) {
-        const request = this._buildRequest(endpoint, data);
+    call({ endpoint, onResponse, data = undefined, needsAuthorization = false }) {
+        const request = this._buildRequest(endpoint, data, needsAuthorization);
         let url = endpoint.url();
         if (endpoint.method() === 'GET' && data) {
             url += "?" + this._dataToQueryString(data);
         }
 
+        console.log(this._baseUrl + url)
+        console.log(request)
         return fetch(this._baseUrl + url, request)
             .then(response => onResponse(response))
             .catch(exception => {
@@ -20,8 +23,8 @@ class RemoteRequester extends Requester {
             })
     }
 
-    _buildRequest(endpoint, data) {
-        let headers = this._buildHeadersFor(endpoint);
+    _buildRequest(endpoint, data, needsAuthorization) {
+        let headers = this._buildHeadersFor(endpoint, needsAuthorization);
         let requestOptions = {
             method: endpoint.method(),
             headers: headers
@@ -35,10 +38,14 @@ class RemoteRequester extends Requester {
         return requestOptions;
     }
 
-    _buildHeadersFor(endpoint) {
+    _buildHeadersFor(endpoint, needsAuthorization) {
         let headers = {};
         if (endpoint.contentType() && endpoint.contentType() !== "multipart/form-data") {
             headers['Content-Type'] = endpoint.contentType();
+        }
+        if(needsAuthorization){
+            console.log("token", store.getState().appReducer.token)
+            headers['Authorization'] = `Bearer ${store.getState().appReducer.token}`
         }
         return headers;
     }
