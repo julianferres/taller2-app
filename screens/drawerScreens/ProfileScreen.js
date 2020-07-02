@@ -14,6 +14,7 @@ import shortid from 'shortid';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
+import { color } from 'react-native-reanimated';
 
 
 class _ProfileScreen extends React.Component {
@@ -45,12 +46,12 @@ class _ProfileScreen extends React.Component {
         });
     }
 
-    onResponse(response) {
+    onResponseSubmit(response) {
         if (response.ok) {
             this.showSuccessfulMessage()
             this.props.navigation.navigate("Home")
         } else {
-            this.alertProfile("Sign up problem, try again!")
+            this.alertProfile("Edit profile problem, try again!")
         }
         this.props.setWaitingResponse(false);
     }
@@ -74,7 +75,7 @@ class _ProfileScreen extends React.Component {
 
     handleSubmit() {
         this.props.setWaitingResponse(true);
-        app.apiClient().editProfile(this.state, this.onResponse.bind(this))
+        app.apiClient().editProfile(this.state, this.onResponseSubmit.bind(this))
     }
 
     componentDidMount() {
@@ -111,75 +112,74 @@ class _ProfileScreen extends React.Component {
 
     fetchingComponent() {
         return (
-            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                <UIActivityIndicator color="#00335c" animating={this.state.isFetching} />
+            <View style={[styles.updateProfileContainer, { paddingTop: StatusBar.currentHeight }]}>
+                <CustomHeader title="Profile" navigation={this.props.navigation} />
+                <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                    <Text style={{color:"#00335c", paddingBottom:25, fontSize: 25}}>Loading Profile to Edit</Text>
+                    <ActivityIndicator color={"#00335c"} size={55} animating={!this.state.isFetching} />
+                </View>
             </View>
         )
     }
     editProfileComponent() {
         return (
-            [<View key={shortid.generate()} style={[styles.inputView, { marginTop: 50 }]}>
-                <TextInput
-                    style={styles.inputText}
-                    value={this.state.email}
-                    placeholderTextColor="#cad6eb"
-                    editable={false}
-                    onChangeText={(text) => this.setState({ email: text })}
-                />
-            </View>,
-            <View key={shortid.generate()} style={styles.inputView}>
-                <TextInput
-                    style={styles.inputText}
-                    secureTextEntry={true}
-                    placeholder="Password"
-                    placeholderTextColor="#cad6eb"
-                    onChangeText={(text) => this.setState({ password: text })}
-                />
-            </View>,
-            <View key={shortid.generate()} style={styles.inputView}>
-                <TextInput
-                    style={styles.inputText}
-                    placeholder="Full Name"
-                    value={this.state.fullname}
-                    placeholderTextColor="#cad6eb"
-                    onChangeText={(text) => this.setState({ fullname: text })}
-                />
-            </View>,
-            <View key={shortid.generate()} style={styles.inputView}>
-                <TextInput
-                    style={styles.inputText}
-                    placeholder="Phone Number"
-                    value={this.state.phone_number}
-                    placeholderTextColor="#cad6eb"
-                    onChangeText={(text) => this.setState({ fullname: text })}
-                />
-            </View>,
-            <TouchableOpacity key={shortid.generate()} style={styles.pickImage} onPress={this._pickImage}>
-                {!this.state.photo && <Text style={styles.imagePickerText}>Pick a New Profile Image</Text>}
-                {!this.state.photo && <Ionicons name="md-image" color={"white"} size={25} />}
-                {this.state.photo && <Text style={styles.imagePickerText}>Image Selected</Text>}
-                {this.state.photo && <Ionicons name="ios-checkmark-circle-outline" color={"white"} size={25} />}
-            </TouchableOpacity>,
-            <ActivityIndicator key={shortid.generate()} style={styles.activityIndicator} size={55} animating={this.props.showWaitingResponse} />,
-            <TouchableOpacity key={shortid.generate()} style={styles.loginBtn}
-                onPress={() => {
-                    Keyboard.dismiss()
-                    this.handleSubmit()
-                }}>
-                <Text style={styles.loginText}>UPDATE</Text>
-            </TouchableOpacity>]
-        );
-    }
-
-    render() {
-        console.log("State: ", this.state)
-        return (
             <View style={[styles.updateProfileContainer, { paddingTop: StatusBar.currentHeight }]}>
                 <CustomHeader title="Profile" navigation={this.props.navigation} />
-                {this.state.isFetching && this.fetchingComponent()}
-                {!this.state.isFetching && this.editProfileComponent()}
+                <View style={[styles.inputView, { marginTop: 50 }]}>
+                    <TextInput
+                        style={styles.inputText}
+                        value={this.state.email}
+                        placeholderTextColor="#cad6eb"
+                        editable={false}
+                    />
+                </View>
+                <View style={styles.inputView}>
+                    <TextInput
+                        style={styles.inputText}
+                        secureTextEntry={true}
+                        placeholder="Password"
+                        placeholderTextColor="#cad6eb"
+                        onChangeText={(text) => this.setState({ password: text })}
+                    />
+                </View>
+                <View style={styles.inputView}>
+                    <TextInput
+                        style={styles.inputText}
+                        placeholder="Full Name"
+                        value={this.state.fullname}
+                        placeholderTextColor="#cad6eb"
+                        onChangeText={(text) => this.setState({ fullname: text })}
+                    />
+                </View>
+                <View style={styles.inputView}>
+                    <TextInput
+                        style={styles.inputText}
+                        placeholder="Phone Number"
+                        value={this.state.phone_number}
+                        placeholderTextColor="#cad6eb"
+                        keyboardType="numeric"
+                        onChangeText={(text) => this.setState({ phone_number: text })}
+                    />
+                </View>
+                <TouchableOpacity style={styles.pickImage} onPress={this._pickImage}>
+                    {!this.state.photo && <Text style={styles.imagePickerText}>Pick a New Profile Image</Text>}
+                    {!this.state.photo && <Ionicons name="md-image" color={"white"} size={25} />}
+                    {this.state.photo && <Text style={styles.imagePickerText}>Image Selected</Text>}
+                    {this.state.photo && <Ionicons name="ios-checkmark-circle-outline" color={"white"} size={25} />}
+                </TouchableOpacity>
+                <ActivityIndicator style={styles.activityIndicator} size={55} animating={this.props.showWaitingResponse} />
+                <TouchableOpacity style={styles.loginBtn}
+                    onPress={() => {
+                        Keyboard.dismiss()
+                        this.handleSubmit()
+                    }}>
+                    <Text style={styles.loginText}>UPDATE</Text>
+                </TouchableOpacity>
             </View>
         );
+    }
+    render() {
+        return !this.state.isFetching ? this.fetchingComponent() : this.editProfileComponent() ;
     }
 }
 
