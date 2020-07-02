@@ -37,7 +37,6 @@ class _VideoDetailScreen extends React.Component{
 
     onResponse(response){
         if(response.ok){
-            response.json().then(json => console.log(json))
             showMessage({
                     message: "Video uploaded!",
                     type: "success",
@@ -105,7 +104,6 @@ class _VideoDetailScreen extends React.Component{
     }
 
     render() {
-        console.log(this.props.video)
         return(
             <View style={{flex: 1, paddingTop: StatusBar.currentHeight}}>
                 <CustomHeader title="Video detail" navigation={this.props.navigation}/>
@@ -160,7 +158,7 @@ class _VideoDetailScreen extends React.Component{
                         keyboardVerticalOffset={20}
                         enabled={false}
                         style={{justifyContent: "center", alignItems: "center", padding: 10}}>
-                        <Video
+                            <Video
                             source={{ uri: this.props.video.uri }}
                             resizeMode={Video.RESIZE_MODE_CONTAIN}
                             rate={1.0}

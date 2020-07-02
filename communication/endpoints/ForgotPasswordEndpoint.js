@@ -2,7 +2,7 @@ import {Endpoint} from "./Endpoint.js";
 
 export class ForgotPasswordEndpoint extends Endpoint {
     static url() {
-        return '/user/recover_password'
+        return 'user/recover_password'
     }
 
     method() {
