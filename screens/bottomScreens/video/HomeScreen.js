@@ -27,7 +27,7 @@ export default class HomeScreen extends React.Component{
             );
             var actualThumbnails = this.state.thumbnails
             this.setState({ thumbnails: actualThumbnails.concat(uri) })
-            if(videoIndex === totalVideos - 1){
+            if(videoIndex > (totalVideos / 2 - 1)){
                 this.setState({isFetching: false})
             }
         } catch (e) {
@@ -65,7 +65,7 @@ export default class HomeScreen extends React.Component{
     fetchingComponent(){
         return (
             <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-                <UIActivityIndicator color="blue" animating={this.state.isFetching}/>
+                <UIActivityIndicator color="#00335c" animating={this.state.isFetching}/>
             </View>
         )
     }
