@@ -66,7 +66,7 @@ class SignUp extends React.Component {
         if (!this.validateEmail(this.state.email)) {
             this.alertSignup("Please enter a valid email");
             return;
-        } 
+        }
         this.props.setWaitingResponse(true);
         app.apiClient().signUp(this.state, this.onResponse.bind(this))
     }
@@ -94,7 +94,7 @@ class SignUp extends React.Component {
                 let filename = localUri.split('/').pop();
                 let match = /\.(\w+)$/.exec(filename);
                 let type = match ? `image/${match[1]}` : `image`;
-                
+
                 this.setState({ photo: { uri: localUri, name: filename, type } });
             }
         } catch (E) {
@@ -133,11 +133,11 @@ class SignUp extends React.Component {
                 </View>
                 <TouchableOpacity style={styles.pickImage} onPress={this._pickImage}>
                     {!this.state.photo && <Text style={styles.imagePickerText}>Pick an Image</Text>}
-                    {!this.state.photo && <Ionicons name="md-image" color={"white"} size={25}/>}
-                    { this.state.photo && <Text style={styles.imagePickerText}>Image Selected</Text>}
-                    {this.state.photo && <Ionicons name="ios-checkmark-circle-outline" color={"white"} size={25}/>}
+                    {!this.state.photo && <Ionicons name="md-image" color={"white"} size={25} />}
+                    {this.state.photo && <Text style={styles.imagePickerText}>Image Selected</Text>}
+                    {this.state.photo && <Ionicons name="ios-checkmark-circle-outline" color={"white"} size={25} />}
                 </TouchableOpacity>
-                <ActivityIndicator size={55} animating={this.props.showWaitingResponse} />
+                <ActivityIndicator style={styles.activityIndicator} size={55} animating={this.props.showWaitingResponse} />
                 <TouchableOpacity style={styles.loginBtn}
                     onPress={() => {
                         Keyboard.dismiss()
