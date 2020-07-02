@@ -12,7 +12,7 @@ export default function SideBarNavigator() {
     return (
         <Drawer.Navigator drawerContent={(props) => <CustomDrawerContainer {...props}/>}>
             <Drawer.Screen name="TabMenu" component={BottomTabNavigator} />
-            <Drawer.Screen name="Profile" component={ProfileScreen} />
+            <Drawer.Screen name="Profile" component={ProfileScreen}/>
             <Drawer.Screen name="UploadVideo" component={UploadVideoScreen} />
             <Drawer.Screen name="VideoDetail" component={VideoDetailScreen} />
         </Drawer.Navigator>

@@ -42,7 +42,8 @@
     "react-native-screens": "~2.2.0",
     "react-native-web": "~0.11.7",
     "react-redux": "^7.2.0",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "shortid": "^2.2.15"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
