@@ -36,7 +36,7 @@ export default function CustomHeader({title, isHome, navigation}){
                 </View>
             </View>
             <LinearGradient
-                colors={['rgba(0,0,0,0.8)', 'transparent']}
+                colors={['rgba(0,0,0,0.4)', 'transparent']}
                 style={{
                     left: 0,
                     right: 0,

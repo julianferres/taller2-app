@@ -47,7 +47,8 @@ export default class HomeScreen extends React.Component{
                                 "title": responseVideo["video"]["title"],
                                 "location": responseVideo["video"]["location"],
                                 "uri": responseVideo["video"]["file_location"],
-                                "description": responseVideo["video"]["description"]
+                                "description": responseVideo["video"]["description"],
+                                "photo":  responseVideo["user"]["photo"]
                             }
                         }
                     )
@@ -80,6 +81,9 @@ export default class HomeScreen extends React.Component{
                         ownerName={video["fullname"]}
                         description={video["description"]}
                         thumbnail={this.state.thumbnails[index]}
+                        uri={video["uri"]}
+                        userPhoto={video["photo"]}
+                        navigation={this.props.navigation}
                     />
                 ))}
             </ScrollView>
