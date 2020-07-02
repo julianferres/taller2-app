@@ -69,5 +69,10 @@ export const styles = StyleSheet.create({
     },
     activityIndicator:{
         paddingTop: 15
+    },
+    updateProfileContainer:{
+        flex: 1,
+       
+        alignItems: "center",
     }
 });

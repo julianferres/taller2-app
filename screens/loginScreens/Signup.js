@@ -33,7 +33,7 @@ class SignUp extends React.Component {
 
     alertSignup(errorMessage) {
         showMessage({
-            message: "Error",
+            message: errorMessage,
             type: "danger",
             icon: "danger",
             animationDuration: 500
