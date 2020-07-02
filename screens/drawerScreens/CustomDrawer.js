@@ -18,21 +18,21 @@ class CustomDrawer extends React.Component {
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={{ marginTop: 5, flex: 1, flexDirection: "row" }}
-                        onPress={() => props.navigation.navigate("TabMenu")}
+                        onPress={() => this.props.navigation.navigate("TabMenu")}
                     >
                         <SimpleLineIcons name="menu" size={30} color="black" />
                         <Text style={{ fontSize: 20, paddingLeft: 10 }}>Menu</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={{ marginTop: 20, flex: 1, flexDirection: "row" }}
-                        onPress={() => props.navigation.navigate("UploadVideo")}
+                        onPress={() => this.props.navigation.navigate("UploadVideo")}
                     >
                         <SimpleLineIcons name="cloud-upload" size={30} color="black" />
                         <Text style={{ fontSize: 20, paddingLeft: 10 }}>Upload new video</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={{ marginTop: 20, flex: 1, flexDirection: "row" }}
-                        onPress={() => props.navigation.navigate("Profile")}
+                        onPress={() => this.props.navigation.navigate("Profile")}
                     >
                         <SimpleLineIcons name="user" size={30} color="black" />
                         <Text style={{ fontSize: 20, paddingLeft: 10 }}>Edit my profile</Text>
