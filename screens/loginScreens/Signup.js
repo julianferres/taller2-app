@@ -19,7 +19,7 @@ class SignUp extends React.Component {
             email: "",
             password: "",
             fullname: "",
-            phone_number: "1234-5678",
+            phone_number: "",
             photo: null,
         }
         this.errorMessages = {
@@ -33,7 +33,7 @@ class SignUp extends React.Component {
 
     alertSignup(errorMessage) {
         showMessage({
-            message: "Error",
+            message: errorMessage,
             type: "danger",
             icon: "danger",
             animationDuration: 500
@@ -131,13 +131,22 @@ class SignUp extends React.Component {
                         onChangeText={(text) => this.setState({ fullname: text })}
                     />
                 </View>
+                <View style={styles.inputView}>
+                    <TextInput
+                        style={styles.inputText}
+                        placeholder="Phone Number"
+                        keyboardType= "numeric"
+                        placeholderTextColor="#cad6eb"
+                        onChangeText={(text) => this.setState({ phone_number: text })}
+                    />
+                </View>
                 <TouchableOpacity style={styles.pickImage} onPress={this._pickImage}>
                     {!this.state.photo && <Text style={styles.imagePickerText}>Pick an Image</Text>}
                     {!this.state.photo && <Ionicons name="md-image" color={"white"} size={25} />}
                     {this.state.photo && <Text style={styles.imagePickerText}>Image Selected</Text>}
                     {this.state.photo && <Ionicons name="ios-checkmark-circle-outline" color={"white"} size={25} />}
                 </TouchableOpacity>
-                <ActivityIndicator style={styles.activityIndicator} size={55} animating={this.props.showWaitingResponse} />
+                <ActivityIndicator style={styles.activityIndicator} color={"white"} size={55} animating={this.props.showWaitingResponse} />
                 <TouchableOpacity style={styles.loginBtn}
                     onPress={() => {
                         Keyboard.dismiss()
