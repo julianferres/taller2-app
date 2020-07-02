@@ -7,8 +7,8 @@ import { showMessage } from "react-native-flash-message";
 import { app } from "../../app/app";
 import { WAITING_RESPONSE } from "../../reducers/appReducer";
 import { connect } from "react-redux";
-import { store } from "../../reducers/appReducer";
 import { UIActivityIndicator } from "react-native-indicators";
+import shortid from 'shortid';
 
 //Photo
 import * as ImagePicker from 'expo-image-picker';
@@ -21,22 +21,21 @@ class _ProfileScreen extends React.Component {
         super(props);
         this.state = {
             email: "",
-            password: "",
+            password: null,
             fullname: "",
             phone_number: "",
             photo: null,
             isFetching: true,
         }
     }
-    alertSignup(errorMessage) {
+    alertProfile(errorMessage) {
         showMessage({
-            message: "Error",
+            message: errorMessage,
             type: "danger",
             icon: "danger",
             animationDuration: 500
         });
     }
-
     showSuccessfulMessage() {
         showMessage({
             message: "Profile Successfully Updated",
@@ -51,12 +50,26 @@ class _ProfileScreen extends React.Component {
             this.showSuccessfulMessage()
             this.props.navigation.navigate("Home")
         } else {
-            response.json()
-                .then(json => {
-                    this.alertSignup("Sign up problem, try again!")
-                })
+            this.alertProfile("Sign up problem, try again!")
         }
         this.props.setWaitingResponse(false);
+    }
+
+    onResponseGet(response) {
+        if (response.ok) {
+            response.json().then(json => {
+                console.log("Json recibido", json)
+                this.setState({
+                    "fullname": json["fullname"],
+                    "email": json["email"],
+                    "fullname": json["fullname"],
+                    "phone_number": json["phone_number"],
+                })
+            })
+        } else {
+            this.alertProfile("Problem when trying to get profile data. Try again later")
+        }
+        this.setState({ isFetching: false });
     }
 
     handleSubmit() {
@@ -66,13 +79,13 @@ class _ProfileScreen extends React.Component {
 
     componentDidMount() {
         this.getPermissionAsync();
-        app.apiClient().homeVideos(this.onResponse.bind(this))
+        app.apiClient().getProfile(this.onResponseGet.bind(this))
     }
     getPermissionAsync = async () => {
         if (Constants.platform.ios) {
             const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
             if (status !== 'granted') {
-                this.alertSignup('Sorry, we need camera roll permissions to make this work!');
+                this.alertProfile('Sorry, we need camera roll permissions to make this work!');
             }
         }
     };
@@ -96,11 +109,6 @@ class _ProfileScreen extends React.Component {
         }
     };
 
-    simular() {
-        this.showSuccessfulMessage()
-        this.props.navigation.navigate("Home")
-    }
-
     fetchingComponent() {
         return (
             <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -110,7 +118,7 @@ class _ProfileScreen extends React.Component {
     }
     editProfileComponent() {
         return (
-            [<View style={[styles.inputView, { marginTop: 50 }]}>
+            [<View key={shortid.generate()} style={[styles.inputView, { marginTop: 50 }]}>
                 <TextInput
                     style={styles.inputText}
                     value={this.state.email}
@@ -119,7 +127,7 @@ class _ProfileScreen extends React.Component {
                     onChangeText={(text) => this.setState({ email: text })}
                 />
             </View>,
-            <View style={styles.inputView}>
+            <View key={shortid.generate()} style={styles.inputView}>
                 <TextInput
                     style={styles.inputText}
                     secureTextEntry={true}
@@ -128,34 +136,35 @@ class _ProfileScreen extends React.Component {
                     onChangeText={(text) => this.setState({ password: text })}
                 />
             </View>,
-            <View style={styles.inputView}>
+            <View key={shortid.generate()} style={styles.inputView}>
                 <TextInput
                     style={styles.inputText}
                     placeholder="Full Name"
+                    value={this.state.fullname}
                     placeholderTextColor="#cad6eb"
                     onChangeText={(text) => this.setState({ fullname: text })}
                 />
             </View>,
-            <View style={styles.inputView}>
+            <View key={shortid.generate()} style={styles.inputView}>
                 <TextInput
                     style={styles.inputText}
                     placeholder="Phone Number"
+                    value={this.state.phone_number}
                     placeholderTextColor="#cad6eb"
                     onChangeText={(text) => this.setState({ fullname: text })}
                 />
             </View>,
-            <TouchableOpacity style={styles.pickImage} onPress={this._pickImage}>
+            <TouchableOpacity key={shortid.generate()} style={styles.pickImage} onPress={this._pickImage}>
                 {!this.state.photo && <Text style={styles.imagePickerText}>Pick a New Profile Image</Text>}
                 {!this.state.photo && <Ionicons name="md-image" color={"white"} size={25} />}
                 {this.state.photo && <Text style={styles.imagePickerText}>Image Selected</Text>}
                 {this.state.photo && <Ionicons name="ios-checkmark-circle-outline" color={"white"} size={25} />}
             </TouchableOpacity>,
-            <ActivityIndicator style={styles.activityIndicator} size={55} animating={this.props.showWaitingResponse} />,
-            <TouchableOpacity style={styles.loginBtn}
+            <ActivityIndicator key={shortid.generate()} style={styles.activityIndicator} size={55} animating={this.props.showWaitingResponse} />,
+            <TouchableOpacity key={shortid.generate()} style={styles.loginBtn}
                 onPress={() => {
-                    //Keyboard.dismiss()
-                    //this.handleSubmit()
-                    this.simular()
+                    Keyboard.dismiss()
+                    this.handleSubmit()
                 }}>
                 <Text style={styles.loginText}>UPDATE</Text>
             </TouchableOpacity>]
@@ -163,12 +172,12 @@ class _ProfileScreen extends React.Component {
     }
 
     render() {
-        console.log(store.getState().appReducer.email)
+        console.log("State: ", this.state)
         return (
             <View style={[styles.updateProfileContainer, { paddingTop: StatusBar.currentHeight }]}>
                 <CustomHeader title="Profile" navigation={this.props.navigation} />
-                {!this.state.isFetching && this.fetchingComponent()}
-                {this.state.isFetching && this.editProfileComponent()}
+                {this.state.isFetching && this.fetchingComponent()}
+                {!this.state.isFetching && this.editProfileComponent()}
             </View>
         );
     }

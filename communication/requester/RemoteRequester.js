@@ -94,11 +94,11 @@ class MultiPartEncoder extends Encoder {
         for (let field in requestBody) {
             let value = requestBody[field];
 
-            if (value !== undefined) {
+            if (value !== undefined && value !==null) {
                 formData.append(field, value);
             }
         }
-
+        
         return formData;
     }
 
