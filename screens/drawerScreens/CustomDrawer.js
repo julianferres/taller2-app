@@ -50,17 +50,12 @@ class CustomDrawer extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-    }
-}
-
 const mapDispatchToProps = (dispatch) => {
     return {
         removeToken: () => dispatch({ type: REMOVE_TOKEN }),
     }
 }
 
-const CustomDrawerContainer = connect(mapStateToProps, mapDispatchToProps)(CustomDrawer);
+const CustomDrawerContainer = connect(null, mapDispatchToProps)(CustomDrawer);
 
 export default CustomDrawerContainer;
