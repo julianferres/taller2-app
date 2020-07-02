@@ -60,7 +60,7 @@ class ApiClient {
             onResponse: response => onResponse(response),
         })
     }
-    editProfile(onResponse){
+    editProfile(data, onResponse){
         return this._requester.call({
             endpoint: new EditProfileEndpoint(),
             onResponse: response => onResponse(response),

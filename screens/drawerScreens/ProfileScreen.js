@@ -7,14 +7,11 @@ import { showMessage } from "react-native-flash-message";
 import { app } from "../../app/app";
 import { WAITING_RESPONSE } from "../../reducers/appReducer";
 import { connect } from "react-redux";
-import { UIActivityIndicator } from "react-native-indicators";
-import shortid from 'shortid';
 
 //Photo
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
-import { color } from 'react-native-reanimated';
 
 
 class _ProfileScreen extends React.Component {
@@ -50,16 +47,16 @@ class _ProfileScreen extends React.Component {
         if (response.ok) {
             this.showSuccessfulMessage()
             this.props.navigation.navigate("Home")
+            this.props.setWaitingResponse(false);
         } else {
+            this.props.setWaitingResponse(false);
             this.alertProfile("Edit profile problem, try again!")
         }
-        this.props.setWaitingResponse(false);
     }
 
     onResponseGet(response) {
         if (response.ok) {
             response.json().then(json => {
-                console.log("Json recibido", json)
                 this.setState({
                     "fullname": json["fullname"],
                     "email": json["email"],
@@ -116,7 +113,7 @@ class _ProfileScreen extends React.Component {
                 <CustomHeader title="Profile" navigation={this.props.navigation} />
                 <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                     <Text style={{color:"#00335c", paddingBottom:25, fontSize: 25}}>Loading Profile to Edit</Text>
-                    <ActivityIndicator color={"#00335c"} size={55} animating={!this.state.isFetching} />
+                    <ActivityIndicator color={"#00335c"} size={55} animating={this.state.isFetching} />
                 </View>
             </View>
         )
@@ -167,7 +164,7 @@ class _ProfileScreen extends React.Component {
                     {this.state.photo && <Text style={styles.imagePickerText}>Image Selected</Text>}
                     {this.state.photo && <Ionicons name="ios-checkmark-circle-outline" color={"white"} size={25} />}
                 </TouchableOpacity>
-                <ActivityIndicator style={styles.activityIndicator} size={55} animating={this.props.showWaitingResponse} />
+                <ActivityIndicator style={styles.activityIndicator} color={"#00335c"} size={55} animating={this.props.showWaitingResponse} />
                 <TouchableOpacity style={styles.loginBtn}
                     onPress={() => {
                         Keyboard.dismiss()
@@ -179,7 +176,7 @@ class _ProfileScreen extends React.Component {
         );
     }
     render() {
-        return !this.state.isFetching ? this.fetchingComponent() : this.editProfileComponent() ;
+        return this.state.isFetching ? this.fetchingComponent() : this.editProfileComponent() ;
     }
 }
 
