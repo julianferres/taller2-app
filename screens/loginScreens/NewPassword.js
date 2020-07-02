@@ -96,7 +96,7 @@ class NewPassword extends React.Component {
                         onChangeText={(text) => this.setState({ new_password: text })}
                     />
                 </View>
-                <ActivityIndicator style={styles.activityIndicator} color={"white"} size={55} animating={this.props.showWaitingResponse} />
+                <ActivityIndicator size={55} animating={this.props.showWaitingResponse} />
                 <TouchableOpacity style={styles.loginBtn}
                     onPress={() => {
                         Keyboard.dismiss()

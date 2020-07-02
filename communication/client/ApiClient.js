@@ -3,9 +3,6 @@ import { ForgotPasswordEndpoint } from "../endpoints/ForgotPasswordEndpoint";
 import { NewPasswordEndpoint } from "../endpoints/NewPasswordEndpoint";
 import { SignUpEndpoint } from "../endpoints/SignUpEndpoint";
 import { UploadVideoEndpoint } from "../endpoints/UploadVideoEndpoint";
-import { HomeVideoEndpoint } from "../endpoints/HomeVideoEndpoint";
-import { GetProfileEndpoint } from "../endpoints/GetProfileEndpoint";
-import { EditProfileEndpoint } from "../endpoints/EditProfileEndpoint";
 
 class ApiClient {
     constructor(requester) {
@@ -43,26 +40,6 @@ class ApiClient {
     uploadVideo(data, onResponse) {
         return this._requester.call({
             endpoint: new UploadVideoEndpoint(),
-            onResponse: response => onResponse(response),
-            data: data,
-            needsAuthorization: true
-        })
-    }
-    homeVideos(onResponse){
-        return this._requester.call({
-            endpoint: new HomeVideoEndpoint(),
-            onResponse: response => onResponse(response)
-        })
-    }
-    getProfile(onResponse){
-        return this._requester.call({
-            endpoint: new GetProfileEndpoint(),
-            onResponse: response => onResponse(response),
-        })
-    }
-    editProfile(data, onResponse){
-        return this._requester.call({
-            endpoint: new EditProfileEndpoint(),
             onResponse: response => onResponse(response),
             data: data,
             needsAuthorization: true
