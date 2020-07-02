@@ -27,7 +27,7 @@ export default class HomeScreen extends React.Component{
             );
             var actualThumbnails = this.state.thumbnails
             this.setState({ thumbnails: actualThumbnails.concat(uri) })
-            if(videoIndex === totalVideos - 1){
+            if(videoIndex > (totalVideos / 2 - 1)){
                 this.setState({isFetching: false})
             }
         } catch (e) {
@@ -47,7 +47,8 @@ export default class HomeScreen extends React.Component{
                                 "title": responseVideo["video"]["title"],
                                 "location": responseVideo["video"]["location"],
                                 "uri": responseVideo["video"]["file_location"],
-                                "description": responseVideo["video"]["description"]
+                                "description": responseVideo["video"]["description"],
+                                "photo":  responseVideo["user"]["photo"]
                             }
                         }
                     )
@@ -65,7 +66,7 @@ export default class HomeScreen extends React.Component{
     fetchingComponent(){
         return (
             <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-                <UIActivityIndicator color="blue" animating={this.state.isFetching}/>
+                <UIActivityIndicator color="#00335c" animating={this.state.isFetching}/>
             </View>
         )
     }
@@ -80,6 +81,9 @@ export default class HomeScreen extends React.Component{
                         ownerName={video["fullname"]}
                         description={video["description"]}
                         thumbnail={this.state.thumbnails[index]}
+                        uri={video["uri"]}
+                        userPhoto={video["photo"]}
+                        navigation={this.props.navigation}
                     />
                 ))}
             </ScrollView>

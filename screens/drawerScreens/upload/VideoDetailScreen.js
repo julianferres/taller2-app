@@ -158,7 +158,7 @@ class _VideoDetailScreen extends React.Component{
                         keyboardVerticalOffset={20}
                         enabled={false}
                         style={{justifyContent: "center", alignItems: "center", padding: 10}}>
-                        <Video
+                            <Video
                             source={{ uri: this.props.video.uri }}
                             resizeMode={Video.RESIZE_MODE_CONTAIN}
                             rate={1.0}

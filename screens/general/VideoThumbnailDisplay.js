@@ -1,10 +1,23 @@
 import * as React from 'react';
 import * as VideoThumbnails from 'expo-video-thumbnails';
-import {Text, View, Image, Dimensions} from "react-native";
+import {Text, View, Image, Dimensions, TouchableOpacity} from "react-native";
+import {connect} from "react-redux";
+import {VIDEO_INFO_TO_WATCH} from "../../reducers/appReducer";
 
-export default class VideoThumbnailDisplay extends React.Component{
+class _VideoThumbnailDisplay extends React.Component{
     constructor(props) {
         super(props);
+    }
+
+    watchVideo(){
+        this.props.passVideoInfo({
+            uri: this.props.uri,
+            title: this.props.title,
+            description: this.props.description,
+            ownerName: this.props.ownerName,
+            userPhoto: this.props.userPhoto
+        })
+        this.props.navigation.navigate("VideoVisualization")
     }
 
     render() {
@@ -12,14 +25,25 @@ export default class VideoThumbnailDisplay extends React.Component{
         const padding = windowWidth / 25
         const dimension = windowWidth / 2 - padding
         return(
-            <View style={{padding: padding  , flex: 1, flexDirection: "row"}}>
+            <TouchableOpacity style={{margin: padding, marginBottom: 1, flex: 1, flexDirection: "row",
+                backgroundColor: "#EEE8E8", borderWidth: 5, borderColor:"#EEE8E8", borderRadius: 2}}
+                onPress={() => this.watchVideo()}>
                 <Image source={{uri: this.props.thumbnail}} style={{width: dimension, height: dimension - 50}}/>
                 <View style={{paddingLeft: padding, flex: 1}}>
-                    <Text style={{fontSize: 18, fontWeight: "bold"}}>{this.props.title}</Text>
-                    <Text style={{fontSize: 16}}>{this.props.description}</Text>
+                    <Text style={{fontSize: 16, fontWeight: "bold", textAlign: "justify"}}>{this.props.title}</Text>
                     <Text style={{fontSize: 14, color: "grey"}}>{this.props.ownerName}</Text>
                 </View>
-            </View>
+            </TouchableOpacity>
         )
     }
 }
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        passVideoInfo: value => dispatch({type: VIDEO_INFO_TO_WATCH, payload: value})
+    }
+}
+
+const VideoThumbnailDisplay = connect(null, mapDispatchToProps)(_VideoThumbnailDisplay)
+
+export default VideoThumbnailDisplay;

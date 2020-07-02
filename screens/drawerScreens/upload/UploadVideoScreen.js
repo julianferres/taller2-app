@@ -33,8 +33,11 @@ class _UploadVideoScreen extends React.Component{
                 }}>
                     <TouchableOpacity style={{flex: 1, justifyContent: "center", alignItems: "center"}}
                     onPress={() => this.upload()}>
-                        <Text style={{fontSize: 26}}>Upload video from gallery</Text>
-                        <Ionicons name="md-videocam" size={40} color="black" />
+                        <View style={{backgroundColor: 'rgb(200, 200, 200)', justifyContent: "center", alignItems: "center",
+                                        padding: 15, borderRadius: 5}}>
+                            <Text style={{fontSize: 26}}>Upload video from gallery</Text>
+                            <Ionicons name="md-videocam" size={40} color="black" />
+                        </View>
                     </TouchableOpacity>
                 </View>
 
