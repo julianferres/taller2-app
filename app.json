@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "app",
+    "name": "chotuve-app",
     "slug": "app",
     "platforms": [
       "ios",
@@ -23,7 +23,10 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+    },
+    "android": {
+      "package": "com.taller2_grupo6.chotuve_app"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
