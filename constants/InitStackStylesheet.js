@@ -3,7 +3,8 @@ import {StyleSheet} from "react-native";
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#00335c",
+        // backgroundColor: "#00335c",
+        backgroundColor: "white",
         alignItems: "center",
         justifyContent: "center",
     },
@@ -20,7 +21,7 @@ export const styles = StyleSheet.create({
         justifyContent: "center",
         fontWeight: "bold",
         fontSize: 45,
-        color: "white",
+        color: "#00335c",
         marginBottom: 40,
     },
     inputText: {
@@ -28,8 +29,8 @@ export const styles = StyleSheet.create({
         color: "white",
     },
     forgot: {
-        color: "white",
-        fontSize: 12,
+        color: "#00335c",
+        fontSize: 14,
     },
     loginBtn: {
         width: "80%",
@@ -42,14 +43,14 @@ export const styles = StyleSheet.create({
         marginBottom: 10,
     },
     loginText: {
-        color: "white",
+        color: "#00335c",
         fontSize: 16,
     },
     forgotPasswordLogo:{
         justifyContent: "center",
         fontWeight: "bold",
         fontSize: 35,
-        color: "white",
+        color: "#00335c",
         marginBottom: 40,
     },
     pickImage:{
@@ -67,4 +68,11 @@ export const styles = StyleSheet.create({
         fontSize: 16,
         paddingRight: 10
     },
+    activityIndicator:{
+        paddingTop: 15
+    },
+    updateProfileContainer:{
+        flex: 1,
+        alignItems: "center",
+    }
 });

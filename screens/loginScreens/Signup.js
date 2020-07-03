@@ -137,7 +137,9 @@ class SignUp extends React.Component {
                     { this.state.photo && <Text style={styles.imagePickerText}>Image Selected</Text>}
                     {this.state.photo && <Ionicons name="ios-checkmark-circle-outline" color={"white"} size={25}/>}
                 </TouchableOpacity>
-                <ActivityIndicator size={55} animating={this.props.showWaitingResponse} />
+
+                <ActivityIndicator style={styles.activityIndicator} color={"#00335c"} size={55} animating={this.props.showWaitingResponse} />
+
                 <TouchableOpacity style={styles.loginBtn}
                     onPress={() => {
                         Keyboard.dismiss()

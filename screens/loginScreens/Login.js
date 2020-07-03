@@ -92,7 +92,9 @@ class Login extends React.Component {
         <TouchableOpacity  onPress={() => this.props.navigation.navigate("Forgot password")}>
           <Text style={styles.forgot}>Forgot Password?</Text>
         </TouchableOpacity>
-        <ActivityIndicator size={55} animating={this.props.showWaitingResponse} />
+
+        <ActivityIndicator style={styles.activityIndicator} color={"#00335c"} size={55} animating={this.props.showWaitingResponse} />
+
           <TouchableOpacity style={styles.loginBtn} onPress={() => {
               Keyboard.dismiss()
               this.handleSubmit()
