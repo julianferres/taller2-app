@@ -2,7 +2,7 @@ import {Endpoint} from "./Endpoint.js";
 
 export class LoginEndpoint extends Endpoint {
     static url() {
-        return 'user/login'
+        return '/user/login'
     }
 
     method() {

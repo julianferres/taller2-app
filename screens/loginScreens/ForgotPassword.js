@@ -69,6 +69,7 @@ class ForgotPassword extends React.Component {
                   />
               </View>
               <ActivityIndicator style={styles.activityIndicator} color={"#00335c"} size={55} animating={this.props.showWaitingResponse} />
+
               <TouchableOpacity style={styles.loginBtn} 
                  onPress={() => {
                     Keyboard.dismiss()
