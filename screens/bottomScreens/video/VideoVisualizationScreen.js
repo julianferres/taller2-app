@@ -28,7 +28,6 @@ class _VideoVisualizationScreen extends React.Component {
                         useNativeControls
                         style={{width: widthResolution, height: heightResolution, backgroundColor: "black"}}
                     />
-
                 <Text style={{fontSize: 20, fontWeight: "bold", paddingLeft: 10, paddingRight: 10}}>{this.props.videoInfo.title}</Text>
                 <View style={{flex: 1, flexDirection: "row", padding: 10, }}>
                     <Image source={{uri:`data:image/png;base64,${this.props.videoInfo.userPhoto}`}}
