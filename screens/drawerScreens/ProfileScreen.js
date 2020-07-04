@@ -60,7 +60,6 @@ class _ProfileScreen extends React.Component {
                 this.setState({
                     "fullname": json["fullname"],
                     "email": json["email"],
-                    "fullname": json["fullname"],
                     "phone_number": json["phone_number"],
                 })
             })
