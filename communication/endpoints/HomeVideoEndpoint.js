@@ -1,12 +1,12 @@
 import {Endpoint} from "./Endpoint.js";
 
-export class LoginEndpoint extends Endpoint {
+export class HomeVideoEndpoint extends Endpoint {
     static url() {
-        return 'user/login'
+        return 'videos/top'
     }
 
     method() {
-        return 'POST'
+        return 'GET'
     }
 
     contentType() {
