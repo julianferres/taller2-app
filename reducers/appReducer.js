@@ -6,6 +6,7 @@ export const WAITING_RESPONSE = "WAITING_RESPONSE";
 export const EMAIL_TO_RECOVER = "EMAIL_TO_RECOVER";
 export const VIDEO_TO_UPLOAD = "VIDEO_TO_UPLOAD";
 export const USER_EMAIL = "USER_EMAIL";
+export const VIDEO_INFO_TO_WATCH = "VIDEO_INFO_TO_WATCH";
 
 const initialState = {
     token: "",
@@ -14,7 +15,8 @@ const initialState = {
     emailToRecover: "",
     expandSidebar: false,
     videoToUpload: undefined,
-    userEmail: ""
+    userEmail: "",
+    videoVisualizationInfo: undefined
 };
 
 const appReducer = (state = initialState, action) => {
@@ -31,6 +33,9 @@ const appReducer = (state = initialState, action) => {
             return {...state, videoToUpload: action.payload}
         case USER_EMAIL:
             return {...state, userEmail: action.payload}
+        case VIDEO_INFO_TO_WATCH:
+            return {...state, videoVisualizationInfo: action.payload}
+
           default:
             return state;
     }

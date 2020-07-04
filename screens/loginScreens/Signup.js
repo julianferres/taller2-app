@@ -19,7 +19,7 @@ class SignUp extends React.Component {
             email: "",
             password: "",
             fullname: "",
-            phone_number: "1234-5678",
+            phone_number: "",
             photo: null,
         }
         this.errorMessages = {
@@ -33,7 +33,7 @@ class SignUp extends React.Component {
 
     alertSignup(errorMessage) {
         showMessage({
-            message: "Error",
+            message: errorMessage,
             type: "danger",
             icon: "danger",
             animationDuration: 500
@@ -66,7 +66,7 @@ class SignUp extends React.Component {
         if (!this.validateEmail(this.state.email)) {
             this.alertSignup("Please enter a valid email");
             return;
-        } 
+        }
         this.props.setWaitingResponse(true);
         app.apiClient().signUp(this.state, this.onResponse.bind(this))
     }
@@ -94,7 +94,7 @@ class SignUp extends React.Component {
                 let filename = localUri.split('/').pop();
                 let match = /\.(\w+)$/.exec(filename);
                 let type = match ? `image/${match[1]}` : `image`;
-                
+
                 this.setState({ photo: { uri: localUri, name: filename, type } });
             }
         } catch (E) {
@@ -131,11 +131,20 @@ class SignUp extends React.Component {
                         onChangeText={(text) => this.setState({ fullname: text })}
                     />
                 </View>
+                <View style={styles.inputView}>
+                    <TextInput
+                        style={styles.inputText}
+                        placeholder="Phone Number"
+                        keyboardType= "numeric"
+                        placeholderTextColor="#cad6eb"
+                        onChangeText={(text) => this.setState({ phone_number: text })}
+                    />
+                </View>
                 <TouchableOpacity style={styles.pickImage} onPress={this._pickImage}>
                     {!this.state.photo && <Text style={styles.imagePickerText}>Pick an Image</Text>}
-                    {!this.state.photo && <Ionicons name="md-image" color={"white"} size={25}/>}
-                    { this.state.photo && <Text style={styles.imagePickerText}>Image Selected</Text>}
-                    {this.state.photo && <Ionicons name="ios-checkmark-circle-outline" color={"white"} size={25}/>}
+                    {!this.state.photo && <Ionicons name="md-image" color={"white"} size={25} />}
+                    {this.state.photo && <Text style={styles.imagePickerText}>Image Selected</Text>}
+                    {this.state.photo && <Ionicons name="ios-checkmark-circle-outline" color={"white"} size={25} />}
                 </TouchableOpacity>
 
                 <ActivityIndicator style={styles.activityIndicator} color={"#00335c"} size={55} animating={this.props.showWaitingResponse} />
