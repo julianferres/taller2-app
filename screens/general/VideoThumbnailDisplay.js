@@ -15,7 +15,8 @@ class _VideoThumbnailDisplay extends React.Component{
             title: this.props.title,
             description: this.props.description,
             ownerName: this.props.ownerName,
-            userPhoto: this.props.userPhoto
+            userPhoto: this.props.userPhoto,
+            userEmail: this.props.ownerEmail
         })
         this.props.navigation.navigate("VideoVisualization")
     }

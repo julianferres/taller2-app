@@ -30,14 +30,15 @@ class _VideoVisualizationScreen extends React.Component {
                     />
 
                 <Text style={{fontSize: 20, fontWeight: "bold", paddingLeft: 10, paddingRight: 10}}>{this.props.videoInfo.title}</Text>
-                <View style={{flex: 1, flexDirection: "row", padding: 10, }}>
+                <TouchableOpacity style={{flex: 1, flexDirection: "row", padding: 10, }}
+                    onPress={() => this.props.navigation.navigate("UserProfile")}>
                     <Image source={{uri:`data:image/png;base64,${this.props.videoInfo.userPhoto}`}}
                            style={{height: widthResolution / 10, width: widthResolution / 10, borderRadius: 100}}
                     />
                     <View style={{flex: 1, paddingLeft: 10, paddingRight: 10, justifyContent: "center"}}>
                         <Text style={{fontWeight: "bold", fontSize: widthResolution / 25}}>{this.props.videoInfo.ownerName}</Text>
                     </View>
-                </View>
+                </TouchableOpacity>
                 <TouchableOpacity onPress={() => this.setState({isShowingCompleteDescription: !this.state.isShowingCompleteDescription})}>
                     <Text numberOfLines={this.state.isShowingCompleteDescription ? 1000 : 5}
                           style={{height: this.state.isShowingCompleteDescription ? "auto" : 84, paddingLeft: 10,
