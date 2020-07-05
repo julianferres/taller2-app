@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Text, TextInput, TouchableOpacity, View} from "react-native";
-import {Ionicons, Octicons} from "@expo/vector-icons";
+import {Ionicons} from "@expo/vector-icons";
 import {LinearGradient} from 'expo-linear-gradient';
 import {styles} from "../constants/InitStackStylesheet";
 
@@ -12,23 +12,18 @@ export default class CustomHeader extends React.Component {
         }
     }
 
+
+
     render() {
+        const azulMarino = "#00335c";
         return (
             <View>
                 <View style={{flexDirection: "row", height: 50, justifyContent: "space-around", alignItems: "center"}}>
-                    {
-                        this.props.isHome ?
-                            <TouchableOpacity style={{flex: 1, flexDirection: "row"}}
-                                              onPress={() => this.props.navigation.openDrawer()}>
-                                <Octicons name="person" size={30} color="black" style={{padding: 10, paddingLeft: 25}}/>
-                            </TouchableOpacity>
-                            :
-                            <TouchableOpacity style={{flex: 1, flexDirection: "row", paddingTop: 5}}
-                                              onPress={() => this.props.navigation.goBack()}>
-                                <Ionicons name="ios-arrow-back" size={30} color="black" style={{paddingLeft: 20}}/>
-                                <Text style={{paddingTop: 5, paddingLeft: 5}}>Back</Text>
-                            </TouchableOpacity>
-                    }
+                    <TouchableOpacity style={{flex: 1, flexDirection: "row", paddingTop: 5}}
+                                      onPress={() => this.props.navigation.goBack()}>
+                        <Ionicons name="ios-arrow-back" size={30} color={azulMarino} style={{paddingLeft: 20}}/>
+                        <Text style={{paddingTop: 5, paddingLeft: 5, color:azulMarino}}>Back</Text>
+                    </TouchableOpacity>
                     <View style={styles.searchBox}>
                         <TextInput
                             onEntered={() => this.textInput.focus()}
@@ -36,9 +31,9 @@ export default class CustomHeader extends React.Component {
                             ref={(input) => {
                                 this.textInput = input;
                             }}
-                            style={{flex: 2, height: 50, paddingLeft: 10}}
+                            style={{flex: 2, height: 50, paddingLeft: 10, color:azulMarino}}
                             placeholder="Search a Video"
-                            placeholderTextColor="black"
+                            placeholderTextColor={azulMarino}
                             onChangeText={(text) => this.setState({searchTerm: text})}
                         />
                     </View>

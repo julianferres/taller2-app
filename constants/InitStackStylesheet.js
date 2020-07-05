@@ -79,6 +79,7 @@ export const styles = StyleSheet.create({
         flex: 3.5,
         borderWidth: 0.5,
         borderRadius: 4,
+        borderColor: "#00335c",
         height: 40,
         marginRight: 10,
         marginTop: 3
