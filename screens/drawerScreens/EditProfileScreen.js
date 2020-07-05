@@ -203,6 +203,6 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-const ProfileScreen = connect(mapStateToProps, mapDispatchToProps)(_ProfileScreen);
+const EditProfileScreen = connect(mapStateToProps, mapDispatchToProps)(_ProfileScreen);
 
-export default ProfileScreen;
+export default EditProfileScreen;
