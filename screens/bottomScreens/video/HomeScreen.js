@@ -5,7 +5,6 @@ import {UIActivityIndicator} from "react-native-indicators";
 import {app} from "../../../app/app";
 import VideoThumbnailDisplay from "../../general/VideoThumbnailDisplay";
 import * as VideoThumbnails from "expo-video-thumbnails";
-import {connect} from "react-redux";
 
 
 export default class _HomeScreen extends React.Component {

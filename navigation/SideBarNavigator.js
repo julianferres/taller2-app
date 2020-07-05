@@ -5,6 +5,7 @@ import EditProfileScreen from "../screens/drawerScreens/EditProfileScreen";
 import CustomDrawerContainer from "../screens/drawerScreens/CustomDrawer";
 import UploadVideoScreen from "../screens/drawerScreens/upload/UploadVideoScreen";
 import VideoDetailScreen from "../screens/drawerScreens/upload/VideoDetailScreen";
+import FriendshipRequestsScreen from "../screens/drawerScreens/friendship/FriendshipRequestsScreen";
 
 const Drawer = createDrawerNavigator();
 
@@ -15,6 +16,7 @@ export default function SideBarNavigator() {
             <Drawer.Screen name="Profile" component={EditProfileScreen}/>
             <Drawer.Screen name="UploadVideo" component={UploadVideoScreen} />
             <Drawer.Screen name="VideoDetail" component={VideoDetailScreen} />
+            <Drawer.Screen name="Requests" component={FriendshipRequestsScreen} />
         </Drawer.Navigator>
     )
 }

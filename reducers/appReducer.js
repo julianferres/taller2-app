@@ -7,6 +7,7 @@ export const EMAIL_TO_RECOVER = "EMAIL_TO_RECOVER";
 export const VIDEO_TO_UPLOAD = "VIDEO_TO_UPLOAD";
 export const USER_EMAIL = "USER_EMAIL";
 export const VIDEO_INFO_TO_WATCH = "VIDEO_INFO_TO_WATCH";
+export const PENDING_FRIENDSHIP_REQUESTS = "PENDING_FRIENDSHIP_REQUESTS"
 
 const initialState = {
     token: "",
@@ -16,7 +17,8 @@ const initialState = {
     expandSidebar: false,
     videoToUpload: undefined,
     userEmail: "",
-    videoVisualizationInfo: undefined
+    videoVisualizationInfo: undefined,
+    pendingFriendshipRequests: []
 };
 
 const appReducer = (state = initialState, action) => {
@@ -35,6 +37,8 @@ const appReducer = (state = initialState, action) => {
             return {...state, userEmail: action.payload}
         case VIDEO_INFO_TO_WATCH:
             return {...state, videoVisualizationInfo: action.payload}
+        case PENDING_FRIENDSHIP_REQUESTS:
+            return {...state, pendingFriendshipRequests: action.payload}
 
           default:
             return state;
