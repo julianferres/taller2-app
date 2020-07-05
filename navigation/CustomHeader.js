@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {View, Text, TouchableOpacity} from "react-native";
-import {AntDesign, Octicons, Ionicons} from "@expo/vector-icons";
+import {AntDesign, Ionicons} from "@expo/vector-icons";
 import { LinearGradient } from 'expo-linear-gradient';
 import {useFonts} from "@use-expo/font";
 import {AppLoading} from "expo";

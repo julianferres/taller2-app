@@ -8,10 +8,11 @@ export default class CustomHeader extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            searchTerm: ''
         }
     }
 
-    render(){
+    render() {
         return (
             <View>
                 <View style={{flexDirection: "row", height: 50, justifyContent: "space-around", alignItems: "center"}}>
@@ -28,8 +29,18 @@ export default class CustomHeader extends React.Component {
                                 <Text style={{paddingTop: 5, paddingLeft: 5}}>Back</Text>
                             </TouchableOpacity>
                     }
-                    <View style={styles.searchInputView}>
-                        <TextInput/>
+                    <View style={styles.searchBox}>
+                        <TextInput
+                            onEntered={() => this.textInput.focus()}
+                            autoFocus={true}
+                            ref={(input) => {
+                                this.textInput = input;
+                            }}
+                            style={{flex: 2, height: 50, paddingLeft: 10}}
+                            placeholder="Search a Video"
+                            placeholderTextColor="black"
+                            onChangeText={(text) => this.setState({searchTerm: text})}
+                        />
                     </View>
                 </View>
                 <LinearGradient
