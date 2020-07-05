@@ -1,11 +1,27 @@
 import * as React from 'react';
 import {StatusBar, View} from 'react-native';
-import CustomHeader from "../../../navigation/CustomHeader";
+import SearchHeader from "../../../navigation/SearchHeader";
 
-export default function SearchScreen({navigation}) {
-    return (
-        <View style={{flex: 1, paddingTop: StatusBar.currentHeight}}>
-            <CustomHeader title="Search" isHome={false} navigation={navigation}/>
-        </View>
-    )
+export default class SearchScreen extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            search: ''
+        }
+    }
+
+    updateSearch = (search) => {
+        this.setState({search});
+    };
+
+    render() {
+        const {search} = this.state;
+
+        return (
+            <View style={{flex: 1, paddingTop: StatusBar.currentHeight}}>
+                <SearchHeader title="Search" isHome={false} navigation={this.props.navigation}/>
+            </View>
+        );
+    }
 }

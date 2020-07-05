@@ -74,5 +74,17 @@ export const styles = StyleSheet.create({
     updateProfileContainer:{
         flex: 1,
         alignItems: "center",
+    },
+    searchInputView: {
+        flex: 3,
+        width: "80%",
+        borderRadius: 5,
+        borderColor: "black",
+        borderWidth: 1.5,
+        height: 25,
+        marginBottom: 2,
+        marginRight: 10,
+        justifyContent: "center",
+        padding: 20,
     }
 });

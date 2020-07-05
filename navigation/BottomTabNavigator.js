@@ -29,7 +29,7 @@ export default class BottomTabNavigator extends React.Component{
                     name="Search"
                     component={SearchStack}
                     options={{
-                        title: 'Home',
+                        title: 'Search',
                         tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="ios-search" />,
                     }}
                 />
