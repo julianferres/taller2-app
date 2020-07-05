@@ -28,11 +28,9 @@ export default class _HomeScreen extends React.Component {
             );
             var actualThumbnails = this.state.thumbnails
             this.setState({ thumbnails: actualThumbnails.concat(uri) })
-            this.setState({isFetching: false})
-
-            /*if(videoIndex > (totalVideos / 2 - 1)){
+            if(videoIndex > (totalVideos / 2 - 1)){
                 this.setState({isFetching: false})
-            }*/
+            }
         } catch (e) {
             console.warn(e);
         }
