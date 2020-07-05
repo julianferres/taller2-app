@@ -125,7 +125,7 @@ class _FriendshipRequestsScreen extends React.Component {
             <ScrollView>
                 {this.state.friendshipRequests.map((request, index) => {
                     return (
-                        <View style={{flex: 1, flexDirection: "row", paddingRight: 20, borderBottomWidth: 2}} key={index}>
+                        <View style={{flex: 1, flexDirection: "row", paddingRight: 20, borderBottomWidth: 2, borderBottomColor: "#00335c"}} key={index}>
                             <TouchableOpacity style={{flex: 1, flexDirection: "row", padding: 10}}
                             onPress={() => this.goToProfile(request)}>
                                 <Image source={{uri:`data:image/png;base64,${request.photo}`}}

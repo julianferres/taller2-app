@@ -7,7 +7,6 @@ export const EMAIL_TO_RECOVER = "EMAIL_TO_RECOVER";
 export const VIDEO_TO_UPLOAD = "VIDEO_TO_UPLOAD";
 export const USER_EMAIL = "USER_EMAIL";
 export const VIDEO_INFO_TO_WATCH = "VIDEO_INFO_TO_WATCH";
-export const PENDING_FRIENDSHIP_REQUESTS = "PENDING_FRIENDSHIP_REQUESTS"
 
 const initialState = {
     token: "",

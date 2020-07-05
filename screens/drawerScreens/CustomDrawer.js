@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, ScrollView, Text, TouchableOpacity, StatusBar } from "react-native";
 import { SimpleLineIcons, MaterialCommunityIcons } from "@expo/vector-icons";
-import {PENDING_FRIENDSHIP_REQUESTS, REMOVE_TOKEN} from "../../reducers/appReducer";
+import { REMOVE_TOKEN } from "../../reducers/appReducer";
 import { connect } from "react-redux";
 import {app} from "../../app/app";
 
