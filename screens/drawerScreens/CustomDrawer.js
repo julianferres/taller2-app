@@ -9,27 +9,36 @@ import {app} from "../../app/app";
 class CustomDrawer extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            pendingFriendshipRequests: 0
+        }
     }
 
     onResponseFriendshipRequests(response){
         if(response.ok){
             response.json()
                 .then(pendingRequests => {
-                        this.props.setPendingFriendshipRequests(pendingRequests)
+                        this.setState({pendingFriendshipRequests: pendingRequests.length})
                 })
         }
     }
 
     componentDidMount() {
-        app.apiClient().getPendingFriendsRequests(this.onResponseFriendshipRequests.bind(this))
+        this._unsuscribe = this.props.navigation.addListener("state", () => {
+            app.apiClient().getPendingFriendsRequests(this.onResponseFriendshipRequests.bind(this))
+        })
+    }
+
+    componentWillUnmount() {
+        this._unsuscribe()
     }
 
     friendshipRequestNumberComponent(){
-        if(this.props.pendingFriendshipRequests.length > 0){
+        if(this.state.pendingFriendshipRequests > 0){
             return (
                 <View style={{paddingLeft: 10, paddingTop: 6}}>
                     <Text style={{fontSize: 14, backgroundColor: "black",
-                        borderRadius: 100, color: "white"}}> {this.props.pendingFriendshipRequests.length} </Text>
+                        borderRadius: 100, color: "white"}}> {this.state.pendingFriendshipRequests} </Text>
                 </View>
             )
         } else {
@@ -87,17 +96,12 @@ class CustomDrawer extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return { pendingFriendshipRequests: state.appReducer.pendingFriendshipRequests };
-};
-
 const mapDispatchToProps = (dispatch) => {
     return {
         removeToken: () => dispatch({ type: REMOVE_TOKEN }),
-        setPendingFriendshipRequests: value => dispatch({type: PENDING_FRIENDSHIP_REQUESTS, payload: value})
     }
 }
 
-const CustomDrawerContainer = connect(mapStateToProps, mapDispatchToProps)(CustomDrawer);
+const CustomDrawerContainer = connect(null, mapDispatchToProps)(CustomDrawer);
 
 export default CustomDrawerContainer;

@@ -17,8 +17,7 @@ const initialState = {
     expandSidebar: false,
     videoToUpload: undefined,
     userEmail: "",
-    videoVisualizationInfo: undefined,
-    pendingFriendshipRequests: []
+    videoVisualizationInfo: undefined
 };
 
 const appReducer = (state = initialState, action) => {
@@ -37,8 +36,6 @@ const appReducer = (state = initialState, action) => {
             return {...state, userEmail: action.payload}
         case VIDEO_INFO_TO_WATCH:
             return {...state, videoVisualizationInfo: action.payload}
-        case PENDING_FRIENDSHIP_REQUESTS:
-            return {...state, pendingFriendshipRequests: action.payload}
 
           default:
             return state;
