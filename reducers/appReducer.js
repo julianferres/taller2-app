@@ -1,6 +1,7 @@
 import {combineReducers, createStore} from "redux";
 
 export const ADD_TOKEN = "ADD_TOKEN";
+export const ADD_SEARCH = "ADD_SEARCH";
 export const REMOVE_TOKEN = "REMOVE_TOKEN";
 export const WAITING_RESPONSE = "WAITING_RESPONSE";
 export const EMAIL_TO_RECOVER = "EMAIL_TO_RECOVER";
@@ -16,7 +17,8 @@ const initialState = {
     expandSidebar: false,
     videoToUpload: undefined,
     userEmail: "",
-    videoVisualizationInfo: undefined
+    videoVisualizationInfo: undefined,
+    searchHistory: []
 };
 
 const appReducer = (state = initialState, action) => {
@@ -35,7 +37,8 @@ const appReducer = (state = initialState, action) => {
             return {...state, userEmail: action.payload}
         case VIDEO_INFO_TO_WATCH:
             return {...state, videoVisualizationInfo: action.payload}
-
+        case ADD_SEARCH:
+            return {...state, searchHistory: [action.payload,...state.searchHistory]}
           default:
             return state;
     }
