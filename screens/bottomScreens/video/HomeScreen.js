@@ -66,7 +66,8 @@ export default class HomeScreen extends React.Component{
     fetchingComponent(){
         return (
             <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-                <UIActivityIndicator color="#00335c" animating={this.state.isFetching}/>
+                <Text style={{color:"#00335c", paddingBottom:25, fontSize: 25}}>Loading Videos</Text>
+                <ActivityIndicator color={"#00335c"} size={55} animating={this.state.isFetching} />
             </View>
         )
     }
