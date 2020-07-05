@@ -154,23 +154,29 @@ class _SearchScreen extends React.Component {
                     <Text style={{color: "#00335c", fontSize: 25}}>No history yet</Text>
                 </View>
                 :
-                <View style={{flex: 1, justifyContent: "center", paddingLeft:10, paddingTop:15}}>
-                    <TouchableOpacity style={ { flexDirection:'row' }}
-                    onPress={() => this.props.clearHistory()}>
-                        <Ionicons name="ios-close-circle-outline" size={30} color={"#fb5b5a"} style={{paddingLeft: 20,
-                        paddingBottom:20}} />
-                        <Text style={ { color: "#fb5b5a", fontSize:20 } } > Clear History </Text>
+                <View style={{flex: 1, justifyContent: "center", paddingLeft: 10, paddingTop: 15}}>
+                    <TouchableOpacity style={{flexDirection: 'row'}}
+                                      onPress={() => this.props.clearHistory()}>
+                        <Ionicons name="ios-close-circle-outline" size={30} color={"#fb5b5a"} style={{
+                            paddingLeft: 20,
+                            paddingBottom: 20
+                        }}/>
+                        <Text style={{color: "#fb5b5a", fontSize: 20, fontWeight: "bold"}}> Clear History </Text>
                     </TouchableOpacity>
                     <ScrollView>
                         {this.props.searchHistory.map((previousSearch, index) => (
                             <TouchableOpacity key={index}
-                                              style={{flexDirection:'row', paddingBottom: 10}}
-                                onPress={() => {
-                                    this.handleHistorySubmit(previousSearch)
-                                }}
+                                              style={{flexDirection: 'row', paddingBottom: 10}}
+                                              onPress={() => {
+                                                  this.handleHistorySubmit(previousSearch)
+                                              }}
                             >
                                 <Ionicons name="ios-search" size={30} color={azulMarino} style={{paddingLeft: 20}}/>
-                                <Text style={ { fontSize:20, color:azulMarino}}>  {previousSearch}</Text>
+                                <Text style={{
+                                    fontSize: 20,
+                                    color: azulMarino,
+                                    fontWeight: "bold"
+                                }}>  {previousSearch}</Text>
                             </TouchableOpacity>
                         ))}
                     </ScrollView>
