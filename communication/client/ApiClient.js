@@ -6,6 +6,13 @@ import { UploadVideoEndpoint } from "../endpoints/UploadVideoEndpoint";
 import { HomeVideoEndpoint } from "../endpoints/HomeVideoEndpoint";
 import { GetProfileEndpoint } from "../endpoints/GetProfileEndpoint";
 import { EditProfileEndpoint } from "../endpoints/EditProfileEndpoint";
+import { FriendsEndpoint } from "../endpoints/FriendsEndpoint";
+import { PendingFriendRequestsEndpoint } from "../endpoints/PendingFriendRequestsEndpoint"
+import { UserVideosEndpoint } from "../endpoints/UserVideosEndpoint";
+import { FriendshipStatusEndpoint } from "../endpoints/FriendshipStatusEndpoint";
+import { FriendshipRequestEndpoint } from "../endpoints/FriendshipRequestEndpoint";
+import { AcceptFriendshipRequestEndpoint } from "../endpoints/AcceptFriendshipRequestEndpoint"
+import { DeclineFriendshipRequestEndpoint } from "../endpoints/DeclineFriendshipRequestEndpoint"
 
 class ApiClient {
     constructor(requester) {
@@ -63,6 +70,62 @@ class ApiClient {
     editProfile(data, onResponse){
         return this._requester.call({
             endpoint: new EditProfileEndpoint(),
+            onResponse: response => onResponse(response),
+            data: data,
+            needsAuthorization: true
+        })
+    }
+    getPendingFriendsRequests(onResponse){
+        return this._requester.call({
+            endpoint: new PendingFriendRequestsEndpoint(),
+            onResponse: response => onResponse(response),
+            data: undefined,
+            needsAuthorization: true
+        })
+    }
+    getFriends(onResponse){
+        return this._requester.call({
+            endpoint: new FriendsEndpoint(),
+            onResponse: response => onResponse(response),
+            data: undefined,
+            needsAuthorization: true
+        })
+    }
+    getUserVideos(data, onResponse){
+        return this._requester.call({
+            endpoint: new UserVideosEndpoint(),
+            onResponse: response => onResponse(response),
+            data: data,
+            needsAuthorization: true
+        })
+    }
+    getFriendshipStatus(data, onResponse){
+        return this._requester.call({
+            endpoint: new FriendshipStatusEndpoint(),
+            onResponse: response => onResponse(response),
+            data: data,
+            needsAuthorization: true
+        })
+    }
+    sendFriendshipRequest(data, onResponse){
+        return this._requester.call({
+            endpoint: new FriendshipRequestEndpoint(),
+            onResponse: response => onResponse(response),
+            data: data,
+            needsAuthorization: true
+        })
+    }
+    acceptFriendshipRequest(data, onResponse){
+        return this._requester.call({
+            endpoint: new AcceptFriendshipRequestEndpoint(),
+            onResponse: response => onResponse(response),
+            data: data,
+            needsAuthorization: true
+        })
+    }
+    declineFriendshipRequest(data, onResponse){
+        return this._requester.call({
+            endpoint: new DeclineFriendshipRequestEndpoint(),
             onResponse: response => onResponse(response),
             data: data,
             needsAuthorization: true

@@ -1,13 +1,14 @@
 import * as React from 'react';
-import {Text, TouchableOpacity, View, StatusBar, ActivityIndicator, ScrollView} from 'react-native';
+import {ScrollView, StatusBar, View} from 'react-native';
 import CustomHeader from "../../../navigation/CustomHeader";
 import {UIActivityIndicator} from "react-native-indicators";
 import {app} from "../../../app/app";
 import VideoThumbnailDisplay from "../../general/VideoThumbnailDisplay";
 import * as VideoThumbnails from "expo-video-thumbnails";
+import {connect} from "react-redux";
 
 
-export default class HomeScreen extends React.Component{
+export default class _HomeScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -79,6 +80,7 @@ export default class HomeScreen extends React.Component{
                         key={index}
                         title={video["title"]}
                         ownerName={video["fullname"]}
+                        ownerEmail={video["email"]}
                         description={video["description"]}
                         thumbnail={this.state.thumbnails[index]}
                         uri={video["uri"]}
@@ -95,12 +97,10 @@ export default class HomeScreen extends React.Component{
         this.state.isFetching ? showComp = this.fetchingComponent() : showComp = this.videoListComponent()
         return(
             <View style={{flex: 1, paddingTop: StatusBar.currentHeight}}>
-                <CustomHeader title="Home" isHome={true} navigation={this.props.navigation}/>
+                <CustomHeader title="ChoTuve" isHome={true} navigation={this.props.navigation}/>
                 {showComp}
             </View>
         )
     }
 }
-
-
 
