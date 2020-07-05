@@ -19,7 +19,7 @@ export default function CustomHeader({title, isHome, navigation}){
                     isHome ?
                         <TouchableOpacity style={{flex: 1, flexDirection: "row"}}
                                           onPress={() => navigation.openDrawer()}>
-                            <Octicons name="person" size={30} color="black" style={{padding: 10, paddingLeft: 25}} />
+                            <Ionicons name="ios-person" size={30} color="black" style={{padding: 10, paddingLeft: 30}} />
                         </TouchableOpacity>
                         :
                         <TouchableOpacity style={{flex:1, flexDirection: "row", paddingTop: 5}}
