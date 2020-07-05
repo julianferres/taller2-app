@@ -8,6 +8,7 @@ export const EMAIL_TO_RECOVER = "EMAIL_TO_RECOVER";
 export const VIDEO_TO_UPLOAD = "VIDEO_TO_UPLOAD";
 export const USER_EMAIL = "USER_EMAIL";
 export const VIDEO_INFO_TO_WATCH = "VIDEO_INFO_TO_WATCH";
+export const CLEAR_HISTORY = "CLEAR_HISTORY";
 
 const initialState = {
     token: "",
@@ -39,7 +40,9 @@ const appReducer = (state = initialState, action) => {
             return {...state, videoVisualizationInfo: action.payload}
         case ADD_SEARCH:
             return {...state, searchHistory: [action.payload,...state.searchHistory]}
-          default:
+        case CLEAR_HISTORY:
+            return { ...state, searchHistory:[] }
+        default:
             return state;
     }
 };

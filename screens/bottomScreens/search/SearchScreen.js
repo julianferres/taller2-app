@@ -7,7 +7,7 @@ import {app} from "../../../app/app";
 import {showMessage} from "react-native-flash-message";
 import * as VideoThumbnails from "expo-video-thumbnails";
 import VideoThumbnailDisplay from "../../general/VideoThumbnailDisplay";
-import {ADD_SEARCH} from "../../../reducers/appReducer";
+import {ADD_SEARCH, CLEAR_HISTORY} from "../../../reducers/appReducer";
 import {connect} from "react-redux";
 
 class _SearchScreen extends React.Component {
@@ -56,11 +56,21 @@ class _SearchScreen extends React.Component {
             this.alertSearch("Search is Empty");
             return;
         }
-        console.log(this.state.searchTerm)
         this.setState({isSearching: true, isHistory: false})
         app.apiClient().searchVideos({query: this.state.searchTerm}, this.onResponse.bind(this))
         this.props.addSearchToHistory(this.state.searchTerm)
     }
+
+    handleHistorySubmit(historySearch) {
+        if (historySearch === '') {
+            this.alertSearch("Search is Empty");
+            return;
+        }
+        this.setState({isSearching: true, isHistory: false})
+        app.apiClient().searchVideos({query: historySearch}, this.onResponse.bind(this))
+        this.props.addSearchToHistory(historySearch)
+    }
+
 
     onResponse(response) {
         if (response.ok) {
@@ -113,7 +123,7 @@ class _SearchScreen extends React.Component {
                             onFocus={() => this.setState({isHistory: true})}
                             // onBlur={() => this.setState({isHistory: false})}
                             returnKeyType={'search'}
-                            style={{flex: 2, height: 50, fontSize: 15, paddingLeft: 10, color: azulMarino}}
+                            style={{flex: 2, height: 50, fontSize: 16, paddingLeft: 10, color: azulMarino}}
                             placeholder="Search a Video"
                             placeholderTextColor={azulMarino}
                             onSubmitEditing={() => {
@@ -137,22 +147,30 @@ class _SearchScreen extends React.Component {
     }
 
     historyComponent() {
+        const azulMarino = "#00335c";
         return (
             this.props.searchHistory.length === 0 ?
                 <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
                     <Text style={{color: "#00335c", fontSize: 25}}>No history yet</Text>
                 </View>
                 :
-                <View style={{flex: 1, justifyContent: "center", paddingLeft:10}}>
+                <View style={{flex: 1, justifyContent: "center", paddingLeft:10, paddingTop:15}}>
+                    <TouchableOpacity style={ { flexDirection:'row' }}
+                    onPress={() => this.props.clearHistory()}>
+                        <Ionicons name="ios-close-circle-outline" size={30} color={"#fb5b5a"} style={{paddingLeft: 20,
+                        paddingBottom:20}} />
+                        <Text style={ { color: "#fb5b5a", fontSize:20 } } > Clear History </Text>
+                    </TouchableOpacity>
                     <ScrollView>
                         {this.props.searchHistory.map((previousSearch, index) => (
                             <TouchableOpacity key={index}
+                                              style={{flexDirection:'row', paddingBottom: 10}}
                                 onPress={() => {
-                                    this.setState({ searchTerm: previousSearch })
-                                    this.handleSubmit()
+                                    this.handleHistorySubmit(previousSearch)
                                 }}
                             >
-                                <Text style={ { fontSize:25 }}>{previousSearch}</Text>
+                                <Ionicons name="ios-search" size={30} color={azulMarino} style={{paddingLeft: 20}}/>
+                                <Text style={ { fontSize:20, color:azulMarino}}>  {previousSearch}</Text>
                             </TouchableOpacity>
                         ))}
                     </ScrollView>
@@ -218,7 +236,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        addSearchToHistory: searchTerm => dispatch({type: ADD_SEARCH, payload: searchTerm})
+        addSearchToHistory: searchTerm => dispatch({type: ADD_SEARCH, payload: searchTerm}),
+        clearHistory: () => dispatch({type: CLEAR_HISTORY})
     }
 }
 
