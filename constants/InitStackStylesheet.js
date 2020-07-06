@@ -46,14 +46,14 @@ export const styles = StyleSheet.create({
         color: "#00335c",
         fontSize: 16,
     },
-    forgotPasswordLogo:{
+    forgotPasswordLogo: {
         justifyContent: "center",
         fontWeight: "bold",
         fontSize: 35,
         color: "#00335c",
         marginBottom: 40,
     },
-    pickImage:{
+    pickImage: {
         width: "80%",
         backgroundColor: "#265881",
         borderRadius: 25,
@@ -68,11 +68,21 @@ export const styles = StyleSheet.create({
         fontSize: 16,
         paddingRight: 10
     },
-    activityIndicator:{
+    activityIndicator: {
         paddingTop: 15
     },
-    updateProfileContainer:{
+    updateProfileContainer: {
         flex: 1,
         alignItems: "center",
+    },
+    searchBox: {
+        flex: 3.5,
+        borderWidth: 0.5,
+        borderRadius: 4,
+        borderColor: "#00335c",
+        height: 40,
+        marginRight: 10,
+        marginTop: 3
     }
+
 });

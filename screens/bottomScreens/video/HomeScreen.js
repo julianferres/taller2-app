@@ -1,7 +1,6 @@
 import * as React from 'react';
-import {ScrollView, StatusBar, View} from 'react-native';
+import {ScrollView, StatusBar, View, Text, ActivityIndicator} from 'react-native';
 import CustomHeader from "../../../navigation/CustomHeader";
-import {UIActivityIndicator} from "react-native-indicators";
 import {app} from "../../../app/app";
 import VideoThumbnailDisplay from "../../general/VideoThumbnailDisplay";
 import * as VideoThumbnails from "expo-video-thumbnails";
@@ -66,7 +65,8 @@ export default class _HomeScreen extends React.Component {
     fetchingComponent(){
         return (
             <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-                <UIActivityIndicator color="#00335c" animating={this.state.isFetching}/>
+                <Text style={{color:"#00335c", paddingBottom:25, fontSize: 25}}>Loading Videos</Text>
+                <ActivityIndicator color={"#00335c"} size={55} animating={this.state.isFetching} />
             </View>
         )
     }

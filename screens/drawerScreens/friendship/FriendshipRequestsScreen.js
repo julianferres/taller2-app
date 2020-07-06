@@ -115,7 +115,7 @@ class _FriendshipRequestsScreen extends React.Component {
         if(this.state.friendshipRequests.length === 0){
             return (
                 <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-                    <Text style={{fontSize: this.fontSizeIcon * 3/2}}>
+                    <Text style={{fontSize: this.fontSizeIcon * 3/2, color:"#00335c"}}>
                         You don't have any friendship request.
                     </Text>
                 </View>
