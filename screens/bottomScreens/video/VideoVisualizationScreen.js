@@ -77,12 +77,12 @@ class _VideoVisualizationScreen extends React.Component {
                 }}>{this.props.videoInfo.title}</Text>
                 <HorizontalRule margin={0} padding={10}/>
                 <View style={{flexDirection:"row", alignItems:"flex-start", paddingLeft:10}}>
-                    <TouchableOpacity style={{padding: 10, alignItems: "center"}}
+                    <TouchableOpacity style={{padding: 10, marginLeft: 5, alignItems: "center"}}
                                       onPress={() => console.log("Di LIKE")}>
                         <Ionicons size={30} name="md-thumbs-up" style={{color: azulMarino}} />
                         <Text style={{marginTop: -4, color:azulMarino}}>{this.state.likesAmount}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{padding: 10 , marginLeft:5, alignItems: "center"}}
+                    <TouchableOpacity style={{padding: 10 , marginLeft:10, alignItems: "center"}}
                                       onPress={() => console.log("Di Dislike")}>
                         <Ionicons size={30} name="md-thumbs-down" style={{color: azulMarino}} />
                         <Text style={{marginTop: -4, color: azulMarino}}>{this.state.dislikesAmount}</Text>
