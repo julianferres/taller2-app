@@ -8,6 +8,7 @@ import * as Font from 'expo-font';
 import {Ionicons} from "@expo/vector-icons";
 import Colors from "../../../constants/Colors";
 import {showMessage} from "react-native-flash-message";
+import {app} from "../../../app/app";
 
 let customFonts = {
     "OpenSans": require('../../../assets/fonts/OpenSans-SemiBold.ttf'),
@@ -63,9 +64,32 @@ class _VideoVisualizationScreen extends React.Component {
         });
     }
 
-    reaction(reactionType) {
 
+
+    reaction(reactionType) {
+        if(reactionType === "like" && !this.state.myLike){
+            // api.apiClient().giveReaction(, this.onResponse.bind(this))
+        }
+        if(reactionType === "dislike" && !this.state.myDislike){
+            // api.apiClient().giveReaction(, this.onResponse.bind(this))
+        }
+
+        app.apiClient().forgotPassword(this.state, this.onResponse.bind(this))
+
+        this.showReactionMessage(reactionMessage);
         // show
+    }
+
+    onResponse(response){
+        if(response.ok){
+
+        } else {
+            response.json()
+                .then(json => {
+                    this.alertForgotPassword(this.errorMessages[json.message])
+                })
+        }
+        this.props.setWaitingResponse(false);
     }
 
 
