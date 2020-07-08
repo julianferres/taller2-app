@@ -33,8 +33,8 @@ class _VideoVisualizationScreen extends React.Component {
         this.state = {
             isShowingCompleteDescription: false,
             fontsLoaded: false,
-            likesAmount:0,
-            dislikesAmount:0
+            likesAmount:123,
+            dislikesAmount:1234
         }
     }
 
@@ -77,18 +77,19 @@ class _VideoVisualizationScreen extends React.Component {
                 }}>{this.props.videoInfo.title}</Text>
                 <HorizontalRule margin={0} padding={10}/>
                 <View style={{flexDirection:"row", alignItems:"flex-start", paddingLeft:10}}>
-                    <TouchableOpacity style={{padding: 10,}}
+                    <TouchableOpacity style={{padding: 10, alignItems: "center"}}
                                       onPress={() => console.log("Di LIKE")}>
                         <Ionicons size={30} name="md-thumbs-up" style={{color: azulMarino}} />
+                        <Text style={{marginTop: -4, color:azulMarino}}>{this.state.likesAmount}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{padding: 10}}
+                    <TouchableOpacity style={{padding: 10 , marginLeft:5, alignItems: "center"}}
                                       onPress={() => console.log("Di Dislike")}>
                         <Ionicons size={30} name="md-thumbs-down" style={{color: azulMarino}} />
-
+                        <Text style={{marginTop: -4, color: azulMarino}}>{this.state.dislikesAmount}</Text>
                     </TouchableOpacity>
                 </View>
                 <HorizontalRule margin={0} padding={0}/>
-                <TouchableOpacity style={{flex: 1, flexDirection: "row", padding: 10,}}
+                <TouchableOpacity style={{flex: 1, flexDirection: "row", padding: 10}}
                                   onPress={() => this.props.navigation.navigate("UserProfile")}>
                     <Image source={{uri: `data:image/png;base64,${this.props.videoInfo.userPhoto}`}}
                            style={{height: widthResolution / 10, width: widthResolution / 10, borderRadius: 100}}
