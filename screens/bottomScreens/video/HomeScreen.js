@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ScrollView, StatusBar, View, Text, ActivityIndicator} from 'react-native';
+import {ActivityIndicator, ScrollView, StatusBar, Text, View} from 'react-native';
 import CustomHeader from "../../../navigation/CustomHeader";
 import {app} from "../../../app/app";
 import VideoThumbnailDisplay from "../../general/VideoThumbnailDisplay";
@@ -18,15 +18,15 @@ export default class _HomeScreen extends React.Component {
 
     generateThumbnail = async (videoUri, videoIndex, totalVideos) => {
         try {
-                    const { uri } = await VideoThumbnails.getThumbnailAsync(
+            const {uri} = await VideoThumbnails.getThumbnailAsync(
                 videoUri,
                 {
                     time: 15000,
                 }
             );
             var actualThumbnails = this.state.thumbnails
-            this.setState({ thumbnails: actualThumbnails.concat(uri) })
-            if(videoIndex > (totalVideos / 2 - 1)){
+            this.setState({thumbnails: actualThumbnails.concat(uri)})
+            if (videoIndex > (totalVideos / 2 - 1)) {
                 this.setState({isFetching: false})
             }
         } catch (e) {
@@ -34,23 +34,25 @@ export default class _HomeScreen extends React.Component {
         }
     };
 
-    onResponse(response){
-        if(response.ok){
+    onResponse(response) {
+        if (response.ok) {
             response.json().then(json => {
-                this.setState({ videos:
-                    json.map ( (responseVideo, index)  => {
-                            this.generateThumbnail(responseVideo["video"]["file_location"], index, json.length)
-                            return {
-                                "fullname": responseVideo["user"]["fullname"],
-                                "email": responseVideo["user"]["email"],
-                                "title": responseVideo["video"]["title"],
-                                "location": responseVideo["video"]["location"],
-                                "uri": responseVideo["video"]["file_location"],
-                                "description": responseVideo["video"]["description"],
-                                "photo":  responseVideo["user"]["photo"]
+                this.setState({
+                    videos:
+                        json.map((responseVideo, index) => {
+                                this.generateThumbnail(responseVideo["video"]["file_location"], index, json.length)
+                                return {
+                                    "fullname": responseVideo["user"]["fullname"],
+                                    "email": responseVideo["user"]["email"],
+                                    "title": responseVideo["video"]["title"],
+                                    "location": responseVideo["video"]["location"],
+                                    "uri": responseVideo["video"]["file_location"],
+                                    "description": responseVideo["video"]["description"],
+                                    "photo": responseVideo["user"]["photo"],
+                                    "reactions": responseVideo["reactions"]
+                                }
                             }
-                        }
-                    )
+                        )
                 })
             })
         } else {
@@ -62,17 +64,17 @@ export default class _HomeScreen extends React.Component {
         app.apiClient().homeVideos(this.onResponse.bind(this))
     }
 
-    fetchingComponent(){
+    fetchingComponent() {
         return (
             <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-                <Text style={{color:"#00335c", paddingBottom:25, fontSize: 25}}>Loading Videos</Text>
-                <ActivityIndicator color={"#00335c"} size={55} animating={this.state.isFetching} />
+                <Text style={{color: "#00335c", paddingBottom: 25, fontSize: 25}}>Loading Videos</Text>
+                <ActivityIndicator color={"#00335c"} size={55} animating={this.state.isFetching}/>
             </View>
         )
     }
 
-    videoListComponent(){
-        return(
+    videoListComponent() {
+        return (
             <ScrollView>
                 {this.state.videos.map((video, index) => (
                     <VideoThumbnailDisplay
@@ -84,6 +86,7 @@ export default class _HomeScreen extends React.Component {
                         thumbnail={this.state.thumbnails[index]}
                         uri={video["uri"]}
                         userPhoto={video["photo"]}
+                        reactions={video["reactions"]}
                         navigation={this.props.navigation}
                     />
                 ))}
@@ -91,10 +94,10 @@ export default class _HomeScreen extends React.Component {
         )
     }
 
-    render(){
+    render() {
         let showComp;
         this.state.isFetching ? showComp = this.fetchingComponent() : showComp = this.videoListComponent()
-        return(
+        return (
             <View style={{flex: 1, paddingTop: StatusBar.currentHeight}}>
                 <CustomHeader title="ChoTuve" isHome={true} navigation={this.props.navigation}/>
                 {showComp}

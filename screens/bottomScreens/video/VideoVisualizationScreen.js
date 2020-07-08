@@ -6,11 +6,14 @@ import {connect} from "react-redux";
 import {AppLoading} from "expo";
 import * as Font from 'expo-font';
 import {Ionicons} from "@expo/vector-icons";
+import Colors from "../../../constants/Colors";
+import {showMessage} from "react-native-flash-message";
 
 let customFonts = {
     "OpenSans": require('../../../assets/fonts/OpenSans-SemiBold.ttf'),
     "OpenSans-regular": require('../../../assets/fonts/OpenSans-Regular.ttf')
 };
+
 const azulMarino = "#00335c";
 
 class HorizontalRule extends React.Component {
@@ -33,8 +36,10 @@ class _VideoVisualizationScreen extends React.Component {
         this.state = {
             isShowingCompleteDescription: false,
             fontsLoaded: false,
-            likesAmount:123,
-            dislikesAmount:1234
+            likesAmount: this.props.videoInfo["reactions"]["like"],
+            dislikesAmount: this.props.videoInfo["reactions"]["dislike"],
+            myLike: false,
+            myDislike: false
         }
     }
 
@@ -45,7 +50,24 @@ class _VideoVisualizationScreen extends React.Component {
 
     componentDidMount() {
         this._loadFontsAsync();
+
     }
+
+    showReactionMessage(reaction) {
+        showMessage({
+            message: reaction,
+            type: "default",
+            animationDuration: 300,
+            icon: "default",
+            style: {height: 50}
+        });
+    }
+
+    reaction(reactionType) {
+
+        // show
+    }
+
 
     render() {
         const widthResolution = Dimensions.get("window").width
@@ -76,16 +98,31 @@ class _VideoVisualizationScreen extends React.Component {
                     fontFamily: "OpenSans"
                 }}>{this.props.videoInfo.title}</Text>
                 <HorizontalRule margin={0} padding={10}/>
-                <View style={{flexDirection:"row", alignItems:"flex-start", paddingLeft:10}}>
+                <View style={{flexDirection: "row", alignItems: "flex-start", paddingLeft: 10}}>
                     <TouchableOpacity style={{padding: 10, marginLeft: 5, alignItems: "center"}}
-                                      onPress={() => console.log("Di LIKE")}>
-                        <Ionicons size={30} name="md-thumbs-up" style={{color: azulMarino}} />
-                        <Text style={{marginTop: -4, color:azulMarino}}>{this.state.likesAmount}</Text>
+                                      onPress={() => {
+                                          this.reaction("like")
+                                          this.setState({myLike: !this.state.myLike})
+                                      }}>
+                        <Ionicons size={30} name="md-thumbs-up"
+                                  style={{color: this.state.myLike ? azulMarino : Colors.tabIconDefault}}/>
+                        <Text style={{
+                            marginTop: -4,
+                            color: this.state.myLike ? azulMarino : Colors.tabIconDefault
+                        }}>{this.state.likesAmount}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{padding: 10 , marginLeft:10, alignItems: "center"}}
-                                      onPress={() => console.log("Di Dislike")}>
-                        <Ionicons size={30} name="md-thumbs-down" style={{color: azulMarino}} />
-                        <Text style={{marginTop: -4, color: azulMarino}}>{this.state.dislikesAmount}</Text>
+                    <TouchableOpacity style={{padding: 10, marginLeft: 10, alignItems: "center"}}
+                                      onPress={() => {
+                                          this.reaction("dislike")
+                                          this.setState({myDislike: !this.state.myDislike})
+                                      }}>
+                        <Ionicons size={30} name="md-thumbs-down"
+                                  style={{color: this.state.myDislike ? azulMarino : Colors.tabIconDefault}}/>
+                        <Text style={{
+                            marginTop: -4,
+                            color: this.state.myDislike ? azulMarino : Colors.tabIconDefault
+                        }}
+                        >{this.state.dislikesAmount}</Text>
                     </TouchableOpacity>
                 </View>
                 <HorizontalRule margin={0} padding={0}/>
