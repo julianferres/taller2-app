@@ -1,5 +1,5 @@
 import React from "react";
-import { ActivityIndicator, Alert, TextInput, Text, View, TouchableOpacity, Keyboard } from "react-native";
+import { ActivityIndicator, TextInput, Text, View, TouchableOpacity, Keyboard } from "react-native";
 import { styles } from "../../constants/InitStackStylesheet";
 import { app } from "../../app/app";
 import { WAITING_RESPONSE, EMAIL_TO_RECOVER } from "../../reducers/appReducer";
@@ -43,8 +43,6 @@ class NewPassword extends React.Component {
 
     onResponse(response) {
         if (response.ok) {
-            response.json()
-                .then(json => console.log(json))
             this.showSuccessfulMessage()
             this.props.setEmailToRecover("")
             this.props.navigation.popToTop()
