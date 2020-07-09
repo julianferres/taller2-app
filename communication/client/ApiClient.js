@@ -14,6 +14,8 @@ import {FriendshipRequestEndpoint} from "../endpoints/FriendshipRequestEndpoint"
 import {AcceptFriendshipRequestEndpoint} from "../endpoints/AcceptFriendshipRequestEndpoint"
 import {DeclineFriendshipRequestEndpoint} from "../endpoints/DeclineFriendshipRequestEndpoint"
 import { SearchVideosEndpoint } from "../endpoints/SearchVideosEndpoint"
+import { DeleteFriendshipEndpoint } from "../endpoints/DeleteFriendshipEndpoint"
+
 
 class ApiClient {
     constructor(requester) {
@@ -150,6 +152,15 @@ class ApiClient {
     searchVideos(data, onResponse) {
         return this._requester.call({
             endpoint: new SearchVideosEndpoint(),
+            onResponse: response => onResponse(response),
+            data: data,
+            needsAuthorization: true
+        })
+    }
+
+    deleteFriend(data, onResponse) {
+        return this._requester.call({
+            endpoint: new DeleteFriendshipEndpoint(),
             onResponse: response => onResponse(response),
             data: data,
             needsAuthorization: true

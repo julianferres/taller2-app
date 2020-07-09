@@ -10,7 +10,7 @@ class RemoteRequester extends Requester {
     call({ endpoint, onResponse, data = undefined, needsAuthorization = false }) {
         const request = this._buildRequest(endpoint, data, needsAuthorization);
         let url = endpoint.url();
-        if (endpoint.method() === 'GET' && data) {
+        if ((endpoint.method() === 'GET' || endpoint.method() === 'DELETE') && data) {
             url += "?" + this._dataToQueryString(data);
         }
 
@@ -28,12 +28,11 @@ class RemoteRequester extends Requester {
             headers: headers
         };
 
-        if (endpoint.method() !== 'GET') {
+        if (endpoint.method() !== 'GET' && endpoint.method() !== 'DELETE') {
             let encoder = this._encoderFor(endpoint.contentType());
             Object.assign(headers, encoder.headers());
             Object.assign(requestOptions, { body: encoder.encode(data) });
         }
-        console.log("Pegada: ", requestOptions);
         return requestOptions;
     }
 

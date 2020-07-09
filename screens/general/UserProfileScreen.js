@@ -129,7 +129,7 @@ class _UserProfileScreen extends React.Component {
     waitingAcceptanceComponent() {
         return (
             <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-                <MaterialCommunityIcons name="progress-clock" size={this.iconSize} color="#00335c"/>
+                <MaterialCommunityIcons name="account-clock" size={this.iconSize} color="#00335c"/>
                 <Text style={{fontSize: this.fontSizeIcon, color: "#00335c"}}>Request already sent.</Text>
             </View>
         )

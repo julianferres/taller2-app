@@ -70,6 +70,13 @@ class CustomDrawer extends React.Component {
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={{ marginTop: 20, flex: 1, flexDirection: "row" }}
+                        onPress={() => this.props.navigation.navigate("Friends")}
+                    >
+                        <SimpleLineIcons name="people" size={30} color="black" />
+                        <Text style={{ fontSize: 20, paddingLeft: 10 }}>Friends</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={{ marginTop: 20, flex: 1, flexDirection: "row" }}
                         onPress={() => this.props.navigation.navigate("Requests")}
                     >
                         <SimpleLineIcons name="user-follow" size={30} color="black" />
