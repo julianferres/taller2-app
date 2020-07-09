@@ -14,14 +14,10 @@ import {FriendshipRequestEndpoint} from "../endpoints/FriendshipRequestEndpoint"
 import {AcceptFriendshipRequestEndpoint} from "../endpoints/AcceptFriendshipRequestEndpoint"
 import {DeclineFriendshipRequestEndpoint} from "../endpoints/DeclineFriendshipRequestEndpoint"
 import { SearchVideosEndpoint } from "../endpoints/SearchVideosEndpoint"
-<<<<<<< HEAD
 import { DeleteFriendshipEndpoint } from "../endpoints/DeleteFriendshipEndpoint"
-
-=======
 import {GiveReactionEndpoint} from "../endpoints/GiveReactionEndpoint";
 import {RemoveReactionEndpoint} from "../endpoints/RemoveReactionEndpoint";
 import {GetReactionsEndpoint} from "../endpoints/GetReactionsEndpoint";
->>>>>>> master
 
 class ApiClient {
     constructor(requester) {
