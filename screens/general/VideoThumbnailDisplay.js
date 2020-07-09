@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as VideoThumbnails from 'expo-video-thumbnails';
 import {Text, View, Image, Dimensions, TouchableOpacity} from "react-native";
 import {connect} from "react-redux";
 import {VIDEO_INFO_TO_WATCH} from "../../reducers/appReducer";
@@ -16,7 +15,8 @@ class _VideoThumbnailDisplay extends React.Component{
             description: this.props.description,
             ownerName: this.props.ownerName,
             userPhoto: this.props.userPhoto,
-            userEmail: this.props.ownerEmail
+            userEmail: this.props.ownerEmail,
+            reactions: this.props.reactions
         })
         this.props.navigation.navigate("VideoVisualization")
     }
