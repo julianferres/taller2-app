@@ -4,7 +4,7 @@ import CustomHeader from "../../../navigation/CustomHeader";
 import {app} from "../../../app/app";
 import {showMessage} from "react-native-flash-message";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
-import {VIDEO_INFO_TO_WATCH} from "../../../reducers/appReducer";
+import {USER_INFORMATION} from "../../../reducers/appReducer";
 import {connect} from "react-redux";
 
 class _FriendshipRequestsScreen extends React.Component {
@@ -166,7 +166,7 @@ class _FriendshipRequestsScreen extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        passVideoInfo: value => dispatch({type: VIDEO_INFO_TO_WATCH, payload: value})
+        passVideoInfo: value => dispatch({type: USER_INFORMATION, payload: value})
     }
 }
 

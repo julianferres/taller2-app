@@ -4,7 +4,7 @@ import CustomHeader from "../../../navigation/CustomHeader";
 import {app} from "../../../app/app";
 import {showMessage} from "react-native-flash-message";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
-import {VIDEO_INFO_TO_WATCH} from "../../../reducers/appReducer";
+import {USER_INFORMATION} from "../../../reducers/appReducer";
 import {connect} from "react-redux";
 
 class _FriendsScreen extends React.Component {
@@ -76,13 +76,22 @@ class _FriendsScreen extends React.Component {
         app.apiClient().deleteFriend({other_user_email: friend.email}, this.onResponseDeleteFriend.bind(this))
     }
 
-    goToProfile(friend){
-        this.props.passVideoInfo({
+    passUserInfo(friend){
+        this.props.passUserInfo({
             ownerName: friend.fullname,
             userPhoto: friend.photo,
             userEmail: friend.email
         })
+    }
+
+    goToProfile(friend){
+        this.passUserInfo(friend)
         this.props.navigation.navigate("UserProfile")
+    }
+
+    goToConversation(friend){
+        this.passUserInfo(friend)
+        this.props.navigation.navigate("Conversation")
     }
 
     fetchingComponent(){
@@ -122,7 +131,7 @@ class _FriendsScreen extends React.Component {
                                     </View>
                                 </TouchableOpacity>
                                 <View style={{flex: 1, flexDirection: "row", justifyContent: "space-between" }}>
-                                    <TouchableOpacity style={{flex: 1, alignItems: "center"}}>
+                                    <TouchableOpacity style={{flex: 1, alignItems: "center"}} onPress={() => this.goToConversation(friend)}>
                                         <MaterialCommunityIcons name="message-text" size={this.iconSize} color="#00335c" />
                                         <Text style={{textAlign: "center", color: "#00335c", fontSize: this.fontSizeIcon}}>Send message</Text>
                                     </TouchableOpacity>
@@ -153,7 +162,7 @@ class _FriendsScreen extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        passVideoInfo: value => dispatch({type: VIDEO_INFO_TO_WATCH, payload: value})
+        passUserInfo: value => dispatch({type: USER_INFORMATION, payload: value})
     }
 }
 

@@ -8,6 +8,7 @@ import VideoDetailScreen from "../screens/drawerScreens/upload/VideoDetailScreen
 import FriendshipRequestsScreen from "../screens/drawerScreens/friendship/FriendshipRequestsScreen";
 import UserProfileScreen from "../screens/general/UserProfileScreen";
 import FriendsScreen from "../screens/drawerScreens/friendship/FriendsScreen";
+import ConversationScreen from "../screens/general/ConversationScreen";
 
 const Drawer = createDrawerNavigator();
 
@@ -21,6 +22,7 @@ export default function SideBarNavigator() {
             <Drawer.Screen name="Requests" component={FriendshipRequestsScreen} />
             <Drawer.Screen name="UserProfile" component={UserProfileScreen} />
             <Drawer.Screen name="Friends" component={FriendsScreen} />
+            <Drawer.Screen name="Conversation" component={ConversationScreen} />
         </Drawer.Navigator>
     )
 }

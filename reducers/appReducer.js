@@ -7,7 +7,7 @@ export const WAITING_RESPONSE = "WAITING_RESPONSE";
 export const EMAIL_TO_RECOVER = "EMAIL_TO_RECOVER";
 export const VIDEO_TO_UPLOAD = "VIDEO_TO_UPLOAD";
 export const USER_EMAIL = "USER_EMAIL";
-export const VIDEO_INFO_TO_WATCH = "VIDEO_INFO_TO_WATCH";
+export const USER_INFORMATION = "VIDEO_INFO_TO_WATCH";
 export const CLEAR_HISTORY = "CLEAR_HISTORY";
 
 const initialState = {
@@ -36,7 +36,7 @@ const appReducer = (state = initialState, action) => {
             return {...state, videoToUpload: action.payload}
         case USER_EMAIL:
             return {...state, userEmail: action.payload}
-        case VIDEO_INFO_TO_WATCH:
+        case USER_INFORMATION:
             return {...state, videoVisualizationInfo: action.payload}
         case ADD_SEARCH:
             return {...state, searchHistory: [action.payload,...state.searchHistory]}
