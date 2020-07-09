@@ -252,7 +252,7 @@ class _UserProfileScreen extends React.Component {
                         flex: 1,
                         flexDirection: "row",
                         padding: this.fontSizeIcon,
-                        borderBottomWidth: 1,
+                        borderBottomWidth: 0.5,
                         borderBottomColor: "#D2D2D2"
                     }}>
                         <Image source={{uri: `data:image/png;base64,${this.props.userPhoto}`}}
@@ -264,7 +264,7 @@ class _UserProfileScreen extends React.Component {
                     <View style={{
                         flex: 1,
                         alignItems: "center",
-                        borderBottomWidth: 1,
+                        borderBottomWidth: 0.5,
                         padding: 3,
                         borderBottomColor: "#D2D2D2"
                     }}>

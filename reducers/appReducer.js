@@ -25,13 +25,13 @@ const initialState = {
 const appReducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_TOKEN:
-            return { ...state, token: action.payload, loggedIn: true };
+            return {...state, token: action.payload, loggedIn: true};
         case REMOVE_TOKEN:
-            return { ...state, token: null, loggedIn: false };
+            return {...state, token: null, loggedIn: false};
         case WAITING_RESPONSE:
-            return { ...state, waitingResponse: action.payload};
+            return {...state, waitingResponse: action.payload};
         case EMAIL_TO_RECOVER:
-            return { ...state, emailToRecover: action.payload};
+            return {...state, emailToRecover: action.payload};
         case VIDEO_TO_UPLOAD:
             return {...state, videoToUpload: action.payload}
         case USER_EMAIL:
@@ -39,9 +39,10 @@ const appReducer = (state = initialState, action) => {
         case USER_INFORMATION:
             return {...state, videoVisualizationInfo: action.payload}
         case ADD_SEARCH:
-            return {...state, searchHistory: [action.payload,...state.searchHistory]}
+            return {...state, searchHistory: [action.payload, ...state.searchHistory.filter(item => item !== action.payload)]}
+
         case CLEAR_HISTORY:
-            return { ...state, searchHistory:[] }
+            return {...state, searchHistory: []}
         default:
             return state;
     }

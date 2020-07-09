@@ -14,8 +14,14 @@ import {FriendshipRequestEndpoint} from "../endpoints/FriendshipRequestEndpoint"
 import {AcceptFriendshipRequestEndpoint} from "../endpoints/AcceptFriendshipRequestEndpoint"
 import {DeclineFriendshipRequestEndpoint} from "../endpoints/DeclineFriendshipRequestEndpoint"
 import { SearchVideosEndpoint } from "../endpoints/SearchVideosEndpoint"
+<<<<<<< HEAD
 import { DeleteFriendshipEndpoint } from "../endpoints/DeleteFriendshipEndpoint"
 
+=======
+import {GiveReactionEndpoint} from "../endpoints/GiveReactionEndpoint";
+import {RemoveReactionEndpoint} from "../endpoints/RemoveReactionEndpoint";
+import {GetReactionsEndpoint} from "../endpoints/GetReactionsEndpoint";
+>>>>>>> master
 
 class ApiClient {
     constructor(requester) {
@@ -162,6 +168,32 @@ class ApiClient {
         return this._requester.call({
             endpoint: new DeleteFriendshipEndpoint(),
             onResponse: response => onResponse(response),
+            data: data,
+            needsAuthorization: true
+        })
+    }
+
+    giveReaction(data, onResponse){
+        return this._requester.call({
+            endpoint: new GiveReactionEndpoint(),
+            onResponse: onResponse,
+            data: data,
+            needsAuthorization: true
+        })
+    }
+    removeReaction(data, onResponse){
+        return this._requester.call({
+            endpoint: new RemoveReactionEndpoint(),
+            onResponse: onResponse,
+            data: data,
+            needsAuthorization: true
+        })
+    }
+    getReactions(data, onResponse){
+
+        return this._requester.call({
+            endpoint: new GetReactionsEndpoint(),
+            onResponse: onResponse,
             data: data,
             needsAuthorization: true
         })
