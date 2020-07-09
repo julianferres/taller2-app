@@ -51,7 +51,14 @@ class _VideoVisualizationScreen extends React.Component {
 
     componentDidMount() {
         this._loadFontsAsync();
+        this.getMyReactions();
+    }
 
+    getMyReactions() {
+        app.apiClient().getReactions({
+            target_email: this.props.videoInfo.userEmail,
+            video_title: this.props.videoInfo.title
+        }, this.onResponseGet.bind(this))
     }
 
     showReactionMessage(reaction) {
@@ -73,7 +80,6 @@ class _VideoVisualizationScreen extends React.Component {
             style: {height: 50}
         });
     }
-
 
     reaction(reactionType) {
         let body = {
@@ -112,17 +118,24 @@ class _VideoVisualizationScreen extends React.Component {
         }
 
         this.showReactionMessage(reactionMessage);
-        // show
+
     }
 
     onResponse(response) {
+        if (!response.ok) {
+            this.alertReaction("Error giving reaction")
+        }
+    }
+
+    onResponseGet(response) {
         if (response.ok) {
             response.json()
                 .then(json => {
-                    console.log(json)
+                    if (json["reaction"] === "like") this.setState({myLike: true})
+                    if (json["reaction"] === "dislike") this.setState({myDislike: true})
                 })
         } else {
-            this.alertReaction("Error giving reaction")
+            this.alertReaction("Error loading your reactions")
         }
     }
 

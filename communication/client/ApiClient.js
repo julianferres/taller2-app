@@ -16,6 +16,7 @@ import {DeclineFriendshipRequestEndpoint} from "../endpoints/DeclineFriendshipRe
 import { SearchVideosEndpoint } from "../endpoints/SearchVideosEndpoint"
 import {GiveReactionEndpoint} from "../endpoints/GiveReactionEndpoint";
 import {RemoveReactionEndpoint} from "../endpoints/RemoveReactionEndpoint";
+import {GetReactionsEndpoint} from "../endpoints/GetReactionsEndpoint";
 
 class ApiClient {
     constructor(requester) {
@@ -169,6 +170,15 @@ class ApiClient {
     removeReaction(data, onResponse){
         return this._requester.call({
             endpoint: new RemoveReactionEndpoint(),
+            onResponse: onResponse,
+            data: data,
+            needsAuthorization: true
+        })
+    }
+    getReactions(data, onResponse){
+
+        return this._requester.call({
+            endpoint: new GetReactionsEndpoint(),
             onResponse: onResponse,
             data: data,
             needsAuthorization: true
