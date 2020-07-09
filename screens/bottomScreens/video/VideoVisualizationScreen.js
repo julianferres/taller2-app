@@ -64,32 +64,66 @@ class _VideoVisualizationScreen extends React.Component {
         });
     }
 
+    alertReaction(errorMessage) {
+        showMessage({
+            message: errorMessage,
+            type: "danger",
+            animationDuration: 300,
+            icon: "warning",
+            style: {height: 50}
+        });
+    }
 
 
     reaction(reactionType) {
-        if(reactionType === "like" && !this.state.myLike){
-            // api.apiClient().giveReaction(, this.onResponse.bind(this))
-        }
-        if(reactionType === "dislike" && !this.state.myDislike){
-            // api.apiClient().giveReaction(, this.onResponse.bind(this))
-        }
+        let body = {
+            target_email: this.props.videoInfo.userEmail,
+            video_title: this.props.videoInfo.title,
+            reaction: reactionType
+        }, reactionMessage;
 
-        app.apiClient().forgotPassword(this.state, this.onResponse.bind(this))
+        if (reactionType === "like" && !this.state.myLike) {
+            app.apiClient().giveReaction(body, this.onResponse.bind(this))
+            this.setState({
+                likesAmount: this.state.likesAmount + 1,
+                dislikesAmount: this.state.dislikesAmount - (this.state.myDislike ? 1 : 0),
+                myDislike: false
+            })
+            reactionMessage = 'Your like has been added'
+        }
+        if (reactionType === "like" && this.state.myLike) {
+            app.apiClient().removeReaction(body, this.onResponse.bind(this))
+            this.setState({likesAmount: this.state.likesAmount - 1})
+            reactionMessage = 'Your like has been removed'
+        }
+        if (reactionType === "dislike" && !this.state.myDislike) {
+            app.apiClient().giveReaction(body, this.onResponse.bind(this))
+            this.setState({
+                dislikesAmount: this.state.dislikesAmount + 1,
+                likesAmount: this.state.likesAmount - (this.state.myLike ? 1 : 0),
+                myLike: false
+            })
+            reactionMessage = 'Your dislike has been added'
+        }
+        if (reactionType === "dislike" && this.state.myDislike) {
+            app.apiClient().removeReaction(body, this.onResponse.bind(this))
+            this.setState({dislikesAmount: this.state.dislikesAmount - 1})
+            reactionMessage = 'Your dislike has been removed'
+        }
 
         this.showReactionMessage(reactionMessage);
         // show
     }
 
-    onResponse(response){
-        if(response.ok){
-
-        } else {
+    onResponse(response) {
+        if (response.ok) {
             response.json()
                 .then(json => {
-                    this.alertForgotPassword(this.errorMessages[json.message])
+                    console.log(json)
                 })
+        } else {
+            this.alertReaction("Error giving reaction")
         }
-        this.props.setWaitingResponse(false);
     }
 
 
