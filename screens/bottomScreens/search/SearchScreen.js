@@ -109,11 +109,6 @@ class _SearchScreen extends React.Component {
                     justifyContent: "space-around",
                     alignItems: "center"
                 }}>
-                    <TouchableOpacity style={{flex: 1, flexDirection: "row", paddingTop: 5}}
-                                      onPress={() => this.props.navigation.goBack()}>
-                        <Ionicons name="ios-arrow-back" size={30} color={azulMarino} style={{paddingLeft: 20}}/>
-                        <Text style={{paddingTop: 5, paddingLeft: 5, color: azulMarino}}>Back</Text>
-                    </TouchableOpacity>
                     <View style={styles.searchBox}>
                         <TextInput
                             onEntered={() => this.textInput.focus()}
@@ -122,7 +117,6 @@ class _SearchScreen extends React.Component {
                                 this.textInput = input;
                             }}
                             onFocus={() => this.setState({isHistory: true})}
-                            // onBlur={() => this.setState({isHistory: false})}
                             returnKeyType={'search'}
                             style={{flex: 2, height: 50, fontSize: 16, paddingLeft: 10, color: azulMarino}}
                             placeholder="Search a Video"
