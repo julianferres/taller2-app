@@ -57,6 +57,10 @@ class _FriendsScreen extends React.Component {
         })
     }
 
+    componentWillUnmount() {
+        this._unsuscribe()
+    }
+
     onResponseDeleteFriend(response){
         if(response.ok){
             showMessage({

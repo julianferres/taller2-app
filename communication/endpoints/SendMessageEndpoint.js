@@ -1,12 +1,12 @@
 import {Endpoint} from "./Endpoint.js";
 
-export class ConversationEndpoint extends Endpoint {
+export class SendMessageEndpoint extends Endpoint {
     static url() {
-        return 'user/messages_with'
+        return 'user/message'
     }
 
     method() {
-        return 'GET'
+        return 'POST'
     }
 
     contentType() {

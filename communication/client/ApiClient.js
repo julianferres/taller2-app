@@ -18,6 +18,10 @@ import { DeleteFriendshipEndpoint } from "../endpoints/DeleteFriendshipEndpoint"
 import {GiveReactionEndpoint} from "../endpoints/GiveReactionEndpoint";
 import {RemoveReactionEndpoint} from "../endpoints/RemoveReactionEndpoint";
 import {GetReactionsEndpoint} from "../endpoints/GetReactionsEndpoint";
+import {ConversationEndpoint} from "../endpoints/ConversationEndpoint";
+import {SendMessageEndpoint} from "../endpoints/SendMessageEndpoint";
+
+
 
 class ApiClient {
     constructor(requester) {
@@ -186,9 +190,25 @@ class ApiClient {
         })
     }
     getReactions(data, onResponse){
-
         return this._requester.call({
             endpoint: new GetReactionsEndpoint(),
+            onResponse: onResponse,
+            data: data,
+            needsAuthorization: true
+        })
+    }
+    getConversation(data, onResponse){
+        return this._requester.call({
+            endpoint: new ConversationEndpoint(),
+            onResponse: onResponse,
+            data: data,
+            needsAuthorization: true
+        })
+    }
+
+    sendMessage(data, onResponse){
+        return this._requester.call({
+            endpoint: new SendMessageEndpoint(),
             onResponse: onResponse,
             data: data,
             needsAuthorization: true

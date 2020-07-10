@@ -14,6 +14,8 @@ class RemoteRequester extends Requester {
             url += "?" + this._dataToQueryString(data);
         }
 
+        console.log(url)
+
         return fetch(this._baseUrl + url, request)
             .then(response => onResponse(response))
             .catch(exception => {
