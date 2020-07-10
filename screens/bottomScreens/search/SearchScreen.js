@@ -86,7 +86,8 @@ class _SearchScreen extends React.Component {
                                     "location": responseVideo["video"]["location"],
                                     "uri": responseVideo["video"]["file_location"],
                                     "description": responseVideo["video"]["description"],
-                                    "photo": responseVideo["user"]["photo"]
+                                    "photo": responseVideo["user"]["photo"],
+                                    "reactions": responseVideo["reactions"]
                                 }
                             }
                         )
@@ -211,6 +212,7 @@ class _SearchScreen extends React.Component {
                             description={video["description"]}
                             thumbnail={this.state.thumbnails[index]}
                             uri={video["uri"]}
+                            reactions={video["reactions"]}
                             userPhoto={video["photo"]}
                             navigation={this.props.navigation}
                         />
