@@ -1,6 +1,8 @@
 import * as React from 'react';
-import {ActivityIndicator, Dimensions, TextInput, ScrollView, StatusBar, Text,
-    TouchableOpacity, View, KeyboardAvoidingView, Keyboard} from 'react-native';
+import {
+    ActivityIndicator, Dimensions, TextInput, ScrollView, StatusBar, Text,
+    TouchableOpacity, View, KeyboardAvoidingView, Keyboard, Image, AppRegistry
+} from 'react-native';
 import {connect} from "react-redux";
 import CustomHeader from "../../navigation/CustomHeader";
 import {app} from "../../app/app";
@@ -22,10 +24,12 @@ class _ConversationScreen extends React.Component{
             messages: undefined,
             messageToSend: "",
             pages: undefined,
-            fontsLoaded: false
+            fontsLoaded: false,
+            scrollDown: true,
+            topChildIndex: 15,
         }
 
-        this.perPage = 20
+        this.perPage = 15
 
         this.widthResolution = Dimensions.get("window").width
         this.fontSizeNotMessages = this.widthResolution / 25
@@ -48,11 +52,12 @@ class _ConversationScreen extends React.Component{
 
     onResponseGetConversation(response){
         response.json().then(json => {
-            console.log(json)
             this.setState({
                 messages: json["messages"],
                 pages: json["pages"],
-                isFetchingConversation: false})
+                isFetchingConversation: false,
+                scrollDown: true,
+                currentPage: 1})
         })
     }
 
@@ -62,6 +67,7 @@ class _ConversationScreen extends React.Component{
                 page: 1,
                 per_page: this.perPage},
             this.onResponseGetConversation.bind(this))
+
     }
 
     componentDidMount() {
@@ -121,10 +127,10 @@ class _ConversationScreen extends React.Component{
 
     ownMessage(message){
         return(
-            <View style={{padding: 5}}>
+            <View style={{padding: 5, flexDirection: "row"}}>
                 <View style={{flex: 1, flexDirection: "row", justifyContent: "flex-end", backgroundColor: "#00335c", marginLeft: this.paddingMessage,
                     borderRadius: 25, padding: this.fontSizeMessage / 2}}>
-                    <Text style={{fontSize: this.fontSizeMessage, fontFamily: "OpenSans", color: "white", align: "justify", marginLeft: 10, marginRight: 10}}>
+                    <Text style={{fontSize: this.fontSizeMessage, fontFamily: "OpenSans", color: "white", marginLeft: 10, marginRight: 10}}>
                         {message["message"]}
                     </Text>
                 </View>
@@ -134,10 +140,13 @@ class _ConversationScreen extends React.Component{
 
     otherUserMessage(message){
         return(
-            <View style={{padding: 5}}>
+            <View style={{padding: 5, flexDirection: "row", alignItems: "center"}}>
+                <Image source={{uri:`data:image/png;base64,${this.props.userPhoto}`}}
+                       style={{height: this.fontSizeMessage * 2, width: this.fontSizeMessage * 2, borderRadius: 100}}
+                />
                 <View style={{flex: 1, flexDirection: "row", justifyContent: "flex-start", backgroundColor: "#EEE8E8", marginRight: this.paddingMessage,
-                    borderRadius: 25, padding: this.fontSizeMessage / 2}}>
-                    <Text style={{fontSize: this.fontSizeMessage, fontFamily: "OpenSans", align: "justify", marginLeft: 10, marginRight: 10}}>
+                    borderRadius: 25, padding: this.fontSizeMessage / 2, marginLeft: 4}}>
+                    <Text style={{fontSize: this.fontSizeMessage, fontFamily: "OpenSans", marginLeft: 10, marginRight: 10}}>
                         {message["message"]}
                     </Text>
                 </View>
@@ -145,27 +154,67 @@ class _ConversationScreen extends React.Component{
         )
     }
 
-    messagesComponent(){
+    onResponseGetConversationNextPage(response){
+        response.json().then(json => {
+            let alreadyFetchedMessages = this.state.messages;
+            let oldCurrentPage = this.state.currentPage;
+            this.setState({
+                messages: alreadyFetchedMessages.concat(json["messages"]),
+                pages: json["pages"],
+                currentPage: oldCurrentPage + 1,
+                scrollDown: false})
+        })
+    }
+
+    getConversationNextPage(){
+        app.apiClient().getConversation(
+            { other_user_email: this.props.userEmail,
+                page: this.state.currentPage + 1,
+                per_page: this.perPage},
+            this.onResponseGetConversationNextPage.bind(this))
+
+    }
+
+    moreMessages(e){
+        if(e.nativeEvent.contentOffset.y === 0){
+            this.getConversationNextPage()
+        }
+    }
+
+    messagesComponent(chatsHeight){
         if(this.state.messages.length === 0){
             return (
+                <ScrollView style={{height: chatsHeight, marginBottom: 10}}>
                 <View style={{flex: 1, justifyContent: "center", alignItems: "center", paddingTop: 10}}>
                     <Text style={{fontSize: this.fontSizeNotMessages, color:"#00335c"}}>
                         You don't have any messages with {this.props.userName.split(" ")[0]}.
                     </Text>
                 </View>
+                </ScrollView>
             )
         } else {
             return (
-                <View style={{flex: 1, flexDirection: "column-reverse"}}>
-                    {this.state.messages.map((message, index) => {
-                        let messageComp = this.isOwnMessage(message) ? this.ownMessage(message) : this.otherUserMessage(message)
-                        return(
-                            <View>
-                                {messageComp}
-                            </View>
-                        )
-                    })}
-                </View>
+                <ScrollView style={{height: chatsHeight, marginBottom: 10}}
+                            contentContainerStyle={{flexDirection: "column-reverse"}}
+                            ref={ref => this.scrollView = ref} onContentSizeChange={(height, whidth) => {
+                                if(this.state.scrollDown){
+                                    this.scrollView.scrollToEnd({animated: true})
+                                } else {
+                                    const heightToScroll = height / (this.state.currentPage + 3 )
+                                    this.scrollView.scrollTo({x: 0, y: height - heightToScroll, animated: false})
+                                }
+                            }}
+                            onScroll={(e) => this.moreMessages(e)}
+                    >
+                        {this.state.messages.map((message, index) => {
+                            let messageComp = this.isOwnMessage(message) ? this.ownMessage(message) : this.otherUserMessage(message)
+                            return(
+                                <View key={index}>
+                                    {messageComp}
+                                </View>
+                            )
+                        })}
+                </ScrollView>
             )
         }
     }
@@ -182,9 +231,7 @@ class _ConversationScreen extends React.Component{
         let inputSizeWidth = widthDimension - widthDimension / 8
         return (
             <KeyboardAvoidingView behavior="height">
-                <ScrollView style={{height: chatsHeight, marginBottom: 10}}>
-                    {this.messagesComponent()}
-                </ScrollView>
+                {this.messagesComponent(chatsHeight)}
                 <View style={{paddingLeft: 10, flexDirection: "row"}}>
                     <View style={{borderWidth: 2, borderColor: "#00335c", borderRadius: 30, width: inputSizeWidth - 5, marginRight: 5, justifyContent: "center"}}>
                         <TextInput
@@ -207,9 +254,8 @@ class _ConversationScreen extends React.Component{
         const showComp = this.state.isFetchingConversation || !this.state.fontsLoaded ? this.fetchingComponent() : this.conversationComponent()
         return (
             <View style={{flex: 1, paddingTop: StatusBar.currentHeight}}>
-                <CustomHeader title="Conversation" navigation={this.props.navigation}/>
+                <CustomHeader title={this.props.userName.split(" ")[0]} navigation={this.props.navigation}/>
                 {showComp}
-
             </View>
         )
     }
