@@ -37,7 +37,7 @@ class CustomDrawer extends React.Component {
         if(this.state.pendingFriendshipRequests > 0){
             return (
                 <View style={{paddingLeft: 10, paddingTop: 6}}>
-                    <Text style={{fontSize: 14, backgroundColor: "black",
+                    <Text style={{fontSize: 14, backgroundColor: "#00335c",
                         borderRadius: 100, color: "white"}}> {this.state.pendingFriendshipRequests} </Text>
                 </View>
             )
@@ -67,6 +67,13 @@ class CustomDrawer extends React.Component {
                     >
                         <SimpleLineIcons name="cloud-upload" size={30} color="black" />
                         <Text style={{ fontSize: 20, paddingLeft: 10 }}>Upload new video</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={{ marginTop: 20, flex: 1, flexDirection: "row" }}
+                        onPress={() => this.props.navigation.navigate("Friends")}
+                    >
+                        <SimpleLineIcons name="people" size={30} color="black" />
+                        <Text style={{ fontSize: 20, paddingLeft: 10 }}>Friends</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={{ marginTop: 20, flex: 1, flexDirection: "row" }}

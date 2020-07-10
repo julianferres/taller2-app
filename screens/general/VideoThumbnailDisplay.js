@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Text, View, Image, Dimensions, TouchableOpacity} from "react-native";
 import {connect} from "react-redux";
-import {VIDEO_INFO_TO_WATCH} from "../../reducers/appReducer";
+import {USER_INFORMATION} from "../../reducers/appReducer";
 
 class _VideoThumbnailDisplay extends React.Component{
     constructor(props) {
@@ -41,7 +41,7 @@ class _VideoThumbnailDisplay extends React.Component{
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        passVideoInfo: value => dispatch({type: VIDEO_INFO_TO_WATCH, payload: value})
+        passVideoInfo: value => dispatch({type: USER_INFORMATION, payload: value})
     }
 }
 
