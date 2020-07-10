@@ -63,7 +63,8 @@ class _UserProfileScreen extends React.Component {
                                     "title": responseVideo["video"]["title"],
                                     "location": responseVideo["video"]["location"],
                                     "uri": responseVideo["video"]["file_location"],
-                                    "description": responseVideo["video"]["description"]
+                                    "description": responseVideo["video"]["description"],
+                                    "reactions": responseVideo["reactions"]
                                 }
                             }
                         )
@@ -232,6 +233,7 @@ class _UserProfileScreen extends React.Component {
                             ownerEmail={this.props.userEmail}
                             description={video["description"]}
                             thumbnail={this.state.thumbnails[index]}
+                            reactions={video["reactions"]}
                             uri={video["uri"]}
                             userPhoto={this.props.userPhoto}
                             navigation={this.props.navigation}
