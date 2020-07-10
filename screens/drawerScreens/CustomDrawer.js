@@ -37,7 +37,7 @@ class CustomDrawer extends React.Component {
         if(this.state.pendingFriendshipRequests > 0){
             return (
                 <View style={{paddingLeft: 10, paddingTop: 6}}>
-                    <Text style={{fontSize: 14, backgroundColor: "black",
+                    <Text style={{fontSize: 14, backgroundColor: "#00335c",
                         borderRadius: 100, color: "white"}}> {this.state.pendingFriendshipRequests} </Text>
                 </View>
             )
