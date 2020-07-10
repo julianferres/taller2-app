@@ -9,6 +9,7 @@ import {Ionicons} from "@expo/vector-icons";
 import Colors from "../../../constants/Colors";
 import {showMessage} from "react-native-flash-message";
 import {app} from "../../../app/app";
+import {MODIFY_REACTION} from "../../../reducers/appReducer";
 
 let customFonts = {
     "OpenSans": require('../../../assets/fonts/OpenSans-SemiBold.ttf'),
@@ -37,10 +38,10 @@ class _VideoVisualizationScreen extends React.Component {
         this.state = {
             isShowingCompleteDescription: false,
             fontsLoaded: false,
-            likesAmount: this.props.videoInfo["reactions"]["like"],
-            dislikesAmount: this.props.videoInfo["reactions"]["dislike"],
             myLike: false,
-            myDislike: false
+            myDislike: false,
+            amountLikes: this.props.videoInfo.reactions.like,
+            amountDislikes: this.props.videoInfo.reactions.dislike
         }
     }
 
@@ -88,35 +89,36 @@ class _VideoVisualizationScreen extends React.Component {
             reaction: reactionType
         }, reactionMessage;
 
+
         if (reactionType === "like" && !this.state.myLike) {
             app.apiClient().giveReaction(body, this.onResponse.bind(this))
-            this.setState({
-                likesAmount: this.state.likesAmount + 1,
-                dislikesAmount: this.state.dislikesAmount - (this.state.myDislike ? 1 : 0),
-                myDislike: false
+            this.props.modifyReaction({
+                newLike: this.state.amountLikes + 1,
+                newDislike: this.state.amountDislikes + (this.state.myDislike ? -1 : 0)
             })
+            this.setState({myDislike: false})
             reactionMessage = 'Your like has been added'
         }
         if (reactionType === "like" && this.state.myLike) {
             app.apiClient().removeReaction(body, this.onResponse.bind(this))
-            this.setState({likesAmount: this.state.likesAmount - 1})
+            this.props.modifyReaction({newLike: this.state.amountLikes - 1, newDislike: this.state.amountDislikes})
             reactionMessage = 'Your like has been removed'
+
         }
         if (reactionType === "dislike" && !this.state.myDislike) {
             app.apiClient().giveReaction(body, this.onResponse.bind(this))
-            this.setState({
-                dislikesAmount: this.state.dislikesAmount + 1,
-                likesAmount: this.state.likesAmount - (this.state.myLike ? 1 : 0),
-                myLike: false
+            this.props.modifyReaction({
+                newLike: this.state.amountLikes + (this.state.myLike ? -1 : 0),
+                newDislike: this.state.amountDislikes + 1
             })
+            this.setState({myLike: false})
             reactionMessage = 'Your dislike has been added'
         }
         if (reactionType === "dislike" && this.state.myDislike) {
             app.apiClient().removeReaction(body, this.onResponse.bind(this))
-            this.setState({dislikesAmount: this.state.dislikesAmount - 1})
+            this.props.modifyReaction({newLike: this.state.amountLikes, newDislike: this.state.amountDislikes - 1})
             reactionMessage = 'Your dislike has been removed'
         }
-
         this.showReactionMessage(reactionMessage);
 
     }
@@ -146,6 +148,7 @@ class _VideoVisualizationScreen extends React.Component {
         if (!this.state.fontsLoaded) {
             return <AppLoading/>
         }
+        console.log(this.props.videoInfo);
         return (
 
             <ScrollView style={{flex: 1, paddingTop: StatusBar.currentHeight}}>
@@ -180,7 +183,7 @@ class _VideoVisualizationScreen extends React.Component {
                         <Text style={{
                             marginTop: -4,
                             color: this.state.myLike ? azulMarino : Colors.tabIconDefault
-                        }}>{this.state.likesAmount}</Text>
+                        }}>{this.props.videoInfo.reactions.like}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={{padding: 10, marginLeft: 10, alignItems: "center"}}
                                       onPress={() => {
@@ -193,7 +196,7 @@ class _VideoVisualizationScreen extends React.Component {
                             marginTop: -4,
                             color: this.state.myDislike ? azulMarino : Colors.tabIconDefault
                         }}
-                        >{this.state.dislikesAmount}</Text>
+                        >{this.props.videoInfo.reactions.dislike}</Text>
                     </TouchableOpacity>
                 </View>
                 <HorizontalRule margin={0} padding={0}/>
@@ -228,6 +231,12 @@ const mapStateToProps = (state) => {
     return {videoInfo: state.appReducer.videoVisualizationInfo};
 };
 
-const VideoVisualizationScreen = connect(mapStateToProps, null)(_VideoVisualizationScreen)
+const mapDispatchToProps = (dispatch) => {
+    return {
+        modifyReaction: value => dispatch({type: MODIFY_REACTION, payload: value})
+    }
+}
+
+const VideoVisualizationScreen = connect(mapStateToProps, mapDispatchToProps)(_VideoVisualizationScreen)
 
 export default VideoVisualizationScreen;

@@ -9,6 +9,7 @@ export const VIDEO_TO_UPLOAD = "VIDEO_TO_UPLOAD";
 export const USER_EMAIL = "USER_EMAIL";
 export const VIDEO_INFO_TO_WATCH = "VIDEO_INFO_TO_WATCH";
 export const CLEAR_HISTORY = "CLEAR_HISTORY";
+export const MODIFY_REACTION = "MODIFY_REACTION";
 
 const initialState = {
     token: "",
@@ -39,10 +40,23 @@ const appReducer = (state = initialState, action) => {
         case VIDEO_INFO_TO_WATCH:
             return {...state, videoVisualizationInfo: action.payload}
         case ADD_SEARCH:
-            return {...state, searchHistory: [action.payload, ...state.searchHistory.filter(item => item !== action.payload)]}
-
+            return {
+                ...state,
+                searchHistory: [action.payload, ...state.searchHistory.filter(item => item !== action.payload)]
+            }
         case CLEAR_HISTORY:
             return {...state, searchHistory: []}
+        case MODIFY_REACTION:
+            return {
+                ...state,
+                videoVisualizationInfo: {
+                    ...state.videoVisualizationInfo,
+                    reactions: {
+                        like: action.payload.newLike,
+                        dislike: action.payload.newDislike
+                    }
+                }
+            }
         default:
             return state;
     }
