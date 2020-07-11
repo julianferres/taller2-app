@@ -1,5 +1,18 @@
 import * as React from 'react';
-import {ActivityIndicator, ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {
+    ActivityIndicator,
+    AsyncStorage,
+    Keyboard,
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView,
+    StatusBar,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    View
+} from 'react-native';
 import {Ionicons} from "@expo/vector-icons";
 import {LinearGradient} from 'expo-linear-gradient';
 import {styles} from "../../../constants/InitStackStylesheet";
@@ -9,7 +22,6 @@ import * as VideoThumbnails from "expo-video-thumbnails";
 import VideoThumbnailDisplay from "../../general/VideoThumbnailDisplay";
 import {ADD_SEARCH, CLEAR_HISTORY, SET_HISTORY} from "../../../reducers/appReducer";
 import {connect} from "react-redux";
-import { AsyncStorage } from 'react-native';
 
 class _SearchScreen extends React.Component {
 
@@ -169,47 +181,61 @@ class _SearchScreen extends React.Component {
     historyComponent() {
         const azulMarino = "#00335c";
         return (
+
             this.props.searchHistory.length === 0 ?
-                <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-                    <Text style={{color: "#00335c", fontSize: 25}}>No history yet</Text>
-                </View>
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                    <KeyboardAvoidingView
+                        enabled={false}
+                        style={{flex: 1, alignItems: "center", paddingTop: 50}}
+                        behavior={Platform.OS == "ios" ? "padding" : "height"}
+                    >
+                        <Text style={{color: "#00335c", fontSize: 25, fontFamily:"OpenSans"}}>No history yet</Text>
+                    </KeyboardAvoidingView>
+                </TouchableWithoutFeedback>
                 :
-                <View style={{flex: 1, justifyContent: "center", paddingLeft: 10, paddingTop: 15}}>
-                    <TouchableOpacity style={{flexDirection: 'row'}}
-                                      onPress={() => {
-                                          this.props.clearHistory()
-                                          this._storeHistory()
-                                      }}>
-                        <Ionicons name="ios-close-circle-outline" size={30} color={"#fb5b5a"} style={{
-                            paddingLeft: 20,
-                            paddingBottom: 20
-                        }}/>
-                        <Text style={{color: "#fb5b5a", fontSize: 20, fontWeight: "bold"}}> Clear History </Text>
-                    </TouchableOpacity>
-                    <ScrollView>
-                        {this.props.searchHistory.map((previousSearch, index) => (
-                            <TouchableOpacity key={index}
-                                              style={{flexDirection: 'row', paddingBottom: 10}}
-                                              onPress={() => {
-                                                  this.handleHistorySubmit(previousSearch)
-                                              }}
-                            >
-                                <Ionicons name="ios-search" size={30} color={azulMarino} style={{paddingLeft: 20}}/>
-                                <Text style={{
-                                    fontSize: 20,
-                                    color: azulMarino,
-                                    fontWeight: "bold"
-                                }}>  {previousSearch}</Text>
-                            </TouchableOpacity>
-                        ))}
-                    </ScrollView>
-                </View>
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                    <KeyboardAvoidingView
+                        enabled={false}
+                        style={{flex: 1, justifyContent: "center", paddingLeft: 10, paddingTop: 15}}
+                        behavior={Platform.OS == "ios" ? "padding" : "height"}
+                    >
+
+                        <TouchableOpacity style={{flexDirection: 'row'}}
+                                          onPress={() => {
+                                              this.props.clearHistory()
+                                              this._storeHistory()
+                                          }}>
+                            <Ionicons name="ios-close-circle-outline" size={30} color={"#fb5b5a"} style={{
+                                paddingLeft: 20,
+                                paddingBottom: 20
+                            }}/>
+                            <Text style={{color: "#fb5b5a", fontSize: 20, fontWeight: "bold"}}> Clear History </Text>
+                        </TouchableOpacity>
+                        <ScrollView>
+                            {this.props.searchHistory.map((previousSearch, index) => (
+                                <TouchableOpacity key={index}
+                                                  style={{flexDirection: 'row', paddingBottom: 10}}
+                                                  onPress={() => {
+                                                      this.handleHistorySubmit(previousSearch)
+                                                  }}
+                                >
+                                    <Ionicons name="ios-search" size={30} color={azulMarino} style={{paddingLeft: 20}}/>
+                                    <Text style={{
+                                        fontSize: 20,
+                                        color: azulMarino,
+                                        fontWeight: "bold"
+                                    }}>  {previousSearch}</Text>
+                                </TouchableOpacity>
+                            ))}
+                        </ScrollView>
+                    </KeyboardAvoidingView>
+                </TouchableWithoutFeedback>
         );
     }
 
     searchingComponent() {
         return (
-            <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+            <View style={{flex: 1, paddingTop: 50, alignItems: "center"}}>
                 <Text style={{color: "#00335c", paddingBottom: 25, fontSize: 25}}>Loading Videos</Text>
                 <ActivityIndicator color={"#00335c"} size={55} animating={this.state.isSearching}/>
             </View>
@@ -219,9 +245,9 @@ class _SearchScreen extends React.Component {
     videoListComponent() {
         return (
             this.state.videos.length === 0 ?
-                <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-                    <Text style={{color: "#00335c", fontSize: 25}}>No videos matching</Text>
-                    <Text style={{color: "#00335c", fontSize: 25}}>your search</Text>
+                <View style={{flex: 1, paddingTop: 50, alignItems: "center"}}>
+                    <Text style={{color: "#00335c", fontSize: 25, fontFamily:"OpenSans"}}>No videos matching</Text>
+                    <Text style={{color: "#00335c", fontSize: 25, fontFamily:"OpenSans"}}>your search</Text>
 
                 </View>
                 : <ScrollView>

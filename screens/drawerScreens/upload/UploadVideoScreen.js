@@ -6,6 +6,8 @@ import {connect} from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
 import {VIDEO_TO_UPLOAD} from "../../../reducers/appReducer";
 
+const azulMarino = "#00335c";
+
 class _UploadVideoScreen extends React.Component{
     constructor(props) {
         super(props);
@@ -33,10 +35,10 @@ class _UploadVideoScreen extends React.Component{
                 }}>
                     <TouchableOpacity style={{flex: 1, justifyContent: "center", alignItems: "center"}}
                     onPress={() => this.upload()}>
-                        <View style={{backgroundColor: 'rgb(200, 200, 200)', justifyContent: "center", alignItems: "center",
+                        <View style={{backgroundColor: "rgba(0,51,92,0.3)", justifyContent: "center", alignItems: "center",
                                         padding: 15, borderRadius: 5}}>
-                            <Text style={{fontSize: 26}}>Upload video from gallery</Text>
-                            <Ionicons name="md-videocam" size={40} color="black" />
+                            <Text style={{fontSize: 24, color: azulMarino, fontFamily:"OpenSans"}}>Upload video from gallery</Text>
+                            <Ionicons name="md-videocam" size={40} color={azulMarino} />
                         </View>
                     </TouchableOpacity>
                 </View>

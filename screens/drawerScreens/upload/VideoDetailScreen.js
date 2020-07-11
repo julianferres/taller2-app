@@ -1,13 +1,28 @@
 import * as React from 'react';
-import {StatusBar, View, TextInput, Text, TouchableOpacity, Button, Alert, Picker, ScrollView, KeyboardAvoidingView, Dimensions} from "react-native";
+import {
+    Alert,
+    Button,
+    Dimensions,
+    KeyboardAvoidingView,
+    Picker,
+    ScrollView,
+    StatusBar,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
+} from "react-native";
 import CustomHeader from "../../../navigation/CustomHeader";
-import { Video } from 'expo-av';
+import {Video} from 'expo-av';
 import {connect} from 'react-redux';
 import {app} from "../../../app/app";
-import { showMessage } from "react-native-flash-message";
-import {BallIndicator, BarIndicator} from "react-native-indicators"
+import {showMessage} from "react-native-flash-message";
+import {BarIndicator} from "react-native-indicators"
+import Colors from "../../../constants/Colors";
 
-class _VideoDetailScreen extends React.Component{
+const azulMarino = "#00335c";
+
+class _VideoDetailScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -22,7 +37,7 @@ class _VideoDetailScreen extends React.Component{
         }
     }
 
-    resetState(){
+    resetState() {
         this.setState({
             titleFocused: false,
             descriptionFocused: false,
@@ -35,8 +50,8 @@ class _VideoDetailScreen extends React.Component{
         })
     }
 
-    onResponse(response){
-        if(response.ok){
+    onResponse(response) {
+        if (response.ok) {
             showMessage({
                     message: "Video uploaded!",
                     type: "success",
@@ -104,45 +119,66 @@ class _VideoDetailScreen extends React.Component{
     }
 
     render() {
-        return(
+        return (
             <View style={{flex: 1, paddingTop: StatusBar.currentHeight}}>
                 <CustomHeader title="Video detail" navigation={this.props.navigation}/>
                 <ScrollView>
                     <View style={{paddingLeft: 30, paddingTop: 50, paddingRight: 30}}>
-                        <Text style={{fontSize: 20}}>Title</Text>
-                        <TextInput style={{paddingTop: 10, borderBottomWidth: 1,
-                            borderBottomColor: this.state.titleFocused ? "#839FF9" : "lightblue"}}
+                        <Text style={{fontSize: 20, fontFamily: "OpenSans", color: azulMarino}}>Title</Text>
+                        <TextInput style={{
+                            paddingTop: 10, borderBottomWidth: 1,
+                            borderBottomColor: this.state.titleFocused ? azulMarino : Colors.tabIconDefault
+                        }}
                                    placeholder="Enter title"
                                    onFocus={() => this.setState({titleFocused: true})}
                                    onBlur={() => this.setState({titleFocused: false})}
                                    onChangeText={(text) => this.setState({title: text})}
                         />
-                        <Text style={{fontSize: 20, paddingTop: 5}}>Description</Text>
-                        <TextInput style={{paddingTop: 10, borderBottomWidth: 1,
-                            borderBottomColor: this.state.descriptionFocused ? "#839FF9" : "lightblue"}}
+                        <Text style={{
+                            fontSize: 20,
+                            paddingTop: 5,
+                            fontFamily: "OpenSans",
+                            color: azulMarino
+                        }}>Description</Text>
+                        <TextInput style={{
+                            paddingTop: 10, borderBottomWidth: 1,
+                            borderBottomColor: this.state.descriptionFocused ? azulMarino : Colors.tabIconDefault
+                        }}
                                    placeholder="Enter description"
                                    onFocus={() => this.setState({descriptionFocused: true})}
                                    onBlur={() => this.setState({descriptionFocused: false})}
                                    onChangeText={(text) => this.setState({description: text})}
                         />
-                        <Text style={{fontSize: 20, paddingTop: 5}}>Location</Text>
-                        <TextInput style={{paddingTop: 10, borderBottomWidth: 1,
-                            borderBottomColor: this.state.locationFocused ? "#839FF9" : "lightblue"}}
+                        <Text style={{
+                            fontSize: 20,
+                            paddingTop: 5,
+                            fontFamily: "OpenSans",
+                            color: azulMarino
+                        }}>Location</Text>
+                        <TextInput style={{
+                            paddingTop: 10, borderBottomWidth: 1,
+                            borderBottomColor: this.state.locationFocused ? azulMarino : Colors.tabIconDefault
+                        }}
                                    placeholder="Enter location"
                                    onFocus={() => this.setState({locationFocused: true})}
                                    onBlur={() => this.setState({locationFocused: false})}
                                    onChangeText={(text) => this.setState({location: text})}
                         />
-                        <Text style={{fontSize: 20, paddingTop: 5}}>Visible</Text>
+                        <Text style={{
+                            fontSize: 20,
+                            paddingTop: 5,
+                            fontFamily: "OpenSans",
+                            color: azulMarino
+                        }}>Visible</Text>
                         <View style={{flex: 1, flexDirection: "row", paddingTop: 5}}>
                             <Picker
                                 mode="dropdown"
                                 selectedValue={this.state.visible}
-                                style={{ height: 50, width: 150 }}
+                                style={{height: 50, width: 150, fontFamily: "OpenSans", color: azulMarino}}
                                 onValueChange={(itemValue, itemIndex) => this.setState({visible: itemValue})}
                             >
-                                <Picker.Item label="Yes" value="Yes" />
-                                <Picker.Item label="No" value="No" />
+                                <Picker.Item color={azulMarino} label="Yes" value="Yes"/>
+                                <Picker.Item color={azulMarino} label="No" value="No"/>
                             </Picker>
                             <BarIndicator
                                 animating={this.state.animating}
@@ -158,20 +194,24 @@ class _VideoDetailScreen extends React.Component{
                         keyboardVerticalOffset={20}
                         enabled={false}
                         style={{justifyContent: "center", alignItems: "center", padding: 10}}>
-                            <Video
-                            source={{ uri: this.props.video.uri }}
+                        <Video
+                            source={{uri: this.props.video.uri}}
                             resizeMode={Video.RESIZE_MODE_CONTAIN}
                             rate={1.0}
                             isMuted={true}
                             isLooping
                             shouldPlay={true}
-                            style={{height: Math.round(Dimensions.get('window').width - 70), width: Math.round(Dimensions.get('window').width - 70)}}
+                            style={{
+                                height: Math.round(Dimensions.get('window').width - 70),
+                                width: Math.round(Dimensions.get('window').width - 70)
+                            }}
                         />
                         <TouchableOpacity style={{padding: 10}}>
                             <Button
-                                title="Upload!"
+
+                                title="UPLOAD"
                                 onPress={() => this.handleUpload()}
-                                color="blue"
+                                color={azulMarino}
                             />
                         </TouchableOpacity>
                     </KeyboardAvoidingView>
@@ -184,7 +224,7 @@ class _VideoDetailScreen extends React.Component{
 }
 
 const mapStateToProps = (state) => {
-    return { video: state.appReducer.videoToUpload };
+    return {video: state.appReducer.videoToUpload};
 };
 
 const VideoDetailScreen = connect(mapStateToProps, null)(_VideoDetailScreen);

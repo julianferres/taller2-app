@@ -1,12 +1,21 @@
 import React from "react";
-import { ActivityIndicator, Text, TextInput, TouchableOpacity, View, Keyboard } from "react-native";
-import { Ionicons } from '@expo/vector-icons';
-import { styles } from "../../constants/InitStackStylesheet";
-import { showMessage } from "react-native-flash-message";
-import { app } from "../../app/app";
-import { WAITING_RESPONSE } from "../../reducers/appReducer";
-import { connect } from "react-redux";
-
+import {
+    ActivityIndicator,
+    Keyboard,
+    KeyboardAvoidingView,
+    Platform,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    View
+} from "react-native";
+import {Ionicons} from '@expo/vector-icons';
+import {styles} from "../../constants/InitStackStylesheet";
+import {showMessage} from "react-native-flash-message";
+import {app} from "../../app/app";
+import {WAITING_RESPONSE} from "../../reducers/appReducer";
+import {connect} from "react-redux";
 //Photo
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
@@ -27,6 +36,7 @@ class SignUp extends React.Component {
         }
         this.emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     }
+
     validateEmail() {
         return this.emailRegex.test(this.state.email);
     }
@@ -74,9 +84,10 @@ class SignUp extends React.Component {
     componentDidMount() {
         this.getPermissionAsync();
     }
+
     getPermissionAsync = async () => {
         if (Constants.platform.ios) {
-            const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+            const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL);
             if (status !== 'granted') {
                 this.alertSignup('Sorry, we need camera roll permissions to make this work!');
             }
@@ -95,7 +106,7 @@ class SignUp extends React.Component {
                 let match = /\.(\w+)$/.exec(filename);
                 let type = match ? `image/${match[1]}` : `image`;
 
-                this.setState({ photo: { uri: localUri, name: filename, type } });
+                this.setState({photo: {uri: localUri, name: filename, type}});
             }
         } catch (E) {
             console.log(E);
@@ -104,59 +115,66 @@ class SignUp extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <Text style={styles.logo}>Sign up</Text>
-                <View style={styles.inputView}>
-                    <TextInput
-                        style={styles.inputText}
-                        placeholder="Email"
-                        placeholderTextColor="#cad6eb"
-                        onChangeText={(text) => this.setState({ email: text })}
-                    />
-                </View>
-                <View style={styles.inputView}>
-                    <TextInput
-                        style={styles.inputText}
-                        secureTextEntry={true}
-                        placeholder="Password"
-                        placeholderTextColor="#cad6eb"
-                        onChangeText={(text) => this.setState({ password: text })}
-                    />
-                </View>
-                <View style={styles.inputView}>
-                    <TextInput
-                        style={styles.inputText}
-                        placeholder="Full Name"
-                        placeholderTextColor="#cad6eb"
-                        onChangeText={(text) => this.setState({ fullname: text })}
-                    />
-                </View>
-                <View style={styles.inputView}>
-                    <TextInput
-                        style={styles.inputText}
-                        placeholder="Phone Number"
-                        keyboardType= "numeric"
-                        placeholderTextColor="#cad6eb"
-                        onChangeText={(text) => this.setState({ phone_number: text })}
-                    />
-                </View>
-                <TouchableOpacity style={styles.pickImage} onPress={this._pickImage}>
-                    {!this.state.photo && <Text style={styles.imagePickerText}>Pick an Image</Text>}
-                    {!this.state.photo && <Ionicons name="md-image" color={"white"} size={25} />}
-                    {this.state.photo && <Text style={styles.imagePickerText}>Image Selected</Text>}
-                    {this.state.photo && <Ionicons name="ios-checkmark-circle-outline" color={"white"} size={25} />}
-                </TouchableOpacity>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <KeyboardAvoidingView
+                    enabled={false}
+                    style={styles.container}
+                    behavior={Platform.OS == "ios" ? "padding" : "height"}
+                >
+                    <Text style={styles.logo}>Sign up</Text>
+                    <View style={styles.inputView}>
+                        <TextInput
+                            style={styles.inputText}
+                            placeholder="Email"
+                            placeholderTextColor="#cad6eb"
+                            onChangeText={(text) => this.setState({email: text})}
+                        />
+                    </View>
+                    <View style={styles.inputView}>
+                        <TextInput
+                            style={styles.inputText}
+                            secureTextEntry={true}
+                            placeholder="Password"
+                            placeholderTextColor="#cad6eb"
+                            onChangeText={(text) => this.setState({password: text})}
+                        />
+                    </View>
+                    <View style={styles.inputView}>
+                        <TextInput
+                            style={styles.inputText}
+                            placeholder="Full Name"
+                            placeholderTextColor="#cad6eb"
+                            onChangeText={(text) => this.setState({fullname: text})}
+                        />
+                    </View>
+                    <View style={styles.inputView}>
+                        <TextInput
+                            style={styles.inputText}
+                            placeholder="Phone Number"
+                            keyboardType="numeric"
+                            placeholderTextColor="#cad6eb"
+                            onChangeText={(text) => this.setState({phone_number: text})}
+                        />
+                    </View>
+                    <TouchableOpacity style={styles.pickImage} onPress={this._pickImage}>
+                        {!this.state.photo && <Text style={styles.imagePickerText}>Pick an Image</Text>}
+                        {!this.state.photo && <Ionicons name="md-image" color={"white"} size={25}/>}
+                        {this.state.photo && <Text style={styles.imagePickerText}>Image Selected</Text>}
+                        {this.state.photo && <Ionicons name="ios-checkmark-circle-outline" color={"white"} size={25}/>}
+                    </TouchableOpacity>
 
-                <ActivityIndicator style={styles.activityIndicator} color={"#00335c"} size={55} animating={this.props.showWaitingResponse} />
+                    <ActivityIndicator style={styles.activityIndicator} color={"#00335c"} size={55}
+                                       animating={this.props.showWaitingResponse}/>
 
-                <TouchableOpacity style={styles.loginBtn}
-                    onPress={() => {
-                        Keyboard.dismiss()
-                        this.handleSubmit()
-                    }}>
-                    <Text style={styles.loginText}>SIGNUP</Text>
-                </TouchableOpacity>
-            </View>
+                    <TouchableOpacity style={styles.loginBtn}
+                                      onPress={() => {
+                                          Keyboard.dismiss()
+                                          this.handleSubmit()
+                                      }}>
+                        <Text style={styles.loginText}>SIGNUP</Text>
+                    </TouchableOpacity>
+                </KeyboardAvoidingView>
+            </TouchableWithoutFeedback>
         );
     }
 }
@@ -169,7 +187,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setWaitingResponse: value => dispatch({ type: WAITING_RESPONSE, payload: value })
+        setWaitingResponse: value => dispatch({type: WAITING_RESPONSE, payload: value})
     }
 }
 
