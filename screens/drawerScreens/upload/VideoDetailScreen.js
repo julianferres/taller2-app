@@ -183,7 +183,7 @@ class _VideoDetailScreen extends React.Component {
                             <BarIndicator
                                 animating={this.state.animating}
                                 animationDuration={500}
-                                color="blue"
+                                color={azulMarino}
                                 count={5}
                             />
                         </View>
