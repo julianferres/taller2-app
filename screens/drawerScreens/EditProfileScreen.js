@@ -1,5 +1,16 @@
 import * as React from 'react';
-import {ActivityIndicator, Keyboard, StatusBar, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {
+    ActivityIndicator,
+    Keyboard,
+    KeyboardAvoidingView,
+    Platform,
+    StatusBar,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    View
+} from "react-native";
 import CustomHeader from "../../navigation/CustomHeader";
 import {Ionicons} from '@expo/vector-icons';
 import {styles} from "../../constants/InitStackStylesheet";
@@ -120,14 +131,15 @@ class _ProfileScreen extends React.Component {
     editProfileComponent() {
         return (
             <>
-                <View style={[styles.inputView, { marginTop: 50}]}>
-                    <TextInput
-                        style={styles.inputText}
-                        value={this.state.email}
-                        placeholderTextColor="#cad6eb"
-                        editable={false}
-                    />
-                </View>
+                <TouchableOpacity style={[styles.inputView, {marginTop: 50}]} activeOpacity={0.9}>
+                        <TextInput
+                            style={styles.inputText}
+                            value={this.state.email}
+                            placeholderTextColor="#cad6eb"
+                            editable={false}
+                        />
+                </TouchableOpacity>
+
                 <View style={styles.inputView}>
                     <TextInput
                         style={styles.inputText}
@@ -180,12 +192,19 @@ class _ProfileScreen extends React.Component {
         this.state.isFetching ? showComp = this.fetchingComponent() : showComp = this.editProfileComponent();
 
         return (
-            <View style={{flex: 1, paddingTop: StatusBar.currentHeight}}>
-                <CustomHeader title="Profile" navigation={this.props.navigation}/>
-                <View style={{flex:1, alignItems: 'center'}}>
-                    {showComp}
-                </View>
-            </View>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <KeyboardAvoidingView
+                    enabled={false}
+                    style={{flex: 1, paddingTop: StatusBar.currentHeight}}
+                    behavior={Platform.OS == "ios" ? "padding" : "height"}
+                >
+
+                    <CustomHeader title="Profile" navigation={this.props.navigation}/>
+                    <View style={{flex: 1, alignItems: 'center'}}>
+                        {showComp}
+                    </View>
+                </KeyboardAvoidingView>
+            </TouchableWithoutFeedback>
         );
 
     }
