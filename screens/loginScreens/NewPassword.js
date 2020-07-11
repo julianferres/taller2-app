@@ -1,10 +1,20 @@
 import React from "react";
-import { ActivityIndicator, TextInput, Text, View, TouchableOpacity, Keyboard } from "react-native";
-import { styles } from "../../constants/InitStackStylesheet";
-import { app } from "../../app/app";
-import { WAITING_RESPONSE, EMAIL_TO_RECOVER } from "../../reducers/appReducer";
-import { showMessage } from "react-native-flash-message";
-import { connect } from "react-redux";
+import {
+    ActivityIndicator,
+    Keyboard,
+    KeyboardAvoidingView,
+    Platform,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    View
+} from "react-native";
+import {styles} from "../../constants/InitStackStylesheet";
+import {app} from "../../app/app";
+import {EMAIL_TO_RECOVER, WAITING_RESPONSE} from "../../reducers/appReducer";
+import {showMessage} from "react-native-flash-message";
+import {connect} from "react-redux";
 
 
 class NewPassword extends React.Component {
@@ -20,6 +30,7 @@ class NewPassword extends React.Component {
         }
         this.emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     }
+
     validateEmail() {
         return this.emailRegex.test(this.state.email);
     }
@@ -67,45 +78,53 @@ class NewPassword extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <Text style={styles.forgotPasswordLogo}>Password Recovery</Text>
-                <View style={styles.inputView}>
-                    <TextInput
-                        style={styles.inputText}
-                        value={this.state.email}
-                        placeholderTextColor="#cad6eb"
-                        onChangeText={(text) => this.setState({ email: text })}
-                    />
-                </View>
-                <View style={styles.inputView}>
-                    <TextInput
-                        style={styles.inputText}
-                        placeholder="Enter received token"
-                        placeholderTextColor="#cad6eb"
-                        onChangeText={(text) => this.setState({ token: text })}
-                    />
-                </View>
-                <View style={styles.inputView}>
-                    <TextInput
-                        style={styles.inputText}
-                        placeholder="Enter your new password"
-                        placeholderTextColor="#cad6eb"
-                        secureTextEntry={true}
-                        onChangeText={(text) => this.setState({ new_password: text })}
-                    />
-                </View>
-                <ActivityIndicator style={styles.activityIndicator} color={"#00335c"} size={55} animating={this.props.showWaitingResponse} />
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <KeyboardAvoidingView
+                    enabled={false}
+                    style={styles.container}
+                    behavior={Platform.OS == "ios" ? "padding" : "height"}
+                >
+                    <Text style={styles.forgotPasswordLogo}>Password Recovery</Text>
+                    <View style={styles.inputView}>
+                        <TextInput
+                            style={styles.inputText}
+                            value={this.state.email}
+                            placeholderTextColor="#cad6eb"
+                            onChangeText={(text) => this.setState({email: text})}
+                        />
+                    </View>
+                    <View style={styles.inputView}>
+                        <TextInput
+                            style={styles.inputText}
+                            placeholder="Enter received token"
+                            placeholderTextColor="#cad6eb"
+                            onChangeText={(text) => this.setState({token: text})}
+                        />
+                    </View>
+                    <View style={styles.inputView}>
+                        <TextInput
+                            style={styles.inputText}
+                            placeholder="Enter your new password"
+                            placeholderTextColor="#cad6eb"
+                            secureTextEntry={true}
+                            onChangeText={(text) => this.setState({new_password: text})}
+                        />
+                    </View>
+                    <ActivityIndicator style={styles.activityIndicator} color={"#00335c"} size={55}
+                                       animating={this.props.showWaitingResponse}/>
 
-                <TouchableOpacity style={styles.loginBtn}
-                    onPress={() => {
-                        Keyboard.dismiss()
-                        this.handleSubmit()
-                    }}>
+                    <TouchableOpacity style={styles.loginBtn}
+                                      onPress={() => {
+                                          Keyboard.dismiss()
+                                          this.handleSubmit()
+                                      }}>
 
-                    <Text style={styles.loginText}>Submit</Text>
-                </TouchableOpacity>
-            </View>
+                        <Text style={styles.loginText}>Submit</Text>
+                    </TouchableOpacity>
+                </KeyboardAvoidingView>
+            </TouchableWithoutFeedback>
         );
+
     }
 }
 
@@ -119,8 +138,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setWaitingResponse: value => dispatch({ type: WAITING_RESPONSE, payload: value }),
-        setEmailToRecover: value => dispatch({ type: EMAIL_TO_RECOVER, payload: value })
+        setWaitingResponse: value => dispatch({type: WAITING_RESPONSE, payload: value}),
+        setEmailToRecover: value => dispatch({type: EMAIL_TO_RECOVER, payload: value})
     }
 }
 
