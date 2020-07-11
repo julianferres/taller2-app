@@ -10,6 +10,7 @@ export const USER_EMAIL = "USER_EMAIL";
 export const USER_INFORMATION = "VIDEO_INFO_TO_WATCH";
 export const CLEAR_HISTORY = "CLEAR_HISTORY";
 export const MODIFY_REACTION = "MODIFY_REACTION";
+export const SET_HISTORY = "SET_HISTORY";
 
 const initialState = {
     token: "",
@@ -57,6 +58,8 @@ const appReducer = (state = initialState, action) => {
                     }
                 }
             }
+        case SET_HISTORY:
+            return {...state, searchHistory: action.payload}
         default:
             return state;
     }

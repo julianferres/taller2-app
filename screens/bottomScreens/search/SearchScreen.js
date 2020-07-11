@@ -7,8 +7,9 @@ import {app} from "../../../app/app";
 import {showMessage} from "react-native-flash-message";
 import * as VideoThumbnails from "expo-video-thumbnails";
 import VideoThumbnailDisplay from "../../general/VideoThumbnailDisplay";
-import {ADD_SEARCH, CLEAR_HISTORY} from "../../../reducers/appReducer";
+import {ADD_SEARCH, CLEAR_HISTORY, SET_HISTORY} from "../../../reducers/appReducer";
 import {connect} from "react-redux";
+import { AsyncStorage } from 'react-native';
 
 class _SearchScreen extends React.Component {
 
@@ -22,6 +23,28 @@ class _SearchScreen extends React.Component {
             isHistory: true
         }
     }
+
+    componentDidMount() {
+        this._retrieveHistory()
+    }
+
+    _storeHistory = async () => {
+        try {
+            await AsyncStorage.setItem('@SearchHistory:key', this.props.searchHistory);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    _retrieveHistory = async () => {
+        try {
+            const value = await AsyncStorage.getItem('SearchHistory');
+            if (value !== null) {
+                this.props.initHistory(value);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     alertSearch(errorMessage) {
         showMessage({
@@ -59,6 +82,7 @@ class _SearchScreen extends React.Component {
         this.setState({isSearching: true, isHistory: false})
         app.apiClient().searchVideos({query: this.state.searchTerm}, this.onResponse.bind(this))
         this.props.addSearchToHistory(this.state.searchTerm)
+        this._storeHistory()
     }
 
     handleHistorySubmit(historySearch) {
@@ -69,6 +93,7 @@ class _SearchScreen extends React.Component {
         this.setState({isSearching: true, isHistory: false})
         app.apiClient().searchVideos({query: historySearch}, this.onResponse.bind(this))
         this.props.addSearchToHistory(historySearch)
+        this._storeHistory()
     }
 
 
@@ -151,7 +176,10 @@ class _SearchScreen extends React.Component {
                 :
                 <View style={{flex: 1, justifyContent: "center", paddingLeft: 10, paddingTop: 15}}>
                     <TouchableOpacity style={{flexDirection: 'row'}}
-                                      onPress={() => this.props.clearHistory()}>
+                                      onPress={() => {
+                                          this.props.clearHistory()
+                                          this._storeHistory()
+                                      }}>
                         <Ionicons name="ios-close-circle-outline" size={30} color={"#fb5b5a"} style={{
                             paddingLeft: 20,
                             paddingBottom: 20
@@ -238,6 +266,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        initHistory: history => dispatch({type: SET_HISTORY, payload: history}),
         addSearchToHistory: searchTerm => dispatch({type: ADD_SEARCH, payload: searchTerm}),
         clearHistory: () => dispatch({type: CLEAR_HISTORY})
     }
