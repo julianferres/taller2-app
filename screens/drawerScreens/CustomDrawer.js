@@ -4,7 +4,13 @@ import {SimpleLineIcons} from "@expo/vector-icons";
 import {REMOVE_TOKEN} from "../../reducers/appReducer";
 import {connect} from "react-redux";
 import {app} from "../../app/app";
+import * as Font from "expo-font";
 const azulMarino = "#00335c";
+
+let customFonts = {
+    "OpenSans": require('../../assets/fonts/OpenSans-SemiBold.ttf'),
+    "OpenSans-regular": require('../../assets/fonts/OpenSans-Regular.ttf')
+};
 
 class CustomDrawer extends React.Component {
     constructor(props) {
@@ -15,6 +21,10 @@ class CustomDrawer extends React.Component {
         }
     }
 
+    async _loadFontsAsync() {
+        await Font.loadAsync(customFonts);
+    }
+    
     onResponseFriendshipRequests(response) {
         if (response.ok) {
             response.json()
@@ -39,6 +49,7 @@ class CustomDrawer extends React.Component {
     }
 
     componentDidMount() {
+        this._loadFontsAsync()
         this._unsuscribe = this.props.navigation.addListener("state", () => {
             app.apiClient().getPendingFriendsRequests(this.onResponseFriendshipRequests.bind(this))
             app.apiClient().getProfile(this.onResponseGet.bind(this))
