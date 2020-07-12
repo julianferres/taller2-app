@@ -7,7 +7,6 @@ import {showMessage} from "react-native-flash-message";
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as VideoThumbnails from "expo-video-thumbnails";
 import VideoThumbnailDisplay from "./VideoThumbnailDisplay";
-const azulMarino = "#00335c";
 
 class _UserProfileScreen extends React.Component {
     constructor(props) {
@@ -81,144 +80,9 @@ class _UserProfileScreen extends React.Component {
     }
 
     componentDidMount() {
-        app.apiClient().getFriendshipStatus({other: this.props.userEmail}, this.onResponseFriendshipStatus.bind(this))
         app.apiClient().getUserVideos({email: this.props.userEmail}, this.onResponseVideos.bind(this))
     }
 
-    onResponseFriendshipRequest(response) {
-        if (response.ok) {
-            showMessage({
-                message: "Request sent!",
-                type: "success",
-                animationDuration: 500,
-                icon: "success"
-            });
-            this.setState({isFetchingFriendStatus: false, friendshipStatus: "sent"})
-        } else {
-            showMessage({
-                message: "Error sending request.",
-                type: "danger",
-                animationDuration: 500,
-                icon: "danger"
-            });
-        }
-    }
-
-    sendFriendshipRequest() {
-        this.setState({isFetchingFriendStatus: true})
-        app.apiClient().sendFriendshipRequest({other_user_email: this.props.userEmail}, this.onResponseFriendshipRequest.bind(this))
-    }
-
-    addUserComponent() {
-        return (
-            <TouchableOpacity style={{flex: 1, justifyContent: "center", alignItems: "center"}}
-                              onPress={() => this.sendFriendshipRequest()}>
-                <MaterialCommunityIcons name="account-plus" size={this.iconSize} color="#00335c"/>
-                <Text style={{fontSize: this.fontSizeIcon, color: "#00335c"}}>Add friend</Text>
-            </TouchableOpacity>
-        )
-    }
-
-    alreadyFriendsComponent() {
-        return (
-            <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-                <MaterialCommunityIcons name="account-supervisor" size={this.iconSize} color="#00335c"/>
-                <Text style={{fontSize: this.fontSizeIcon, color: "#00335c"}}>You are friends!</Text>
-            </View>
-        )
-    }
-
-    waitingAcceptanceComponent() {
-        return (
-            <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-                <MaterialCommunityIcons name="account-clock" size={this.iconSize} color="#00335c"/>
-                <Text style={{fontSize: this.fontSizeIcon, color: "#00335c"}}>Request already sent.</Text>
-            </View>
-        )
-    }
-
-    onResponseAcceptRequest(response) {
-        if (response.ok) {
-            showMessage({
-                message: `Congratulations! ${this.props.userName.split(" ")[0]} and you are now friends.`,
-                type: "success",
-                animationDuration: 500,
-                icon: "success"
-            });
-            this.setState({isFetchingFriendStatus: false, friendshipStatus: "friends"})
-        } else {
-            showMessage({
-                message: "Error sending request.",
-                type: "danger",
-                animationDuration: 500,
-                icon: "danger"
-            });
-        }
-    }
-
-    acceptFriendshipRequest() {
-        this.setState({isFetchingFriendStatus: true})
-        app.apiClient().acceptFriendshipRequest({other_user_email: this.props.userEmail}, this.onResponseAcceptRequest.bind(this))
-    }
-
-    onResponseDeclineRequest(response) {
-        if (response.ok) {
-            showMessage({
-                message: `You decline ${this.props.userName.split(" ")[0]} request.`,
-                type: "success",
-                animationDuration: 500,
-                icon: "success"
-            });
-            this.setState({isFetchingFriendStatus: false, friendshipStatus: "no_contact"})
-        } else {
-            showMessage({
-                message: "Error sending request.",
-                type: "danger",
-                animationDuration: 500,
-                icon: "danger"
-            });
-        }
-    }
-
-    declineFriendshipRequest() {
-        this.setState({isFetchingFriendStatus: true})
-        app.apiClient().declineFriendshipRequest({other_user_email: this.props.userEmail}, this.onResponseDeclineRequest.bind(this))
-    }
-
-    receivedFriendshipRequestComponent() {
-        return (
-            <View style={{flex: 1, justifyContent: "space-around", alignItems: "center", paddingLeft: 5}}>
-                <Text style={{textAlign: "center", color: "#00335c", fontSize: this.fontSizeIcon}}>
-                    {this.props.userName.split(" ")[0]} wants to be your friend!
-                </Text>
-                <TouchableOpacity onPress={() => this.acceptFriendshipRequest()}>
-                    <MaterialCommunityIcons name="account-check" size={this.iconSize} color="#00335c"/>
-                    <Text style={{textAlign: "center", color: "#00335c", fontSize: this.fontSizeIcon}}>Accept</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.declineFriendshipRequest()}>
-                    <MaterialCommunityIcons name="account-remove" size={this.iconSize} color="#00335c"/>
-                    <Text style={{fontSize: this.fontSizeIcon, color: "#00335c"}}>Decline</Text>
-                </TouchableOpacity>
-
-            </View>
-        )
-    }
-
-    friendComponent() {
-        if (this.state.isFetchingFriendStatus) {
-            return <ActivityIndicator size={55} color={"#00335c"}/>
-        } else {
-            if (this.state.friendshipStatus === "no_contact") {
-                return this.addUserComponent()
-            } else if (this.state.friendshipStatus === "friends") {
-                return this.alreadyFriendsComponent()
-            } else if (this.state.friendshipStatus === "sent") {
-                return this.waitingAcceptanceComponent()
-            } else {
-                return this.receivedFriendshipRequestComponent();
-            }
-        }
-    }
 
     videosComponent() {
         if (this.state.isFetchingVideos) {
@@ -271,7 +135,7 @@ class _UserProfileScreen extends React.Component {
                         padding: 3,
                         borderBottomColor: "#D2D2D2"
                     }}>
-                        <Text style={{fontSize: 26, fontFamily: "OpenSans", color:azulMarino}}>{this.props.userName}</Text>
+                        <Text style={{fontSize: 26, fontWeight: "bold"}}>{this.props.userName}</Text>
                     </View>
                     <View>
                         {this.videosComponent()}

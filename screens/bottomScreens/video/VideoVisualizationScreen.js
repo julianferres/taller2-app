@@ -169,7 +169,8 @@ class _VideoVisualizationScreen extends React.Component {
                     fontWeight: "bold",
                     paddingLeft: 10,
                     paddingRight: 10,
-                    fontFamily: "OpenSans"
+                    fontFamily: "OpenSans",
+                    color:azulMarino
                 }}>{this.props.videoInfo.title}</Text>
                 <HorizontalRule margin={0} padding={10}/>
                 <View style={{flexDirection: "row", alignItems: "flex-start", paddingLeft: 10}}>
@@ -207,7 +208,7 @@ class _VideoVisualizationScreen extends React.Component {
                     />
                     <View style={{flex: 1, paddingLeft: 10, paddingRight: 10, justifyContent: "center"}}>
                         <Text style={{
-                            fontWeight: "bold",
+                            fontFamily: "OpenSans",
                             fontSize: widthResolution / 25
                         }}>{this.props.videoInfo.ownerName}</Text>
                     </View>
