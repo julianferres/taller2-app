@@ -12,7 +12,8 @@ export default class _HomeScreen extends React.Component {
         this.state = {
             isFetching: true,
             videos: [],
-            thumbnails: []
+            thumbnails: [],
+
         }
     }
 
