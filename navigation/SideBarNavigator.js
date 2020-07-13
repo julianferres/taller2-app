@@ -14,7 +14,7 @@ const Drawer = createDrawerNavigator();
 
 export default function SideBarNavigator() {
     return (
-        <Drawer.Navigator drawerContent={(props) => <CustomDrawerContainer {...props}/>}>
+        <Drawer.Navigator drawerContent={(props) => <CustomDrawerContainer {...props}/>} >
             <Drawer.Screen name="TabMenu" component={BottomTabNavigator} />
             <Drawer.Screen name="Profile" component={EditProfileScreen}/>
             <Drawer.Screen name="UploadVideo" component={UploadVideoScreen} />

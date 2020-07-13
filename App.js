@@ -9,17 +9,6 @@ import FlashMessage from "react-native-flash-message";
 import {Notifications} from 'expo';
 import registerForPushNotificationsAsync from "./app/notifications";
 
-/*const handle = notification => {
-  console.log(notification)
-  Vibration.vibrate();
-}
-
-const handle_2 = notification => {
-  console.log("2")
-}
-
-Notifications.addListener(handle)*/
-
 export default function App(props) {
   const [notificationToken, setNotificationToken] = React.useState("")
 
