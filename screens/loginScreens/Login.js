@@ -76,7 +76,10 @@ class Login extends React.Component {
             return;
         }
         this.props.setWaitingResponse(true);
-        app.apiClient().login(this.state, this.onResponse.bind(this))
+        let data = this.state
+        data.notification_token = this.props.notificationToken;
+        console.log(data)
+        app.apiClient().login(data, this.onResponse.bind(this))
     }
 
     render() {

@@ -7,11 +7,17 @@ import SideBarNavigator from "./SideBarNavigator";
 const Stack = createStackNavigator();
 
 class Navigator extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
+
         return (
             <Stack.Navigator>
                 {!this.props.loggedIn &&
-                    <Stack.Screen options={{ headerShown: false }} name="AuthStack" component={AuthStack} />}
+                    <Stack.Screen options={{ headerShown: false }} name="AuthStack"
+                                  children={() => <AuthStack notificationToken={this.props.notificationToken}/>} />}
                 {this.props.loggedIn && <Stack.Screen options={{ headerShown: false }} name="SideBarNavigator" component={SideBarNavigator} />}
             </Stack.Navigator>
         );
