@@ -184,7 +184,7 @@ class _ConversationScreen extends React.Component{
     }
 
     moreMessages(e){
-        if(e.nativeEvent.contentOffset.y === 0){
+        if(e.nativeEvent.contentOffset.y === 0 && this.state.pages > this.state.currentPage){
             this.getConversationNextPage()
         }
     }
