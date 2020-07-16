@@ -17,6 +17,8 @@ class _HomeScreen extends React.Component {
             videos: [],
             thumbnails: []
         }
+
+        this.onResponseNotification = this.onResponseNotification.bind(this)
     }
 
     generateThumbnail = async (videoUri, videoIndex, totalVideos) => {
@@ -63,7 +65,7 @@ class _HomeScreen extends React.Component {
         }
     }
 
-    onResponseGetUser(response){
+    onResponseNotification(response, screenToGo){
         if(response.ok){
             response.json().then(json => {
                 this.props.passUserInfo({
@@ -71,20 +73,29 @@ class _HomeScreen extends React.Component {
                     userPhoto: json["photo"],
                     userEmail: json["email"]
                 })
-                this.props.navigation.navigate("Conversation")
+                this.props.navigation.navigate(screenToGo)
             })
         }
     }
+
+    onResponseGetUserChat(response){
+        this.onResponseNotification(response, "Conversation")
+    }
+
+    onResponseGetUserFriendshipRequest(response){
+        this.onResponseNotification(response, "UserProfile")
+    }
+
 
     manageNotification(notification){
 
         if(notification.origin === "received"){
             Vibration.vibrate()
-            //Notifications.presentLocalNotificationAsync()
         } else if (notification.origin === "selected"){
             if(notification.data.kind === "message"){
-                console.log("tapped message")
-                app.apiClient().getUser({email: notification.data.from}, this.onResponseGetUser.bind(this))
+                app.apiClient().getUser({email: notification.data.from}, this.onResponseGetUserChat.bind(this))
+            } else if(notification.data.kind === "friendship_request"){
+                app.apiClient().getUser({email: notification.data.from}, this.onResponseGetUserFriendshipRequest.bind(this))
             }
         }
     }
