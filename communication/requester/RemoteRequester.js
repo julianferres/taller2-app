@@ -13,6 +13,7 @@ class RemoteRequester extends Requester {
         if ((endpoint.method() === 'GET' || endpoint.method() === 'DELETE') && data) {
             url += "?" + this._dataToQueryString(data);
         }
+
         return fetch(this._baseUrl + url, request)
             .then(response => onResponse(response))
             .catch(exception => {

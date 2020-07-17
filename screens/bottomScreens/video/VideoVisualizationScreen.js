@@ -148,7 +148,6 @@ class _VideoVisualizationScreen extends React.Component {
         if (!this.state.fontsLoaded) {
             return <AppLoading/>
         }
-        console.log(this.props.videoInfo);
         return (
 
             <ScrollView style={{flex: 1, paddingTop: StatusBar.currentHeight}}>

@@ -20,6 +20,8 @@ import {RemoveReactionEndpoint} from "../endpoints/RemoveReactionEndpoint";
 import {GetReactionsEndpoint} from "../endpoints/GetReactionsEndpoint";
 import {ConversationEndpoint} from "../endpoints/ConversationEndpoint";
 import {SendMessageEndpoint} from "../endpoints/SendMessageEndpoint";
+import {GetUserEndpoint} from "../endpoints/GetUserEndpoint";
+
 
 
 
@@ -212,6 +214,14 @@ class ApiClient {
             onResponse: onResponse,
             data: data,
             needsAuthorization: true
+        })
+    }
+
+    getUser(data, onResponse){
+        return this._requester.call({
+            endpoint: new GetUserEndpoint(),
+            onResponse: onResponse,
+            data: data
         })
     }
 }

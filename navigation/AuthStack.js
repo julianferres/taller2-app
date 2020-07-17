@@ -8,11 +8,10 @@ import NewPasswordContainer from "../screens/loginScreens/NewPassword";
 const Stack = createStackNavigator();
 
 
-export default function AuthStack() {
-
+export default function AuthStack({notificationToken}) {
     return (
         <Stack.Navigator initialRouteName={"Login"} >
-            <Stack.Screen name="Login" component={LoginContainer} />
+            <Stack.Screen name="Login" children={() => <LoginContainer notificationToken={notificationToken}/>} />
             <Stack.Screen name="Sign up" component={SignUp} options={{cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS}} />
             <Stack.Screen name="Forgot password" component={ForgotPasswordContainer} options={{cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS}} />
             <Stack.Screen name="New password" component={NewPasswordContainer} options={{cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS}}/>
