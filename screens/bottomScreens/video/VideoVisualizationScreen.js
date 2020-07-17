@@ -128,9 +128,7 @@ class _VideoVisualizationScreen extends React.Component {
     }
 
     selectProfile() {
-        console.log("SELECCIONANDO")
-        console.log(this.props.userEmail, this.props.videoInfo.userEmail)
-        this.props.userEmail === this.props.videoInfo.userEmail ?
+       this.props.userEmail === this.props.videoInfo.userEmail ?
             this.props.navigation.navigate("MyProfile") :
             this.props.navigation.navigate("UserProfile")
     }
