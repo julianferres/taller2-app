@@ -16,15 +16,15 @@ const Drawer = createDrawerNavigator();
 export default function SideBarNavigator() {
     return (
         <Drawer.Navigator drawerContent={(props) => <CustomDrawerContainer {...props}/>}>
-            <Drawer.Screen name="MyProfile" component={MyProfileScreen} />
             <Drawer.Screen name="TabMenu" component={BottomTabNavigator} />
-            <Drawer.Screen name="Profile" component={EditProfileScreen}/>
+            <Drawer.Screen name="EditProfile" component={EditProfileScreen}/>
             <Drawer.Screen name="UploadVideo" component={UploadVideoScreen} />
             <Drawer.Screen name="VideoDetail" component={VideoDetailScreen} />
             <Drawer.Screen name="Requests" component={FriendshipRequestsScreen} />
             <Drawer.Screen name="UserProfile" component={UserProfileScreen} />
             <Drawer.Screen name="Friends" component={FriendsScreen} />
             <Drawer.Screen name="Conversation" component={ConversationScreen} />
+            <Drawer.Screen name="MyProfile" component={MyProfileScreen} />
         </Drawer.Navigator>
     )
 }

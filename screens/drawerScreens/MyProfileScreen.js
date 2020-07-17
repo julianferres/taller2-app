@@ -1,20 +1,18 @@
 import * as React from 'react';
-import {ActivityIndicator, Dimensions, Image, ScrollView, StatusBar, Text, TouchableOpacity, View} from 'react-native';
-import {connect} from "react-redux";
+import {Dimensions, Image, ScrollView, StatusBar, Text, TouchableOpacity, View} from 'react-native';
 import CustomHeader from "../../navigation/CustomHeader";
 import {app} from "../../app/app";
 import {showMessage} from "react-native-flash-message";
-import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as VideoThumbnails from "expo-video-thumbnails";
-import VideoThumbnailDisplay from "./VideoThumbnailDisplay";
+import {connect} from "react-redux";
+import {Ionicons} from "@expo/vector-icons";
 
-class _UserProfileScreen extends React.Component {
+const azulMarino = "#00335c";
+
+class _MyProfileScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            friendshipStatus: "",
-            isFetchingFriendStatus: true,
-            isFetchingVideos: true,
             thumbnails: [],
             userVideos: undefined
         }
@@ -25,7 +23,7 @@ class _UserProfileScreen extends React.Component {
 
     manageError() {
         showMessage({
-            message: "Error loading user profile",
+            message: "Error loading your profile",
             type: "danger",
             animationDuration: 500,
             icon: "danger"
@@ -75,45 +73,42 @@ class _UserProfileScreen extends React.Component {
         }
     }
 
-    onResponseFriendshipStatus(response) {
-        response.json().then(json => this.setState({isFetchingFriendStatus: false, friendshipStatus: json["status"]}))
-    }
-
     componentDidMount() {
-        app.apiClient().getUserVideos({email: this.props.userEmail}, this.onResponseVideos.bind(this))
+        app.apiClient().getUserVideos({email: this.props.myProfile["email"]}, this.onResponseVideos.bind(this))
     }
 
-
-    videosComponent() {
-        if (this.state.isFetchingVideos) {
-            return <ActivityIndicator size={55} color={"#00335c"}/>
-        } else {
-            return (
-                <View>
-                    {this.state.userVideos.map((video, index) => (
-                        <VideoThumbnailDisplay
-                            key={index}
-                            title={video["title"]}
-                            ownerName={this.props.userName}
-                            ownerEmail={this.props.userEmail}
-                            description={video["description"]}
-                            thumbnail={this.state.thumbnails[index]}
-                            reactions={video["reactions"]}
-                            uri={video["uri"]}
-                            userPhoto={this.props.userPhoto}
-                            navigation={this.props.navigation}
-                        />
-                    ))}
-                </View>
-            )
-
-        }
-    }
+    // videosComponent() {
+    //     if (this.state.isFetchingVideos) {
+    //         return <ActivityIndicator size={55} color={"#00335c"}/>
+    //     } else {
+    //         return (
+    //             <View>
+    //                 {this.state.userVideos.map((video, index) => (
+    //                     <VideoThumbnailDisplay
+    //                         key={index}
+    //                         title={video["title"]}
+    //                         ownerName={this.props.userName}
+    //                         ownerEmail={this.props.userEmail}
+    //                         description={video["description"]}
+    //                         thumbnail={this.state.thumbnails[index]}
+    //                         reactions={video["reactions"]}
+    //                         uri={video["uri"]}
+    //                         userPhoto={this.props.userPhoto}
+    //                         navigation={this.props.navigation}
+    //                     />
+    //                 ))}
+    //             </View>
+    //         )
+    //
+    //     }
+    // }
 
     render() {
+        // let showComp;
+        // this.state.isFetching ? showComp = this.fetchingComponent() : showComp = this.videosComponent()
         return (
             <View style={{flex: 1, paddingTop: StatusBar.currentHeight}}>
-                <CustomHeader title={this.props.userName.split(" ")[0]} navigation={this.props.navigation}/>
+                <CustomHeader title={"My Profile"} navigation={this.props.navigation}/>
                 <ScrollView>
                     <View style={{
                         flex: 1,
@@ -122,10 +117,15 @@ class _UserProfileScreen extends React.Component {
                         borderBottomWidth: 0.5,
                         borderBottomColor: "#D2D2D2"
                     }}>
-                        <Image source={{uri: `data:image/png;base64,${this.props.userPhoto}`}}
+                        <Image source={{uri: `data:image/png;base64,${this.props.myProfile["photo"]}`}}
                                style={{height: 200, width: 200}}/>
                         <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-                            {this.friendComponent()}
+
+                            <TouchableOpacity style={{flex: 1, justifyContent: "center", alignItems: "center"}}
+                                              onPress={() => this.props.navigation.navigate("EditProfile")}>
+                                <Ionicons name="ios-create" size={40} color={azulMarino}/>
+                                <Text style={{fontSize: this.fontSizeIcon, color: "#00335c", fontFamily:"OpenSans"}}>Edit Profile</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                     <View style={{
@@ -135,25 +135,28 @@ class _UserProfileScreen extends React.Component {
                         padding: 3,
                         borderBottomColor: "#D2D2D2"
                     }}>
-                        <Text style={{fontSize: 26, fontWeight: "bold"}}>{this.props.userName}</Text>
+                        <Text style={{
+                            fontSize: 26,
+                            fontFamily: "OpenSans",
+                            color: azulMarino
+                        }}>{this.props.myProfile["fullname"]}</Text>
                     </View>
-                    <View>
-                        {this.videosComponent()}
-                    </View>
+                    {/*<View>*/}
+                    {/*    {showComp}*/}
+                    {/*</View>*/}
                 </ScrollView>
             </View>
         )
     }
 }
 
+
 const mapStateToProps = (state) => {
     return {
-        userEmail: state.appReducer.videoVisualizationInfo.userEmail,
-        userName: state.appReducer.videoVisualizationInfo.ownerName,
-        userPhoto: state.appReducer.videoVisualizationInfo.userPhoto
-    };
-};
+        myProfile: state.appReducer.myProfile
+    }
+}
 
-const UserProfileScreen = connect(mapStateToProps, null)(_UserProfileScreen)
+const MyProfileScreen = connect(mapStateToProps, null)(_MyProfileScreen);
 
-export default UserProfileScreen;
+export default MyProfileScreen;

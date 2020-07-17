@@ -4,9 +4,11 @@ import CustomHeader from "../../../navigation/CustomHeader";
 import {app} from "../../../app/app";
 import VideoThumbnailDisplay from "../../general/VideoThumbnailDisplay";
 import * as VideoThumbnails from "expo-video-thumbnails";
+import {SET_PROFILE} from "../../../reducers/appReducer";
+import {connect} from "react-redux";
 
 
-export default class _HomeScreen extends React.Component {
+class _HomeScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -61,7 +63,16 @@ export default class _HomeScreen extends React.Component {
         }
     }
 
+    onResponseGet(response) {
+        if (response.ok) {
+            response.json().then(json => this.props.setProfile(json))
+        } else {
+            this.alertProfile("Problem when trying to get profile data. Try again later")
+        }
+    }
+
     componentDidMount() {
+        app.apiClient().getProfile(this.onResponseGet.bind(this))
         app.apiClient().homeVideos(this.onResponse.bind(this))
     }
 
@@ -107,3 +118,12 @@ export default class _HomeScreen extends React.Component {
     }
 }
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setProfile: (value) => dispatch({type: SET_PROFILE, payload: value})
+    }
+}
+
+const HomeScreen = connect(null, mapDispatchToProps)(_HomeScreen);
+
+export default HomeScreen;

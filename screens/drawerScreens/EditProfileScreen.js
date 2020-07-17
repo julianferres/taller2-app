@@ -132,12 +132,12 @@ class _ProfileScreen extends React.Component {
         return (
             <>
                 <TouchableOpacity style={[styles.inputView, {marginTop: 50}]} activeOpacity={0.9}>
-                        <TextInput
-                            style={styles.inputText}
-                            value={this.state.email}
-                            placeholderTextColor="#cad6eb"
-                            editable={false}
-                        />
+                    <TextInput
+                        style={styles.inputText}
+                        value={this.state.email}
+                        placeholderTextColor="#cad6eb"
+                        editable={false}
+                    />
                 </TouchableOpacity>
 
                 <View style={styles.inputView}>
@@ -198,8 +198,7 @@ class _ProfileScreen extends React.Component {
                     style={{flex: 1, paddingTop: StatusBar.currentHeight}}
                     behavior={Platform.OS == "ios" ? "padding" : "height"}
                 >
-
-                    <CustomHeader title="Profile" navigation={this.props.navigation}/>
+                    <CustomHeader title="Edit My Profile" navigation={this.props.navigation}/>
                     <View style={{flex: 1, alignItems: 'center'}}>
                         {showComp}
                     </View>
