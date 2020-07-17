@@ -8,6 +8,7 @@ import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as VideoThumbnails from "expo-video-thumbnails";
 import VideoThumbnailDisplay from "./VideoThumbnailDisplay";
 import * as Font from "expo-font";
+
 const azulMarino = "#00335c";
 
 let customFonts = {
@@ -90,7 +91,6 @@ class _UserProfileScreen extends React.Component {
     }
 
     componentDidMount() {
-        this._loadFontsAsync()
         app.apiClient().getFriendshipStatus({other: this.props.userEmail}, this.onResponseFriendshipStatus.bind(this))
         app.apiClient().getUserVideos({email: this.props.userEmail}, this.onResponseVideos.bind(this))
     }
@@ -232,7 +232,11 @@ class _UserProfileScreen extends React.Component {
 
     videosComponent() {
         if (this.state.isFetchingVideos) {
-            return <ActivityIndicator size={55} color={"#00335c"} style={ { paddingTop: 30 }} />
+            return <View style={{flex: 1, alignItems: "center"}}>
+                <ActivityIndicator size={55} color={"#00335c"} style={{paddingTop: 30}}/>
+                <Text style={{fontSize: 16, fontFamily: "OpenSans", color: azulMarino, paddingTop: 10}}>Loading User
+                    videos</Text>
+            </View>
         } else {
             return (
                 <View>
@@ -281,7 +285,11 @@ class _UserProfileScreen extends React.Component {
                         padding: 3,
                         borderBottomColor: "#D2D2D2"
                     }}>
-                        <Text style={{fontSize: 26, fontFamily: "OpenSans", color:azulMarino}}>{this.props.userName}</Text>
+                        <Text style={{
+                            fontSize: 26,
+                            fontFamily: "OpenSans",
+                            color: azulMarino
+                        }}>{this.props.userName}</Text>
                     </View>
                     <View>
                         {this.videosComponent()}
