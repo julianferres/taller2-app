@@ -7,7 +7,12 @@ import {showMessage} from "react-native-flash-message";
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as VideoThumbnails from "expo-video-thumbnails";
 import VideoThumbnailDisplay from "./VideoThumbnailDisplay";
+import * as Font from "expo-font";
 const azulMarino = "#00335c";
+
+let customFonts = {
+    "OpenSans": require('../../assets/fonts/OpenSans-SemiBold.ttf'),
+};
 
 class _UserProfileScreen extends React.Component {
     constructor(props) {
@@ -32,6 +37,10 @@ class _UserProfileScreen extends React.Component {
             icon: "danger"
         });
         this.props.navigation.goBack()
+    }
+
+    async _loadFontsAsync() {
+        await Font.loadAsync(customFonts);
     }
 
     generateThumbnail = async (videoUri, videoIndex, totalVideos) => {
@@ -81,6 +90,7 @@ class _UserProfileScreen extends React.Component {
     }
 
     componentDidMount() {
+        this._loadFontsAsync()
         app.apiClient().getFriendshipStatus({other: this.props.userEmail}, this.onResponseFriendshipStatus.bind(this))
         app.apiClient().getUserVideos({email: this.props.userEmail}, this.onResponseVideos.bind(this))
     }
@@ -222,7 +232,7 @@ class _UserProfileScreen extends React.Component {
 
     videosComponent() {
         if (this.state.isFetchingVideos) {
-            return <ActivityIndicator size={55} color={"#00335c"}/>
+            return <ActivityIndicator size={55} color={"#00335c"} style={ { paddingTop: 30 }} />
         } else {
             return (
                 <View>

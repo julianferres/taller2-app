@@ -4,13 +4,7 @@ import {SimpleLineIcons} from "@expo/vector-icons";
 import {REMOVE_TOKEN} from "../../reducers/appReducer";
 import {connect} from "react-redux";
 import {app} from "../../app/app";
-import * as Font from "expo-font";
 const azulMarino = "#00335c";
-
-let customFonts = {
-    "OpenSans": require('../../assets/fonts/OpenSans-SemiBold.ttf'),
-    "OpenSans-regular": require('../../assets/fonts/OpenSans-Regular.ttf')
-};
 
 class CustomDrawer extends React.Component {
     constructor(props) {
@@ -21,10 +15,6 @@ class CustomDrawer extends React.Component {
         }
     }
 
-    async _loadFontsAsync() {
-        await Font.loadAsync(customFonts);
-    }
-    
     onResponseFriendshipRequests(response) {
         if (response.ok) {
             response.json()
@@ -49,7 +39,6 @@ class CustomDrawer extends React.Component {
     }
 
     componentDidMount() {
-        this._loadFontsAsync()
         this._unsuscribe = this.props.navigation.addListener("state", () => {
             app.apiClient().getPendingFriendsRequests(this.onResponseFriendshipRequests.bind(this))
             app.apiClient().getProfile(this.onResponseGet.bind(this))
@@ -81,7 +70,8 @@ class CustomDrawer extends React.Component {
         return (
             <View style={{flex: 1, paddingTop: StatusBar.currentHeight}}>
                 <ScrollView style={{marginLeft: 10}}>
-                    <TouchableOpacity style={{marginTop: 20, flex: 1, justifyContent: "center", alignItems: "center"}}>
+                    <TouchableOpacity style={{marginTop: 20, flex: 1, justifyContent: "center", alignItems: "center"}}
+                                      onPress={() => this.props.navigation.navigate("MyProfile")}>
                         <Image source={{uri: `data:image/png;base64,${this.state.profilePhoto}`}}
                                style={{height: widthResolution / 5, width: widthResolution / 5, borderRadius: 200}}
                         />

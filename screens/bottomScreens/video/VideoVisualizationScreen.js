@@ -3,18 +3,11 @@ import {Dimensions, Image, ScrollView, StatusBar, Text, TouchableOpacity, View} 
 import CustomHeader from "../../../navigation/CustomHeader";
 import {Video} from "expo-av";
 import {connect} from "react-redux";
-import {AppLoading} from "expo";
-import * as Font from 'expo-font';
 import {Ionicons} from "@expo/vector-icons";
 import Colors from "../../../constants/Colors";
 import {showMessage} from "react-native-flash-message";
 import {app} from "../../../app/app";
 import {MODIFY_REACTION} from "../../../reducers/appReducer";
-
-let customFonts = {
-    "OpenSans": require('../../../assets/fonts/OpenSans-SemiBold.ttf'),
-    "OpenSans-regular": require('../../../assets/fonts/OpenSans-Regular.ttf')
-};
 
 const azulMarino = "#00335c";
 
@@ -37,7 +30,6 @@ class _VideoVisualizationScreen extends React.Component {
         super(props);
         this.state = {
             isShowingCompleteDescription: false,
-            fontsLoaded: false,
             myLike: false,
             myDislike: false,
             amountLikes: this.props.videoInfo.reactions.like,
@@ -45,13 +37,7 @@ class _VideoVisualizationScreen extends React.Component {
         }
     }
 
-    async _loadFontsAsync() {
-        await Font.loadAsync(customFonts);
-        this.setState({fontsLoaded: true});
-    }
-
     componentDidMount() {
-        this._loadFontsAsync();
         this.getMyReactions();
     }
 
@@ -145,10 +131,7 @@ class _VideoVisualizationScreen extends React.Component {
     render() {
         const widthResolution = Dimensions.get("window").width
         const heightResolution = widthResolution / 16 * 9;
-        if (!this.state.fontsLoaded) {
-            return <AppLoading/>
-        }
-        console.log(this.props.videoInfo);
+
         return (
 
             <ScrollView style={{flex: 1, paddingTop: StatusBar.currentHeight}}>
