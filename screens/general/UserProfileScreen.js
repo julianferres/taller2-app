@@ -7,13 +7,8 @@ import {showMessage} from "react-native-flash-message";
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as VideoThumbnails from "expo-video-thumbnails";
 import VideoThumbnailDisplay from "./VideoThumbnailDisplay";
-import * as Font from "expo-font";
 
 const azulMarino = "#00335c";
-
-let customFonts = {
-    "OpenSans": require('../../assets/fonts/OpenSans-SemiBold.ttf'),
-};
 
 class _UserProfileScreen extends React.Component {
     constructor(props) {
@@ -38,10 +33,6 @@ class _UserProfileScreen extends React.Component {
             icon: "danger"
         });
         this.props.navigation.goBack()
-    }
-
-    async _loadFontsAsync() {
-        await Font.loadAsync(customFonts);
     }
 
     generateThumbnail = async (videoUri, videoIndex, totalVideos) => {

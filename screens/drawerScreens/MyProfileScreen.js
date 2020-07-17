@@ -6,6 +6,7 @@ import {Ionicons} from "@expo/vector-icons";
 import VideoThumbnailDisplay from "../general/VideoThumbnailDisplay";
 import {app} from "../../app/app";
 import * as VideoThumbnails from "expo-video-thumbnails";
+import {showMessage} from "react-native-flash-message";
 
 const azulMarino = "#00335c";
 
@@ -21,6 +22,16 @@ class _MyProfileScreen extends React.Component {
         let widthDimension = Dimensions.get("window").width
         this.iconSize = (widthDimension - 200) / 5
         this.fontSizeIcon = this.iconSize / 3
+    }
+
+    manageError() {
+        showMessage({
+            message: "Error loading my profile",
+            type: "danger",
+            animationDuration: 500,
+            icon: "danger"
+        });
+        this.props.navigation.navigate("Home")
     }
 
     generateThumbnail = async (videoUri, videoIndex, totalVideos) => {
@@ -66,7 +77,7 @@ class _MyProfileScreen extends React.Component {
     }
 
     componentDidMount() {
-        app.apiClient().getUserVideos({email: this.props.myProfile["email"]}, this.onResponse.bind(this))
+        app.apiClient().getUserVideos({email: this.props.userEmail}, this.onResponse.bind(this))
     }
 
     videosComponent() {
@@ -82,13 +93,13 @@ class _MyProfileScreen extends React.Component {
                         <VideoThumbnailDisplay
                             key={index}
                             title={video["title"]}
-                            ownerName={this.props.userName}
+                            ownerName={this.props.myProfile["fullname"]}
                             ownerEmail={this.props.userEmail}
                             description={video["description"]}
                             thumbnail={this.state.thumbnails[index]}
                             reactions={video["reactions"]}
                             uri={video["uri"]}
-                            userPhoto={this.props.userPhoto}
+                            userPhoto={this.props.myProfile["photo"]}
                             navigation={this.props.navigation}
                         />
                     ))}
@@ -147,6 +158,7 @@ class _MyProfileScreen extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
+        userEmail: state.appReducer.userEmail,
         myProfile: state.appReducer.myProfile,
         myVideos: state.appReducer.myVideos,
         myThumbnails: state.appReducer.myThumbnails

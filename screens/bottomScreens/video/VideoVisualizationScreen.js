@@ -127,6 +127,13 @@ class _VideoVisualizationScreen extends React.Component {
         }
     }
 
+    selectProfile() {
+        console.log("SELECCIONANDO")
+        console.log(this.props.userEmail, this.props.videoInfo.userEmail)
+        this.props.userEmail === this.props.videoInfo.userEmail ?
+            this.props.navigation.navigate("MyProfile") :
+            this.props.navigation.navigate("UserProfile")
+    }
 
     render() {
         const widthResolution = Dimensions.get("window").width
@@ -153,7 +160,7 @@ class _VideoVisualizationScreen extends React.Component {
                     paddingLeft: 10,
                     paddingRight: 10,
                     fontFamily: "OpenSans",
-                    color:azulMarino
+                    color: azulMarino
                 }}>{this.props.videoInfo.title}</Text>
                 <HorizontalRule margin={0} padding={10}/>
                 <View style={{flexDirection: "row", alignItems: "flex-start", paddingLeft: 10}}>
@@ -185,7 +192,7 @@ class _VideoVisualizationScreen extends React.Component {
                 </View>
                 <HorizontalRule margin={0} padding={0}/>
                 <TouchableOpacity style={{flex: 1, flexDirection: "row", padding: 10}}
-                                  onPress={() => this.props.navigation.navigate("UserProfile")}>
+                                  onPress={() => this.selectProfile()}>
                     <Image source={{uri: `data:image/png;base64,${this.props.videoInfo.userPhoto}`}}
                            style={{height: widthResolution / 10, width: widthResolution / 10, borderRadius: 100}}
                     />
@@ -212,7 +219,10 @@ class _VideoVisualizationScreen extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    return {videoInfo: state.appReducer.videoVisualizationInfo};
+    return {
+        userEmail: state.appReducer.userEmail,
+        videoInfo: state.appReducer.videoVisualizationInfo,
+    };
 };
 
 const mapDispatchToProps = (dispatch) => {
