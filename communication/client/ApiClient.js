@@ -21,6 +21,7 @@ import {GetReactionsEndpoint} from "../endpoints/GetReactionsEndpoint";
 import {ConversationEndpoint} from "../endpoints/ConversationEndpoint";
 import {SendMessageEndpoint} from "../endpoints/SendMessageEndpoint";
 import {GetUserEndpoint} from "../endpoints/GetUserEndpoint";
+import {LastConversationsEndpoint} from "../endpoints/LastConversationsEndpoint";
 
 
 
@@ -222,6 +223,14 @@ class ApiClient {
             endpoint: new GetUserEndpoint(),
             onResponse: onResponse,
             data: data
+        })
+    }
+
+    lastConversations(onResponse){
+        return this._requester.call({
+            endpoint: new LastConversationsEndpoint(),
+            onResponse: onResponse,
+            needsAuthorization: true
         })
     }
 }
