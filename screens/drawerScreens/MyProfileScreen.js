@@ -37,6 +37,8 @@ class _MyProfileScreen extends React.Component {
         this.props.navigation.navigate("Home")
     }
 
+
+
     generateThumbnail = async (videoUri, videoIndex, totalVideos) => {
         try {
             const {uri} = await VideoThumbnails.getThumbnailAsync(
@@ -151,7 +153,7 @@ class _MyProfileScreen extends React.Component {
                             <Image source={{uri: `data:image/png;base64,${this.props.myProfile["photo"]}`}}
                                    style={{height: 200, width: 200}}/>
                         </Lightbox>
-                        <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+                        <View style={{flex: 1, justifyContent: "center", alignItems: "center", paddingLeft: 90}}>
 
                             <TouchableOpacity style={{flex: 1, justifyContent: "center", alignItems: "center"}}
                                               onPress={() => this.props.navigation.navigate("EditProfile")}>

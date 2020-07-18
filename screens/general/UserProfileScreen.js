@@ -280,7 +280,7 @@ class _UserProfileScreen extends React.Component {
                         <Image source={{uri: `data:image/png;base64,${this.props.userPhoto}`}}
                                style={{height: 200, width: 200}}/>
                         </Lightbox>
-                        <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+                        <View style={{flex: 1, justifyContent: "center", alignItems: "center", paddingLeft: 90}}>
                             {this.friendComponent()}
                         </View>
                     </View>

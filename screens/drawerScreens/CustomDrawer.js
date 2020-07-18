@@ -4,6 +4,7 @@ import {SimpleLineIcons} from "@expo/vector-icons";
 import {REMOVE_TOKEN} from "../../reducers/appReducer";
 import {connect} from "react-redux";
 import {app} from "../../app/app";
+import {showMessage} from "react-native-flash-message";
 
 const azulMarino = "#00335c";
 
@@ -14,6 +15,17 @@ class CustomDrawer extends React.Component {
             pendingFriendshipRequests: 0,
             profilePhoto: null
         }
+    }
+
+    messageSwipe() {
+        showMessage({
+            message: "Swipe left to delete a video",
+            type: "default",
+            animationDuration: 200,
+            icon: "info",
+            style: {height: 50}
+        });
+        this.props.navigation.navigate("Home")
     }
 
     onResponseFriendshipRequests(response) {
@@ -58,7 +70,10 @@ class CustomDrawer extends React.Component {
             <View style={{flex: 1, paddingTop: StatusBar.currentHeight}}>
                 <ScrollView style={{marginLeft: 10}}>
                     <TouchableOpacity style={{marginTop: 20, flex: 1, justifyContent: "center", alignItems: "center"}}
-                                      onPress={() => this.props.navigation.navigate("MyProfile")}>
+                                      onPress={() => {
+                                          this.messageSwipe()
+                                          this.props.navigation.navigate("MyProfile")
+                                      }}>
                         <Image source={{uri: `data:image/png;base64,${this.props.myProfile["photo"]}`}}
                                style={{height: widthResolution / 5, width: widthResolution / 5, borderRadius: 200}}
                         />
