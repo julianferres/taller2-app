@@ -22,6 +22,13 @@ import * as VideoThumbnails from "expo-video-thumbnails";
 import VideoThumbnailDisplay from "../../general/VideoThumbnailDisplay";
 import {ADD_SEARCH, CLEAR_HISTORY, SET_HISTORY} from "../../../reducers/appReducer";
 import {connect} from "react-redux";
+import * as Font from "expo-font";
+
+let customFonts = {
+    "OpenSans": require('../../../assets/fonts/OpenSans-SemiBold.ttf'),
+    "OpenSans-regular": require('../../../assets/fonts/OpenSans-Regular.ttf')
+};
+
 
 class _SearchScreen extends React.Component {
 
@@ -36,7 +43,12 @@ class _SearchScreen extends React.Component {
         }
     }
 
+    async _loadFontsAsync() {
+        await Font.loadAsync(customFonts);
+    }
+
     componentDidMount() {
+        this._loadFontsAsync()
         this._retrieveHistory()
     }
 

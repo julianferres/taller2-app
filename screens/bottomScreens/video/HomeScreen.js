@@ -5,7 +5,7 @@ import {app} from "../../../app/app";
 import VideoThumbnailDisplay from "../../general/VideoThumbnailDisplay";
 import * as VideoThumbnails from "expo-video-thumbnails";
 import {Notifications} from "expo";
-import {USER_INFORMATION} from "../../../reducers/appReducer";
+import {USER_INFORMATION, SET_PROFILE} from "../../../reducers/appReducer";
 import {connect} from "react-redux";
 
 
@@ -15,7 +15,8 @@ class _HomeScreen extends React.Component {
         this.state = {
             isFetching: true,
             videos: [],
-            thumbnails: []
+            thumbnails: [],
+
         }
 
         this.onResponseNotification = this.onResponseNotification.bind(this)
@@ -100,7 +101,16 @@ class _HomeScreen extends React.Component {
         }
     }
 
+    onResponseGet(response) {
+        if (response.ok) {
+            response.json().then(json => this.props.setProfile(json))
+        } else {
+            this.alertProfile("Problem when trying to get profile data. Try again later")
+        }
+    }
+
     componentDidMount() {
+        app.apiClient().getProfile(this.onResponseGet.bind(this))
         app.apiClient().homeVideos(this.onResponse.bind(this))
         Notifications.addListener(this.manageNotification.bind(this))
     }
@@ -149,11 +159,11 @@ class _HomeScreen extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        passUserInfo: value => dispatch({type: USER_INFORMATION, payload: value})
+        passUserInfo: value => dispatch({type: USER_INFORMATION, payload: value}),
+        setProfile: value => dispatch({type: SET_PROFILE, payload: value})
     }
 }
 
 const HomeScreen = connect(null, mapDispatchToProps)(_HomeScreen)
 
 export default HomeScreen;
-

@@ -31,8 +31,8 @@ class _VideoThumbnailDisplay extends React.Component{
                 onPress={() => this.watchVideo()}>
                 <Image source={{uri: this.props.thumbnail}} style={{width: dimension, height: dimension - 50}}/>
                 <View style={{paddingLeft: padding, flex: 1}}>
-                    <Text style={{fontSize: 16, fontWeight: "bold", textAlign: "justify"}}>{this.props.title}</Text>
-                    <Text style={{fontSize: 14, color: "grey"}}>{this.props.ownerName}</Text>
+                    <Text style={{fontSize: 16, textAlign: "justify", fontFamily: "OpenSans"}}>{this.props.title}</Text>
+                    <Text style={{fontSize: 14, color: "grey", fontFamily: "OpenSans"}}>{this.props.ownerName}</Text>
                 </View>
             </TouchableOpacity>
         )

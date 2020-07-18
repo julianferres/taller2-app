@@ -11,6 +11,7 @@ export const USER_INFORMATION = "VIDEO_INFO_TO_WATCH";
 export const CLEAR_HISTORY = "CLEAR_HISTORY";
 export const MODIFY_REACTION = "MODIFY_REACTION";
 export const SET_HISTORY = "SET_HISTORY";
+export const SET_PROFILE = "SET_PROFILE";
 
 const initialState = {
     token: "",
@@ -21,7 +22,8 @@ const initialState = {
     videoToUpload: undefined,
     userEmail: "",
     videoVisualizationInfo: undefined,
-    searchHistory: []
+    searchHistory: [],
+    myProfile: {}
 };
 
 const appReducer = (state = initialState, action) => {
@@ -60,6 +62,8 @@ const appReducer = (state = initialState, action) => {
             }
         case SET_HISTORY:
             return {...state, searchHistory: action.payload}
+        case SET_PROFILE:
+            return {...state, myProfile: action.payload}
         default:
             return state;
     }
