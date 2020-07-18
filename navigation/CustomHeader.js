@@ -2,16 +2,9 @@ import * as React from 'react';
 import {View, Text, TouchableOpacity} from "react-native";
 import {AntDesign, Ionicons} from "@expo/vector-icons";
 import { LinearGradient } from 'expo-linear-gradient';
-import {useFonts} from "@use-expo/font";
-import {AppLoading} from "expo";
 
 export default function CustomHeader({title, isHome, navigation}){
-    let [fonts] = useFonts({"OpenSans": require('../assets/fonts/OpenSans-SemiBold.ttf')})
     const azulMarino = "#00335c"
-
-    if(!fonts){
-        return <AppLoading />
-    }
 
     return<View>
         <View style={{flexDirection: "row", height: 50, justifyContent: "space-around", alignItems: "center"}}>

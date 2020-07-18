@@ -3,18 +3,11 @@ import {Dimensions, Image, ScrollView, StatusBar, Text, TouchableOpacity, View} 
 import CustomHeader from "../../../navigation/CustomHeader";
 import {Video} from "expo-av";
 import {connect} from "react-redux";
-import {AppLoading} from "expo";
-import * as Font from 'expo-font';
 import {Ionicons} from "@expo/vector-icons";
 import Colors from "../../../constants/Colors";
 import {showMessage} from "react-native-flash-message";
 import {app} from "../../../app/app";
 import {MODIFY_REACTION} from "../../../reducers/appReducer";
-
-let customFonts = {
-    "OpenSans": require('../../../assets/fonts/OpenSans-SemiBold.ttf'),
-    "OpenSans-regular": require('../../../assets/fonts/OpenSans-Regular.ttf')
-};
 
 const azulMarino = "#00335c";
 
@@ -37,7 +30,6 @@ class _VideoVisualizationScreen extends React.Component {
         super(props);
         this.state = {
             isShowingCompleteDescription: false,
-            fontsLoaded: false,
             myLike: false,
             myDislike: false,
             amountLikes: this.props.videoInfo.reactions.like,
@@ -45,13 +37,7 @@ class _VideoVisualizationScreen extends React.Component {
         }
     }
 
-    async _loadFontsAsync() {
-        await Font.loadAsync(customFonts);
-        this.setState({fontsLoaded: true});
-    }
-
     componentDidMount() {
-        this._loadFontsAsync();
         this.getMyReactions();
     }
 
@@ -141,13 +127,16 @@ class _VideoVisualizationScreen extends React.Component {
         }
     }
 
+    selectProfile() {
+       this.props.userEmail === this.props.videoInfo.userEmail ?
+            this.props.navigation.navigate("MyProfile") :
+            this.props.navigation.navigate("UserProfile")
+    }
 
     render() {
         const widthResolution = Dimensions.get("window").width
         const heightResolution = widthResolution / 16 * 9;
-        if (!this.state.fontsLoaded) {
-            return <AppLoading/>
-        }
+
         return (
 
             <ScrollView style={{flex: 1, paddingTop: StatusBar.currentHeight}}>
@@ -168,7 +157,8 @@ class _VideoVisualizationScreen extends React.Component {
                     fontWeight: "bold",
                     paddingLeft: 10,
                     paddingRight: 10,
-                    fontFamily: "OpenSans"
+                    fontFamily: "OpenSans",
+                    color: azulMarino
                 }}>{this.props.videoInfo.title}</Text>
                 <HorizontalRule margin={0} padding={10}/>
                 <View style={{flexDirection: "row", alignItems: "flex-start", paddingLeft: 10}}>
@@ -200,13 +190,13 @@ class _VideoVisualizationScreen extends React.Component {
                 </View>
                 <HorizontalRule margin={0} padding={0}/>
                 <TouchableOpacity style={{flex: 1, flexDirection: "row", padding: 10}}
-                                  onPress={() => this.props.navigation.navigate("UserProfile")}>
+                                  onPress={() => this.selectProfile()}>
                     <Image source={{uri: `data:image/png;base64,${this.props.videoInfo.userPhoto}`}}
                            style={{height: widthResolution / 10, width: widthResolution / 10, borderRadius: 100}}
                     />
                     <View style={{flex: 1, paddingLeft: 10, paddingRight: 10, justifyContent: "center"}}>
                         <Text style={{
-                            fontWeight: "bold",
+                            fontFamily: "OpenSans",
                             fontSize: widthResolution / 25
                         }}>{this.props.videoInfo.ownerName}</Text>
                     </View>
@@ -227,7 +217,10 @@ class _VideoVisualizationScreen extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    return {videoInfo: state.appReducer.videoVisualizationInfo};
+    return {
+        userEmail: state.appReducer.userEmail,
+        videoInfo: state.appReducer.videoVisualizationInfo,
+    };
 };
 
 const mapDispatchToProps = (dispatch) => {
