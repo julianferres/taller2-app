@@ -19,7 +19,7 @@ class CustomDrawer extends React.Component {
 
     messageSwipe() {
         showMessage({
-            message: "Swipe left to delete a video",
+            message: "Swipe Left to delete a video",
             type: "default",
             animationDuration: 200,
             icon: "info",

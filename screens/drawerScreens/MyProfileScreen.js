@@ -87,15 +87,13 @@ class _MyProfileScreen extends React.Component {
 
     onResponseDelete(response){
         if(response.ok){
-            response.json().then(json => console.log(json))
             showMessage({
-                message: "Video deleted successfully.",
+                message: "Video successfully deleted.",
                 type: "success",
                 animationDuration: 500,
                 icon: "success"
             });
         } else {
-            response.json().then(json => console.log(json))
             showMessage({
                 message: "There was a problem deleting the video.",
                 type: "danger",
@@ -116,7 +114,7 @@ class _MyProfileScreen extends React.Component {
     }
 
     deleteVideo(video){
-        app.apiClient().deleteVideo({user_email: this.props.userEmail, video_title: video.title}, this.onResponseDelete.bind(this))
+        app.apiClient().deleteVideo({email: this.props.userEmail, video_title: video.title}, this.onResponseDelete.bind(this))
     }
 
     videosComponent() {
