@@ -29,7 +29,6 @@ class CustomDrawer extends React.Component {
     componentDidMount() {
         this._unsuscribe = this.props.navigation.addListener("state", () => {
             app.apiClient().getPendingFriendsRequests(this.onResponseFriendshipRequests.bind(this))
-            // app.apiClient().getProfile(this.onResponseGet.bind(this))
         })
     }
 
