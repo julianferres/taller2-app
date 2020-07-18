@@ -23,6 +23,7 @@ import {SendMessageEndpoint} from "../endpoints/SendMessageEndpoint";
 import {GetUserEndpoint} from "../endpoints/GetUserEndpoint";
 import {LastConversationsEndpoint} from "../endpoints/LastConversationsEndpoint";
 import {DeleteConversationEndpoint} from "../endpoints/DeleteConversationEndpoint";
+import {DeleteVideoEndpoint} from "../endpoints/DeleteVideoEndpoint";
 
 class ApiClient {
     constructor(requester) {
@@ -235,6 +236,15 @@ class ApiClient {
     deleteConversation(data, onResponse){
         return this._requester.call({
             endpoint: new DeleteConversationEndpoint(),
+            onResponse: onResponse,
+            data: data,
+            needsAuthorization: true
+        })
+    }
+
+    deleteVideo(data, onResponse){
+        return this._requester.call({
+            endpoint: new DeleteVideoEndpoint(),
             onResponse: onResponse,
             data: data,
             needsAuthorization: true

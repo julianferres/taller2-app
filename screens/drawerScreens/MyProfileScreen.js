@@ -85,6 +85,40 @@ class _MyProfileScreen extends React.Component {
         app.apiClient().getUserVideos({email: this.props.userEmail}, this.onResponse.bind(this))
     }
 
+    onResponseDelete(response){
+        if(response.ok){
+            response.json().then(json => console.log(json))
+            showMessage({
+                message: "Video deleted successfully.",
+                type: "success",
+                animationDuration: 500,
+                icon: "success"
+            });
+        } else {
+            response.json().then(json => console.log(json))
+            showMessage({
+                message: "There was a problem deleting the video.",
+                type: "danger",
+                animationDuration: 500,
+                icon: "danger"
+            });
+        }
+        this.resetState()
+        app.apiClient().getUserVideos({email: this.props.userEmail}, this.onResponse.bind(this))
+    }
+
+    resetState(){
+        this.setState({
+            isFetchingVideos: true,
+            thumbnails: [],
+            userVideos: undefined
+        })
+    }
+
+    deleteVideo(video){
+        app.apiClient().deleteVideo({user_email: this.props.userEmail, video_title: video.title}, this.onResponseDelete.bind(this))
+    }
+
     videosComponent() {
         if (this.state.isFetchingVideos) {
             return <View style={{flex: 1, alignItems: "center"}}>
@@ -113,7 +147,7 @@ class _MyProfileScreen extends React.Component {
                                 />
                             </View>
                             <TouchableOpacity style={{backgroundColor: "#00335c", flex: 1, justifyContent: "center"}}
-                                              onPress={() => console.log("HOLAAAA")}>
+                                              onPress={() => this.deleteVideo(video)}>
                                 <View style={{padding: widthResolution / 20}}>
                                     <MaterialIcons name="delete" size={widthResolution / 10} color="white"/>
                                 </View>
