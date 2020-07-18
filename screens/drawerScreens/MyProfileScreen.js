@@ -229,7 +229,6 @@ const mapStateToProps = (state) => {
     }
 }
 
-//TODO: Agregar delete on long press
 const MyProfileScreen = connect(mapStateToProps, null)(_MyProfileScreen);
 
 export default MyProfileScreen;
