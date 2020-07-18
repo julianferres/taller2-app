@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {
     ActivityIndicator, Dimensions, TextInput, ScrollView, StatusBar, Text,
-    TouchableOpacity, View, KeyboardAvoidingView, Keyboard, Image, AppRegistry
+    TouchableOpacity, View, KeyboardAvoidingView, Keyboard, Image
 } from 'react-native';
 import {connect} from "react-redux";
 import CustomHeader from "../../navigation/CustomHeader";
@@ -250,7 +250,7 @@ class _ConversationScreen extends React.Component{
                         />
                     </View>
                     <TouchableOpacity onPress={() => this.sendMessage()}>
-                        <Ionicons name="ios-send" size={sendIconSize} color="#00335c" />
+                        <Ionicons name="md-send" size={sendIconSize} color="#00335c" />
                     </TouchableOpacity>
                 </View>
             </KeyboardAvoidingView>
