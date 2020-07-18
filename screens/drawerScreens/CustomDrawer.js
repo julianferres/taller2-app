@@ -23,7 +23,7 @@ class CustomDrawer extends React.Component {
             type: "default",
             animationDuration: 200,
             icon: "info",
-            style: {height: 50}
+            style: {height: 50, backgroundColor: azulMarino}
         });
         this.props.navigation.navigate("Home")
     }
