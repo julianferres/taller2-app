@@ -1,10 +1,11 @@
 import * as React from 'react';
-import {ActivityIndicator, ScrollView, StatusBar, Text, View} from 'react-native';
+import {ActivityIndicator, ScrollView, StatusBar, Text, Vibration, View} from 'react-native';
 import CustomHeader from "../../../navigation/CustomHeader";
 import {app} from "../../../app/app";
 import VideoThumbnailDisplay from "../../general/VideoThumbnailDisplay";
 import * as VideoThumbnails from "expo-video-thumbnails";
-import {SET_PROFILE} from "../../../reducers/appReducer";
+import {Notifications} from "expo";
+import {USER_INFORMATION, SET_PROFILE} from "../../../reducers/appReducer";
 import {connect} from "react-redux";
 
 
@@ -17,6 +18,8 @@ class _HomeScreen extends React.Component {
             thumbnails: [],
 
         }
+
+        this.onResponseNotification = this.onResponseNotification.bind(this)
     }
 
     generateThumbnail = async (videoUri, videoIndex, totalVideos) => {
@@ -63,6 +66,41 @@ class _HomeScreen extends React.Component {
         }
     }
 
+    onResponseNotification(response, screenToGo){
+        if(response.ok){
+            response.json().then(json => {
+                this.props.passUserInfo({
+                    ownerName: json["fullname"],
+                    userPhoto: json["photo"],
+                    userEmail: json["email"]
+                })
+                this.props.navigation.navigate(screenToGo)
+            })
+        }
+    }
+
+    onResponseGetUserChat(response){
+        this.onResponseNotification(response, "Conversation")
+    }
+
+    onResponseGetUserFriendshipRequest(response){
+        this.onResponseNotification(response, "UserProfile")
+    }
+
+
+    manageNotification(notification){
+
+        if(notification.origin === "received"){
+            Vibration.vibrate()
+        } else if (notification.origin === "selected"){
+            if(notification.data.kind === "message"){
+                app.apiClient().getUser({email: notification.data.from}, this.onResponseGetUserChat.bind(this))
+            } else if(notification.data.kind === "friendship_request"){
+                app.apiClient().getUser({email: notification.data.from}, this.onResponseGetUserFriendshipRequest.bind(this))
+            }
+        }
+    }
+
     onResponseGet(response) {
         if (response.ok) {
             response.json().then(json => this.props.setProfile(json))
@@ -74,6 +112,7 @@ class _HomeScreen extends React.Component {
     componentDidMount() {
         app.apiClient().getProfile(this.onResponseGet.bind(this))
         app.apiClient().homeVideos(this.onResponse.bind(this))
+        Notifications.addListener(this.manageNotification.bind(this))
     }
 
     fetchingComponent() {
@@ -120,10 +159,11 @@ class _HomeScreen extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setProfile: (value) => dispatch({type: SET_PROFILE, payload: value})
+        passUserInfo: value => dispatch({type: USER_INFORMATION, payload: value}),
+        setProfile: value => dispatch({type: SET_PROFILE, payload: value})
     }
 }
 
-const HomeScreen = connect(null, mapDispatchToProps)(_HomeScreen);
+const HomeScreen = connect(null, mapDispatchToProps)(_HomeScreen)
 
 export default HomeScreen;

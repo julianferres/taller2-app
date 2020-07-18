@@ -9,6 +9,7 @@ import {app} from "../../app/app";
 import { Ionicons } from '@expo/vector-icons';
 import {showMessage} from "react-native-flash-message";
 import * as Font from "expo-font";
+import {Notifications} from "expo";
 
 let customFonts = {
     "OpenSans": require('../../assets/fonts/OpenSans-SemiBold.ttf'),
@@ -70,12 +71,19 @@ class _ConversationScreen extends React.Component{
 
     }
 
+    manageNotification(notification){
+        if(notification.origin === "received" && notification.data.kind === "message" && notification.data.from === this.props.userEmail){
+            this.getConversation()
+        }
+    }
+
     componentDidMount() {
         this._loadFontsAsync();
         this._unsuscribe = this.props.navigation.addListener("focus", () => {
             this.resetState()
             this.getConversation()
         })
+        Notifications.addListener(this.manageNotification.bind(this))
     }
 
     componentWillUnmount() {
@@ -176,7 +184,7 @@ class _ConversationScreen extends React.Component{
     }
 
     moreMessages(e){
-        if(e.nativeEvent.contentOffset.y === 0){
+        if(e.nativeEvent.contentOffset.y === 0 && this.state.pages > this.state.currentPage){
             this.getConversationNextPage()
         }
     }
