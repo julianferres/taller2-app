@@ -1,5 +1,15 @@
 import * as React from "react";
-import {Dimensions, Image, ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {
+    ActivityIndicator,
+    Dimensions,
+    Image,
+    ScrollView,
+    StatusBar,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
+} from "react-native";
 import CustomHeader from "../../../navigation/CustomHeader";
 import {Video} from "expo-av";
 import {connect} from "react-redux";
@@ -37,6 +47,7 @@ class _VideoVisualizationScreen extends React.Component {
             myDislike: false,
             amountLikes: this.props.videoInfo.reactions.like,
             amountDislikes: this.props.videoInfo.reactions.dislike,
+            isFetchingComments: true,
             comments: [],
             myComment: ""
         }
@@ -77,7 +88,7 @@ class _VideoVisualizationScreen extends React.Component {
         });
     }
 
-    sendComment(){
+    sendComment() {
         app.apiClient().sendComment({
             other_user_email: this.props.videoInfo.userEmail,
             video_title: this.props.videoInfo.title,
@@ -164,6 +175,7 @@ class _VideoVisualizationScreen extends React.Component {
         } else {
             response.json().then(json => console.log(json)).catch(e => console.log(e))
         }
+        this.setState({isFetchingComments: false})
     }
 
     onResponseSendComment(response) {
@@ -172,8 +184,19 @@ class _VideoVisualizationScreen extends React.Component {
         } else {
             response.json().then(json => console.log(json)).catch(e => console.log(e))
         }
+        this.resetState()
+        app.apiClient().getVideoComments({
+            other_user_email: this.props.videoInfo.userEmail,
+            video_title: this.props.videoInfo.title
+        }, this.onResponseGetComments.bind(this))
     }
 
+    resetState() {
+        this.setState({
+            isFetchingComments: true,
+            comments: []
+        })
+    }
 
     selectProfile() {
         this.props.userEmail === this.props.videoInfo.userEmail ?
@@ -181,41 +204,69 @@ class _VideoVisualizationScreen extends React.Component {
             this.props.navigation.navigate("UserProfile")
     }
 
+    fetchingCommentsComponent(){
+        return <View style={{flex: 1, alignItems: "center"}}>
+            <ActivityIndicator size={55} color={"#00335c"} style={{paddingTop: 30}}/>
+            <Text style={{fontSize: 16, fontFamily: "OpenSans", color: azulMarino, paddingTop: 10}}>Loading comments</Text>
+        </View>
+    }
+
     commentsComponent() {
         return (
-            <ScrollView>
-                {this.state.comments.map(comment => (
-                    <View style={{flex: 1, flexDirection: "row", padding: 10}}
-                          onPress={() => this.selectProfile()}>
-                        <Image source={{uri: `data:image/png;base64,${comment.photo}`}}
-                               style={{height: widthResolution / 10, width: widthResolution / 10, borderRadius: 100}}
-                        />
-                        <View style={{flex: 1, paddingLeft: 10, paddingRight: 10, justifyContent: "center"}}>
-                            <View style={{
-                                flex: 1,
-                                paddingLeft: 10,
-                                paddingRight: 10,
-                                justifyContent: "center",
-                                flexDirection: "row"
-                            }}>
-                                <Text style={{
-                                    fontFamily: "OpenSans",
-                                    fontSize: widthResolution / 25
-                                }}>{comment.fullname}</Text>
-                                <Text style={{
-                                    fontFamily: "OpenSans",
-                                    fontSize: widthResolution / 25
-                                }}>{comment.timestamp}</Text>
+            <ScrollView style={{flex: 1}}>
+                <Text style={{
+                    fontFamily: "OpenSans", fontSize: 16, color: azulMarino, paddingLeft: 10,
+                    paddingRight: 10, paddingBottom: 5
+                }}>Comments   {this.state.comments.length}</Text>
+                <TextInput
+                    style={[styles.commentBox, {flex: 2, height: 40, fontSize: 16, paddingLeft: 10, color: azulMarino}]}
+                    placeholder="Add a comment..."
+                    placeholderTextColor={Colors.tabIconDefault}
+                    onSubmitEditing={() => {
+                        this.sendComment()
+                    }}
+                    onChangeText={(text) => this.setState({myComment: text})}
+                    clearButtonMode="while-editing"
+                />
+                <ScrollView>
+                    {this.state.comments.map(comment => (
+                        <View style={{flex: 1, flexDirection: "row", padding: 10}}
+                              onPress={() => this.selectProfile()}>
+                            <Image source={{uri: `data:image/png;base64,${comment.photo}`}}
+                                   style={{
+                                       height: widthResolution / 10,
+                                       width: widthResolution / 10,
+                                       borderRadius: 100
+                                   }}
+                            />
+                            <View style={{flex: 1, paddingLeft: 10, paddingRight: 10, justifyContent: "center"}}>
+                                <View style={{
+                                    flex: 1,
+                                    paddingLeft: 10,
+                                    paddingRight: 10,
+                                    justifyContent: "center",
+                                    flexDirection: "row"
+                                }}>
+                                    <Text style={{
+                                        fontFamily: "OpenSans",
+                                        fontSize: widthResolution / 25
+                                    }}>{comment.fullname}</Text>
+                                    <Text style={{
+                                        fontFamily: "OpenSans",
+                                        fontSize: widthResolution / 25
+                                    }}>{comment.timestamp}</Text>
+                                </View>
                             </View>
                         </View>
-                    </View>
-                ))}
+                    ))}
+                </ScrollView>
             </ScrollView>
         )
     }
 
 
     render() {
+        let commentsSection = this.state.isFetchingComments ? this.fetchingCommentsComponent() : this.commentsComponent();
         return (
             <ScrollView style={{flex: 1, paddingTop: StatusBar.currentHeight}}>
                 <CustomHeader title="Watch" navigation={this.props.navigation}/>
@@ -290,21 +341,7 @@ class _VideoVisualizationScreen extends React.Component {
                           }}>{this.props.videoInfo.description}</Text>
                 </TouchableOpacity>
                 <HorizontalRule margin={10} padding={0}/>
-                <Text style={{
-                    fontFamily: "OpenSans", fontSize: 16, color: azulMarino, paddingLeft: 10,
-                    paddingRight: 10, paddingBottom: 5
-                }}>Comments {this.state.comments.length}</Text>
-                <TextInput
-                    style={[styles.commentBox, {flex: 2, height: 40, fontSize: 16, paddingLeft: 10, color: azulMarino}]}
-                    placeholder="Add a comment..."
-                    placeholderTextColor={Colors.tabIconDefault}
-                    onSubmitEditing={() => {
-                        this.sendComment()
-                    }}
-                    onChangeText={(text) => this.setState({myComment: text})}
-                    clearButtonMode="while-editing"
-                />
-                {this.commentsComponent()}
+                {commentsSection}
             </ScrollView>
         )
     }

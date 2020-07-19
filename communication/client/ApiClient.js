@@ -25,6 +25,7 @@ import {LastConversationsEndpoint} from "../endpoints/LastConversationsEndpoint"
 import {DeleteConversationEndpoint} from "../endpoints/DeleteConversationEndpoint";
 import {DeleteVideoEndpoint} from "../endpoints/DeleteVideoEndpoint";
 import {GetVideoCommentsEndpoint} from "../endpoints/GetVideoCommentsEndpoint";
+import {SendCommentEndpoint} from "../endpoints/SendCommentEndpoint";
 
 class ApiClient {
     constructor(requester) {
