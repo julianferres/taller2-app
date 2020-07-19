@@ -187,8 +187,6 @@ class _VideoVisualizationScreen extends React.Component {
     }
 
     onResponseSendComment(response) {
-        console.log(response.status)
-        console.log(response.body)
         if (response.ok) {
             showMessage({
                 message: "Comment successfully added.",
