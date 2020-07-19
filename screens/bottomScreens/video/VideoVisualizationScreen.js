@@ -19,6 +19,7 @@ import {showMessage} from "react-native-flash-message";
 import {app} from "../../../app/app";
 import {MODIFY_REACTION} from "../../../reducers/appReducer";
 import {styles} from "../../../constants/InitStackStylesheet"
+import Moment from 'moment';
 
 const azulMarino = "#00335c";
 const widthResolution = Dimensions.get("window").width
@@ -61,6 +62,11 @@ class _VideoVisualizationScreen extends React.Component {
             other_user_email: this.props.videoInfo.userEmail,
             video_title: this.props.videoInfo.title
         }, this.onResponseGetComments.bind(this))
+    }
+
+    formatTime(timestamp){
+        timestamp = timestamp.split('.')[0].replace("T"," ")
+        return Moment.utc(timestamp, "YYYY-MM-DD-HH:mm:SS").fromNow();
     }
 
     getMyReactions() {
@@ -168,7 +174,7 @@ class _VideoVisualizationScreen extends React.Component {
                                     "email": comment["user"]["email"],
                                     "photo": comment["user"]["photo"],
                                     "content": comment["comment"]["content"],
-                                    "timestamp": comment["comment"]["timestamp"],
+                                    "timestamp": this.formatTime(comment["comment"]["timestamp"])
                                 }
                             }
                         )
@@ -251,8 +257,12 @@ class _VideoVisualizationScreen extends React.Component {
                 >
                     <ScrollView>
                         {commentsToShow.map((comment, index) => (
-                            <View style={{flex: 1, flexDirection: "row", padding: 10, marginBottom: (index === commentsToShow.length-1 ? 60: 0)}}
-                                  onPress={() => this.selectProfile()}>
+                            <View style={{
+                                flex: 1,
+                                flexDirection: "row",
+                                padding: 10,
+                                marginBottom: (index === commentsToShow.length - 1 ? 60 : 0)
+                            }}>
                                 <Image source={{uri: `data:image/png;base64,${comment.photo}`}}
                                        style={{
                                            height: widthResolution / 10,
@@ -265,19 +275,20 @@ class _VideoVisualizationScreen extends React.Component {
                                         flex: 1,
                                         paddingLeft: 10,
                                         paddingRight: 10,
-                                        justifyContent: "center",
                                         flexDirection: "row"
                                     }}>
                                         <Text style={{
                                             fontFamily: "OpenSans",
-                                            fontSize: widthResolution / 25
+                                            fontSize: widthResolution / 25,
+                                            paddingRight:20
                                         }}>{comment.fullname}</Text>
                                         <Text style={{
-                                            fontFamily: "OpenSans",
+                                            fontFamily: "OpenSans-regular",
+                                            opacity: 0.5,
                                             fontSize: widthResolution / 25
                                         }}>{comment.timestamp}</Text>
                                     </View>
-                                    <Text>{comment.content}</Text>
+                                    <Text style={{paddingTop:5, paddingLeft:10}}>{comment.content}</Text>
                                 </View>
                             </View>
                         ))}
