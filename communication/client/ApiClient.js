@@ -260,6 +260,15 @@ class ApiClient {
             needsAuthorization: true
         })
     }
+
+    sendComment(data, onResponse){
+        return this._requester.call({
+            endpoint: new SendCommentEndpoint(),
+            onResponse: onResponse,
+            data: data,
+            needsAuthorization: true
+        })
+    }
 }
 
 export default ApiClient;

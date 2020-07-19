@@ -37,7 +37,8 @@ class _VideoVisualizationScreen extends React.Component {
             myDislike: false,
             amountLikes: this.props.videoInfo.reactions.like,
             amountDislikes: this.props.videoInfo.reactions.dislike,
-            comments: []
+            comments: [],
+            myComment: ""
         }
     }
 
@@ -76,26 +77,12 @@ class _VideoVisualizationScreen extends React.Component {
         });
     }
 
-    onResponseGetComments(response) {
-        if (response.ok) {
-            response.json().then(json => {
-                this.setState({
-                    comments:
-                        json.map(comment => {
-                                return {
-                                    "fullname": comment["user"]["fullname"],
-                                    "email": comment["user"]["email"],
-                                    "photo": comment["user"]["photo"],
-                                    "content": comment["comment"]["content"],
-                                    "timestamp": comment["comment"]["timestamp"],
-                                }
-                            }
-                        )
-                })
-            })
-        } else {
-            response.json().then(json => console.log(json)).catch(e => console.log(e))
-        }
+    sendComment(){
+        app.apiClient().sendComment({
+            other_user_email: this.props.videoInfo.userEmail,
+            video_title: this.props.videoInfo.title,
+            comment: this.state.myComment
+        }, this.onResponseSendComment.bind(this))
     }
 
     reaction(reactionType) {
@@ -156,6 +143,37 @@ class _VideoVisualizationScreen extends React.Component {
             this.alertReaction("Error loading your reactions")
         }
     }
+
+    onResponseGetComments(response) {
+        if (response.ok) {
+            response.json().then(json => {
+                this.setState({
+                    comments:
+                        json.map(comment => {
+                                return {
+                                    "fullname": comment["user"]["fullname"],
+                                    "email": comment["user"]["email"],
+                                    "photo": comment["user"]["photo"],
+                                    "content": comment["comment"]["content"],
+                                    "timestamp": comment["comment"]["timestamp"],
+                                }
+                            }
+                        )
+                })
+            })
+        } else {
+            response.json().then(json => console.log(json)).catch(e => console.log(e))
+        }
+    }
+
+    onResponseSendComment(response) {
+        if (response.ok) {
+
+        } else {
+            response.json().then(json => console.log(json)).catch(e => console.log(e))
+        }
+    }
+
 
     selectProfile() {
         this.props.userEmail === this.props.videoInfo.userEmail ?
@@ -278,14 +296,12 @@ class _VideoVisualizationScreen extends React.Component {
                 }}>Comments {this.state.comments.length}</Text>
                 <TextInput
                     style={[styles.commentBox, {flex: 2, height: 40, fontSize: 16, paddingLeft: 10, color: azulMarino}]}
-                    onFocus={() => this.setState({isHistory: true})}
-                    returnKeyType={'search'}
                     placeholder="Add a comment..."
                     placeholderTextColor={Colors.tabIconDefault}
                     onSubmitEditing={() => {
-                        this.handleSubmit()
+                        this.sendComment()
                     }}
-                    onChangeText={(text) => this.setState({searchTerm: text})}
+                    onChangeText={(text) => this.setState({myComment: text})}
                     clearButtonMode="while-editing"
                 />
                 {this.commentsComponent()}

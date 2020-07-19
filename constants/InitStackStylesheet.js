@@ -102,7 +102,7 @@ export const styles = StyleSheet.create({
         borderRadius: 4,
         borderColor: "#00335c",
         height: 40,
-        marginRight: 30,
+        marginRight: 10,
         marginLeft: 10,
         marginTop: 5,
         marginBottom: 10
