@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Dimensions, Image, ScrollView, StatusBar, Text, TouchableOpacity, View} from "react-native";
+import {Dimensions, Image, ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View} from "react-native";
 import CustomHeader from "../../../navigation/CustomHeader";
 import {Video} from "expo-av";
 import {connect} from "react-redux";
@@ -8,8 +8,11 @@ import Colors from "../../../constants/Colors";
 import {showMessage} from "react-native-flash-message";
 import {app} from "../../../app/app";
 import {MODIFY_REACTION} from "../../../reducers/appReducer";
+import {styles} from "../../../constants/InitStackStylesheet"
 
 const azulMarino = "#00335c";
+const widthResolution = Dimensions.get("window").width
+const heightResolution = widthResolution / 16 * 9;
 
 class HorizontalRule extends React.Component {
     render() {
@@ -33,12 +36,17 @@ class _VideoVisualizationScreen extends React.Component {
             myLike: false,
             myDislike: false,
             amountLikes: this.props.videoInfo.reactions.like,
-            amountDislikes: this.props.videoInfo.reactions.dislike
+            amountDislikes: this.props.videoInfo.reactions.dislike,
+            comments: []
         }
     }
 
     componentDidMount() {
         this.getMyReactions();
+        app.apiClient().getVideoComments({
+            other_user_email: this.props.videoInfo.userEmail,
+            video_title: this.props.videoInfo.title
+        }, this.onResponseGetComments.bind(this))
     }
 
     getMyReactions() {
@@ -66,6 +74,28 @@ class _VideoVisualizationScreen extends React.Component {
             icon: "warning",
             style: {height: 50}
         });
+    }
+
+    onResponseGetComments(response) {
+        if (response.ok) {
+            response.json().then(json => {
+                this.setState({
+                    comments:
+                        json.map(comment => {
+                                return {
+                                    "fullname": comment["user"]["fullname"],
+                                    "email": comment["user"]["email"],
+                                    "photo": comment["user"]["photo"],
+                                    "content": comment["comment"]["content"],
+                                    "timestamp": comment["comment"]["timestamp"],
+                                }
+                            }
+                        )
+                })
+            })
+        } else {
+            response.json().then(json => console.log(json)).catch(e => console.log(e))
+        }
     }
 
     reaction(reactionType) {
@@ -128,17 +158,47 @@ class _VideoVisualizationScreen extends React.Component {
     }
 
     selectProfile() {
-       this.props.userEmail === this.props.videoInfo.userEmail ?
+        this.props.userEmail === this.props.videoInfo.userEmail ?
             this.props.navigation.navigate("MyProfile") :
             this.props.navigation.navigate("UserProfile")
     }
 
-    render() {
-        const widthResolution = Dimensions.get("window").width
-        const heightResolution = widthResolution / 16 * 9;
-
+    commentsComponent() {
         return (
+            <ScrollView>
+                {this.state.comments.map(comment => (
+                    <View style={{flex: 1, flexDirection: "row", padding: 10}}
+                          onPress={() => this.selectProfile()}>
+                        <Image source={{uri: `data:image/png;base64,${comment.photo}`}}
+                               style={{height: widthResolution / 10, width: widthResolution / 10, borderRadius: 100}}
+                        />
+                        <View style={{flex: 1, paddingLeft: 10, paddingRight: 10, justifyContent: "center"}}>
+                            <View style={{
+                                flex: 1,
+                                paddingLeft: 10,
+                                paddingRight: 10,
+                                justifyContent: "center",
+                                flexDirection: "row"
+                            }}>
+                                <Text style={{
+                                    fontFamily: "OpenSans",
+                                    fontSize: widthResolution / 25
+                                }}>{comment.fullname}</Text>
+                                <Text style={{
+                                    fontFamily: "OpenSans",
+                                    fontSize: widthResolution / 25
+                                }}>{comment.timestamp}</Text>
+                            </View>
+                        </View>
+                    </View>
+                ))}
+            </ScrollView>
+        )
+    }
 
+
+    render() {
+        return (
             <ScrollView style={{flex: 1, paddingTop: StatusBar.currentHeight}}>
                 <CustomHeader title="Watch" navigation={this.props.navigation}/>
                 <Video
@@ -211,6 +271,24 @@ class _VideoVisualizationScreen extends React.Component {
                               paddingRight: 10
                           }}>{this.props.videoInfo.description}</Text>
                 </TouchableOpacity>
+                <HorizontalRule margin={10} padding={0}/>
+                <Text style={{
+                    fontFamily: "OpenSans", fontSize: 16, color: azulMarino, paddingLeft: 10,
+                    paddingRight: 10, paddingBottom: 5
+                }}>Comments {this.state.comments.length}</Text>
+                <TextInput
+                    style={[styles.commentBox, {flex: 2, height: 40, fontSize: 16, paddingLeft: 10, color: azulMarino}]}
+                    onFocus={() => this.setState({isHistory: true})}
+                    returnKeyType={'search'}
+                    placeholder="Add a comment..."
+                    placeholderTextColor={Colors.tabIconDefault}
+                    onSubmitEditing={() => {
+                        this.handleSubmit()
+                    }}
+                    onChangeText={(text) => this.setState({searchTerm: text})}
+                    clearButtonMode="while-editing"
+                />
+                {this.commentsComponent()}
             </ScrollView>
         )
     }
