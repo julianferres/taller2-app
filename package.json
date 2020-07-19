@@ -22,6 +22,7 @@
     "expo": "~37.0.9",
     "expo-asset": "~8.1.0",
     "expo-av": "~8.1.0",
+    "expo-blur": "~8.1.0",
     "expo-constants": "~9.0.0",
     "expo-font": "~8.1.0",
     "expo-image-picker": "~8.1.0",
@@ -37,14 +38,14 @@
     "react-native-flash-message": "^0.1.15",
     "react-native-gesture-handler": "~1.6.0",
     "react-native-indicators": "^0.17.0",
+    "react-native-lightbox": "^0.8.1",
     "react-native-reanimated": "~1.7.0",
     "react-native-safe-area-context": "0.7.3",
     "react-native-screens": "~2.2.0",
     "react-native-web": "~0.11.7",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
-    "shortid": "^2.2.15",
-    "expo-blur": "~8.1.0"
+    "shortid": "^2.2.15"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

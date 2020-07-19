@@ -7,6 +7,8 @@ import {showMessage} from "react-native-flash-message";
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import * as VideoThumbnails from "expo-video-thumbnails";
 import VideoThumbnailDisplay from "./VideoThumbnailDisplay";
+import {styles} from "../../constants/InitStackStylesheet";
+import Lightbox from "react-native-lightbox";
 
 const azulMarino = "#00335c";
 
@@ -263,9 +265,22 @@ class _UserProfileScreen extends React.Component {
                         borderBottomWidth: 0.5,
                         borderBottomColor: "#D2D2D2"
                     }}>
+                        <Lightbox style={{flex: 1}}
+                                  activeProps={{
+                                      resizeMode: 'contain',
+                                      flex: 1,
+                                      width: null
+                                  }}
+                                  renderHeader={close => (
+                                      <TouchableOpacity onPress={close}>
+                                          <Text style={styles.closeButton}>Close</Text>
+                                      </TouchableOpacity>
+                                  )}
+                        >
                         <Image source={{uri: `data:image/png;base64,${this.props.userPhoto}`}}
                                style={{height: 200, width: 200}}/>
-                        <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+                        </Lightbox>
+                        <View style={{flex: 1, justifyContent: "center", alignItems: "center", paddingLeft: 90}}>
                             {this.friendComponent()}
                         </View>
                     </View>

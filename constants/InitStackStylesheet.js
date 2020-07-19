@@ -84,6 +84,17 @@ export const styles = StyleSheet.create({
         marginRight: 12,
         marginLeft: 12,
         marginTop: 3
+    },
+    closeButton: {
+        color: 'white',
+        borderWidth: 1,
+        borderColor: 'white',
+        padding: 8,
+        borderRadius: 3,
+        textAlign: 'center',
+        margin: 10,
+        alignSelf: 'flex-start',
+        fontFamily: 'OpenSans-regular'
     }
 
 });

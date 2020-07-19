@@ -127,7 +127,8 @@ class _ChatScreen extends React.Component{
                         return (
                             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} key={index} snapToInterval={widthResolution}>
                                 <View style={{width: widthResolution}}>
-                                    <TouchableOpacity style={{flex: 1, flexDirection: "row", padding: widthResolution / 22, borderBottomWidth: 2, borderBottomColor: "#00335c"}}
+                                    <TouchableOpacity style={{flex: 1, flexDirection: "row", padding: widthResolution / 22, borderBottomColor: "#D2D2D2",
+                                        borderBottomWidth: 0.5,}}
                                                       onPress={() => this.goToConversation(conversation.user)}
                                                       key={index}>
                                         <Image source={{uri:`data:image/png;base64,${conversation.user.photo}`}}
