@@ -95,6 +95,17 @@ export const styles = StyleSheet.create({
         margin: 10,
         alignSelf: 'flex-start',
         fontFamily: 'OpenSans-regular'
-    }
+    },
+    commentBox: {
+        flex: 3.5,
+        borderWidth: 0.15,
+        borderRadius: 4,
+        borderColor: "#00335c",
+        height: 40,
+        marginRight: 10,
+        marginLeft: 10,
+        marginTop: 5,
+        marginBottom: 10
+    },
 
 });

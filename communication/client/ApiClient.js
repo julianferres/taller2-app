@@ -24,6 +24,8 @@ import {GetUserEndpoint} from "../endpoints/GetUserEndpoint";
 import {LastConversationsEndpoint} from "../endpoints/LastConversationsEndpoint";
 import {DeleteConversationEndpoint} from "../endpoints/DeleteConversationEndpoint";
 import {DeleteVideoEndpoint} from "../endpoints/DeleteVideoEndpoint";
+import {GetVideoCommentsEndpoint} from "../endpoints/GetVideoCommentsEndpoint";
+import {SendCommentEndpoint} from "../endpoints/SendCommentEndpoint";
 
 class ApiClient {
     constructor(requester) {
@@ -245,6 +247,24 @@ class ApiClient {
     deleteVideo(data, onResponse){
         return this._requester.call({
             endpoint: new DeleteVideoEndpoint(),
+            onResponse: onResponse,
+            data: data,
+            needsAuthorization: true
+        })
+    }
+
+    getVideoComments(data, onResponse){
+        return this._requester.call({
+            endpoint: new GetVideoCommentsEndpoint(),
+            onResponse: onResponse,
+            data: data,
+            needsAuthorization: true
+        })
+    }
+
+    sendComment(data, onResponse){
+        return this._requester.call({
+            endpoint: new SendCommentEndpoint(),
             onResponse: onResponse,
             data: data,
             needsAuthorization: true
