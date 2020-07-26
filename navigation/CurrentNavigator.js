@@ -33,6 +33,3 @@ const CurrentNavigator = connect(mapStateToProps)(Navigator);
 
 export default CurrentNavigator;
 
-/*
-return this.props.loggedIn ? <SideBarNavigator /> : <AuthStack />;
-  );*/
