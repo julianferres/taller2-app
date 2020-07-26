@@ -16,7 +16,6 @@ class _HomeScreen extends React.Component {
             isFetching: true,
             videos: [],
             thumbnails: [],
-
         }
 
         this.onResponseNotification = this.onResponseNotification.bind(this)
@@ -109,10 +108,25 @@ class _HomeScreen extends React.Component {
         }
     }
 
+    resetState(){
+        this.setState({
+                isFetching: true,
+                videos: [],
+                thumbnails: [],
+            }
+        )
+    }
     componentDidMount() {
-        app.apiClient().getProfile(this.onResponseGet.bind(this))
-        app.apiClient().homeVideos(this.onResponse.bind(this))
+        this._unsuscribe = this.props.navigation.addListener("focus", () => {
+            this.resetState()
+            app.apiClient().getProfile(this.onResponseGet.bind(this))
+            app.apiClient().homeVideos(this.onResponse.bind(this))
+        })
         Notifications.addListener(this.manageNotification.bind(this))
+    }
+
+    componentWillUnmount() {
+        this._unsuscribe()
     }
 
     fetchingComponent() {
