@@ -97,6 +97,10 @@ class _VideoVisualizationScreen extends React.Component {
     }
 
     sendComment() {
+        if(this.state.myComment === ""){
+            this.alertReaction("Empty comment");
+            return
+        }
         app.apiClient().sendComment({
             target_email: this.props.videoInfo.userEmail,
             video_title: this.props.videoInfo.title,
@@ -299,6 +303,7 @@ class _VideoVisualizationScreen extends React.Component {
     render() {
         let commentsSection = this.state.isFetchingComments ? this.fetchingCommentsComponent() : this.commentsComponent();
         return (
+
             <ScrollView style={{flex: 1, paddingTop: StatusBar.currentHeight}}
             >
                 <CustomHeader title="Watch" navigation={this.props.navigation}/>
