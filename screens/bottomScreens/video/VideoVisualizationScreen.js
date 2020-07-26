@@ -64,8 +64,8 @@ class _VideoVisualizationScreen extends React.Component {
         }, this.onResponseGetComments.bind(this))
     }
 
-    formatTime(timestamp){
-        timestamp = timestamp.split('.')[0].replace("T"," ")
+    formatTime(timestamp) {
+        timestamp = timestamp.split('.')[0].replace("T", " ")
         return Moment.utc(timestamp, "YYYY-MM-DD-HH:mm:SS").fromNow();
     }
 
@@ -97,6 +97,10 @@ class _VideoVisualizationScreen extends React.Component {
     }
 
     sendComment() {
+        if (this.state.myComment === "") {
+            this.alertReaction("Empty comment");
+            return
+        }
         app.apiClient().sendComment({
             target_email: this.props.videoInfo.userEmail,
             video_title: this.props.videoInfo.title,
@@ -254,12 +258,11 @@ class _VideoVisualizationScreen extends React.Component {
                     onPress={() => this.setState({isShowingCompleteComments: !this.state.isShowingCompleteComments})}
                 >
                     <ScrollView>
-                        {commentsToShow.map((comment, index) => (
+                        {commentsToShow.map((comment) => (
                             <View style={{
                                 flex: 1,
                                 flexDirection: "row",
                                 padding: 10,
-                                marginBottom: (index === commentsToShow.length - 1 ? 60 : 0)
                             }}>
                                 <Image source={{uri: `data:image/png;base64,${comment.photo}`}}
                                        style={{
@@ -278,7 +281,7 @@ class _VideoVisualizationScreen extends React.Component {
                                         <Text style={{
                                             fontFamily: "OpenSans",
                                             fontSize: widthResolution / 25,
-                                            paddingRight:20
+                                            paddingRight: 20
                                         }}>{comment.fullname}</Text>
                                         <Text style={{
                                             fontFamily: "OpenSans-regular",
@@ -286,7 +289,7 @@ class _VideoVisualizationScreen extends React.Component {
                                             fontSize: widthResolution / 25
                                         }}>{comment.timestamp}</Text>
                                     </View>
-                                    <Text style={{paddingTop:5, paddingLeft:10}}>{comment.content}</Text>
+                                    <Text style={{paddingTop: 5, paddingLeft: 10}}>{comment.content}</Text>
                                 </View>
                             </View>
                         ))}
@@ -299,82 +302,86 @@ class _VideoVisualizationScreen extends React.Component {
     render() {
         let commentsSection = this.state.isFetchingComments ? this.fetchingCommentsComponent() : this.commentsComponent();
         return (
-            <ScrollView style={{flex: 1, paddingTop: StatusBar.currentHeight}}
-            >
-                <CustomHeader title="Watch" navigation={this.props.navigation}/>
-                <Video
-                    source={{uri: this.props.videoInfo.uri}}
-                    resizeMode={Video.RESIZE_MODE_CONTAIN}
-                    rate={1.0}
-                    isMuted={false}
-                    isLooping
-                    shouldPlay={false}
-                    useNativeControls
-                    style={{width: widthResolution, height: heightResolution, backgroundColor: "black"}}
-                />
+            <View style={{flex: 1, paddingTop: StatusBar.currentHeight}}>
 
-                <Text style={{
-                    fontSize: 25,
-                    fontWeight: "bold",
-                    paddingLeft: 10,
-                    paddingRight: 10,
-                    fontFamily: "OpenSans",
-                    color: azulMarino
-                }}>{this.props.videoInfo.title}</Text>
-                <HorizontalRule margin={0} padding={10}/>
-                <View style={{flexDirection: "row", alignItems: "flex-start", paddingLeft: 10}}>
-                    <TouchableOpacity style={{padding: 10, marginLeft: 5, alignItems: "center"}}
-                                      onPress={() => {
-                                          this.reaction("like")
-                                          this.setState({myLike: !this.state.myLike})
-                                      }}>
-                        <Ionicons size={30} name="md-thumbs-up"
-                                  style={{color: this.state.myLike ? azulMarino : Colors.tabIconDefault}}/>
-                        <Text style={{
-                            marginTop: -4,
-                            color: this.state.myLike ? azulMarino : Colors.tabIconDefault
-                        }}>{this.props.videoInfo.reactions.like}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{padding: 10, marginLeft: 10, alignItems: "center"}}
-                                      onPress={() => {
-                                          this.reaction("dislike")
-                                          this.setState({myDislike: !this.state.myDislike})
-                                      }}>
-                        <Ionicons size={30} name="md-thumbs-down"
-                                  style={{color: this.state.myDislike ? azulMarino : Colors.tabIconDefault}}/>
-                        <Text style={{
-                            marginTop: -4,
-                            color: this.state.myDislike ? azulMarino : Colors.tabIconDefault
-                        }}
-                        >{this.props.videoInfo.reactions.dislike}</Text>
-                    </TouchableOpacity>
-                </View>
-                <HorizontalRule margin={0} padding={0}/>
-                <TouchableOpacity style={{flex: 1, flexDirection: "row", padding: 10}}
-                                  onPress={() => this.selectProfile()}>
-                    <Image source={{uri: `data:image/png;base64,${this.props.videoInfo.userPhoto}`}}
-                           style={{height: widthResolution / 10, width: widthResolution / 10, borderRadius: 100}}
+                <CustomHeader title="Watch" navigation={this.props.navigation}/>
+
+                <ScrollView style={{flex: 1}}
+                >
+                    <Video
+                        source={{uri: this.props.videoInfo.uri}}
+                        resizeMode={Video.RESIZE_MODE_CONTAIN}
+                        rate={1.0}
+                        isMuted={false}
+                        isLooping
+                        shouldPlay={false}
+                        useNativeControls
+                        style={{width: widthResolution, height: heightResolution, backgroundColor: "black"}}
                     />
-                    <View style={{flex: 1, paddingLeft: 10, paddingRight: 10, justifyContent: "center"}}>
-                        <Text style={{
-                            fontFamily: "OpenSans",
-                            fontSize: widthResolution / 25
-                        }}>{this.props.videoInfo.ownerName}</Text>
+
+                    <Text style={{
+                        fontSize: 25,
+                        fontWeight: "bold",
+                        paddingLeft: 10,
+                        paddingRight: 10,
+                        fontFamily: "OpenSans",
+                        color: azulMarino
+                    }}>{this.props.videoInfo.title}</Text>
+                    <HorizontalRule margin={0} padding={10}/>
+                    <View style={{flexDirection: "row", alignItems: "flex-start", paddingLeft: 10}}>
+                        <TouchableOpacity style={{padding: 10, marginLeft: 5, alignItems: "center"}}
+                                          onPress={() => {
+                                              this.reaction("like")
+                                              this.setState({myLike: !this.state.myLike})
+                                          }}>
+                            <Ionicons size={30} name="md-thumbs-up"
+                                      style={{color: this.state.myLike ? azulMarino : Colors.tabIconDefault}}/>
+                            <Text style={{
+                                marginTop: -4,
+                                color: this.state.myLike ? azulMarino : Colors.tabIconDefault
+                            }}>{this.props.videoInfo.reactions.like}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{padding: 10, marginLeft: 10, alignItems: "center"}}
+                                          onPress={() => {
+                                              this.reaction("dislike")
+                                              this.setState({myDislike: !this.state.myDislike})
+                                          }}>
+                            <Ionicons size={30} name="md-thumbs-down"
+                                      style={{color: this.state.myDislike ? azulMarino : Colors.tabIconDefault}}/>
+                            <Text style={{
+                                marginTop: -4,
+                                color: this.state.myDislike ? azulMarino : Colors.tabIconDefault
+                            }}
+                            >{this.props.videoInfo.reactions.dislike}</Text>
+                        </TouchableOpacity>
                     </View>
-                </TouchableOpacity>
-                <HorizontalRule margin={10} padding={0}/>
-                <TouchableOpacity
-                    onPress={() => this.setState({isShowingCompleteDescription: !this.state.isShowingCompleteDescription})}>
-                    <Text numberOfLines={this.state.isShowingCompleteDescription ? 1000 : 5}
-                          style={{
-                              height: this.state.isShowingCompleteDescription ? "auto" : 100, paddingLeft: 10,
-                              fontFamily: "OpenSans-regular", fontSize: 13, color: azulMarino,
-                              paddingRight: 10
-                          }}>{this.props.videoInfo.description}</Text>
-                </TouchableOpacity>
-                <HorizontalRule margin={10} padding={0}/>
-                {commentsSection}
-            </ScrollView>
+                    <HorizontalRule margin={0} padding={0}/>
+                    <TouchableOpacity style={{flex: 1, flexDirection: "row", padding: 10}}
+                                      onPress={() => this.selectProfile()}>
+                        <Image source={{uri: `data:image/png;base64,${this.props.videoInfo.userPhoto}`}}
+                               style={{height: widthResolution / 10, width: widthResolution / 10, borderRadius: 100}}
+                        />
+                        <View style={{flex: 1, paddingLeft: 10, paddingRight: 10, justifyContent: "center"}}>
+                            <Text style={{
+                                fontFamily: "OpenSans",
+                                fontSize: widthResolution / 25
+                            }}>{this.props.videoInfo.ownerName}</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <HorizontalRule margin={10} padding={0}/>
+                    <TouchableOpacity
+                        onPress={() => this.setState({isShowingCompleteDescription: !this.state.isShowingCompleteDescription})}>
+                        <Text numberOfLines={this.state.isShowingCompleteDescription ? 1000 : 5}
+                              style={{
+                                  height: this.state.isShowingCompleteDescription ? "auto" : 100, paddingLeft: 10,
+                                  fontFamily: "OpenSans-regular", fontSize: 13, color: azulMarino,
+                                  paddingRight: 10
+                              }}>{this.props.videoInfo.description}</Text>
+                    </TouchableOpacity>
+                    <HorizontalRule margin={10} padding={0}/>
+                    {commentsSection}
+                </ScrollView>
+            </View>
         )
     }
 }
