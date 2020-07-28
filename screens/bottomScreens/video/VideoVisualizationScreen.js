@@ -17,7 +17,6 @@ import {Ionicons} from "@expo/vector-icons";
 import Colors from "../../../constants/Colors";
 import {showMessage} from "react-native-flash-message";
 import {app} from "../../../app/app";
-import {MODIFY_REACTION} from "../../../reducers/appReducer";
 import {styles} from "../../../constants/InitStackStylesheet"
 import Moment from 'moment';
 
@@ -118,33 +117,34 @@ class _VideoVisualizationScreen extends React.Component {
 
         if (reactionType === "like" && !this.state.myLike) {
             app.apiClient().giveReaction(body, this.onResponse.bind(this))
-            this.props.modifyReaction({
-                newLike: this.state.amountLikes + 1,
-                newDislike: this.state.amountDislikes + (this.state.myDislike ? -1 : 0)
+            this.setState({
+                amountLikes: this.state.amountLikes + 1,
+                amountDislikes: this.state.amountDislikes + (this.state.myDislike ? -1 : 0)
             })
             this.setState({myDislike: false})
             reactionMessage = 'Your like has been added'
         }
-        if (reactionType === "like" && this.state.myLike) {
+        else if (reactionType === "like" && this.state.myLike) {
             app.apiClient().removeReaction(body, this.onResponse.bind(this))
-            this.props.modifyReaction({newLike: this.state.amountLikes - 1, newDislike: this.state.amountDislikes})
+            this.setState({amountLikes: this.state.amountLikes - 1})
             reactionMessage = 'Your like has been removed'
 
         }
-        if (reactionType === "dislike" && !this.state.myDislike) {
+        else if (reactionType === "dislike" && !this.state.myDislike) {
             app.apiClient().giveReaction(body, this.onResponse.bind(this))
-            this.props.modifyReaction({
-                newLike: this.state.amountLikes + (this.state.myLike ? -1 : 0),
-                newDislike: this.state.amountDislikes + 1
+            this.setState({
+                amountLikes: this.state.amountLikes + (this.state.myLike ? -1 : 0),
+                amountDislikes: this.state.amountDislikes + 1
             })
             this.setState({myLike: false})
             reactionMessage = 'Your dislike has been added'
         }
-        if (reactionType === "dislike" && this.state.myDislike) {
+        else if (reactionType === "dislike" && this.state.myDislike) {
             app.apiClient().removeReaction(body, this.onResponse.bind(this))
-            this.props.modifyReaction({newLike: this.state.amountLikes, newDislike: this.state.amountDislikes - 1})
+            this.setState({amountLikes: this.state.amountLikes, amountDislikes: this.state.amountDislikes - 1})
             reactionMessage = 'Your dislike has been removed'
         }
+
         this.showReactionMessage(reactionMessage);
 
     }
@@ -339,7 +339,7 @@ class _VideoVisualizationScreen extends React.Component {
                             <Text style={{
                                 marginTop: -4,
                                 color: this.state.myLike ? azulMarino : Colors.tabIconDefault
-                            }}>{this.props.videoInfo.reactions.like}</Text>
+                            }}>{this.state.amountLikes}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{padding: 10, marginLeft: 10, alignItems: "center"}}
                                           onPress={() => {
@@ -352,7 +352,7 @@ class _VideoVisualizationScreen extends React.Component {
                                 marginTop: -4,
                                 color: this.state.myDislike ? azulMarino : Colors.tabIconDefault
                             }}
-                            >{this.props.videoInfo.reactions.dislike}</Text>
+                            >{this.state.amountDislikes}</Text>
                         </TouchableOpacity>
                     </View>
                     <HorizontalRule margin={0} padding={0}/>
@@ -393,12 +393,6 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        modifyReaction: value => dispatch({type: MODIFY_REACTION, payload: value})
-    }
-}
-
-const VideoVisualizationScreen = connect(mapStateToProps, mapDispatchToProps)(_VideoVisualizationScreen)
+const VideoVisualizationScreen = connect(mapStateToProps, null)(_VideoVisualizationScreen)
 
 export default VideoVisualizationScreen;
