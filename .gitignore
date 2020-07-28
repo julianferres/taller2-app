@@ -1,3 +1,5 @@
 .idea/
 .expo/
 node_modules/
+google-services.json
+

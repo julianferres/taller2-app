@@ -103,7 +103,6 @@ class _ConversationScreen extends React.Component{
         if(response.ok){
             this.getConversation()
         } else {
-            response.json().then(json => console.log(json))
             showMessage({
                 message: "Error sending message. Please try again.",
                 type: "danger",

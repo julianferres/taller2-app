@@ -11,7 +11,6 @@ class RemoteRequester extends Requester {
         const request = this._buildRequest(endpoint, data, needsAuthorization);
         let url = endpoint.url();
         if ((endpoint.method() === 'GET' || endpoint.method() === 'DELETE') && data) {
-            console.log(data);
             url += "?" + this._dataToQueryString(data);
         }
 
