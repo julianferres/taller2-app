@@ -5,6 +5,7 @@ import { showMessage } from "react-native-flash-message";
 import {app} from "../../app/app";
 import {ADD_TOKEN, USER_EMAIL, WAITING_RESPONSE} from "../../reducers/appReducer";
 import {connect} from "react-redux";
+import {AntDesign} from "@expo/vector-icons";
 
 class Login extends React.Component {
   constructor(props) {
@@ -69,43 +70,49 @@ class Login extends React.Component {
   }
 
   render() {
-    return (
-      <View style={styles.container}>
-         <Text style={styles.logo}>Chotuve App</Text>
-        <View style={styles.inputView}>
-          <TextInput
-            style={styles.inputText}
-            placeholder="Email"
-            placeholderTextColor="#cad6eb"
-            onChangeText={(text) => this.setState({ email: text })}
-          />
-        </View>
-        <View style={styles.inputView}>
-          <TextInput
-            style={styles.inputText}
-            secureTextEntry={true}
-            placeholder="Password"
-            placeholderTextColor="#cad6eb"
-            onChangeText={(text) => this.setState({ password: text })}
-          />
-        </View>
-        <TouchableOpacity  onPress={() => this.props.navigation.navigate("Forgot password")}>
-          <Text style={styles.forgot}>Forgot Password?</Text>
-        </TouchableOpacity>
+      return (
+          <View style={styles.container}>
+              <View style={{flexDirection: "row", alignItems: "center", marginBottom: 50}}>
+                  <AntDesign name="youtube" size={50} color="#00335c" />
+                  <Text style={{justifyContent: "center",
+                      fontWeight: "bold",
+                      fontSize: 45,
+                      color: "#00335c"}}> Chotuve </Text>
+              </View>
+              <View style={styles.inputView}>
+                  <TextInput
+                      style={styles.inputText}
+                      placeholder="Email"
+                      placeholderTextColor="#cad6eb"
+                      onChangeText={(text) => this.setState({ email: text })}
+                  />
+              </View>
+              <View style={styles.inputView}>
+                  <TextInput
+                      style={styles.inputText}
+                      secureTextEntry={true}
+                      placeholder="Password"
+                      placeholderTextColor="#cad6eb"
+                      onChangeText={(text) => this.setState({ password: text })}
+                  />
+              </View>
+              <TouchableOpacity  onPress={() => this.props.navigation.navigate("Forgot password")}>
+                  <Text style={styles.forgot}>Forgot Password?</Text>
+              </TouchableOpacity>
 
-        <ActivityIndicator style={styles.activityIndicator} color={"#00335c"} size={55} animating={this.props.showWaitingResponse} />
+              <ActivityIndicator style={styles.activityIndicator} color={"#00335c"} size={55} animating={this.props.showWaitingResponse} />
 
-          <TouchableOpacity style={styles.loginBtn} onPress={() => {
-              Keyboard.dismiss()
-              this.handleSubmit()
-          }}>
-            <Text style={styles.loginText}>LOGIN</Text>
-          </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.props.navigation.navigate("Sign up")}>
-          <Text style={styles.loginText}>Signup</Text>
-        </TouchableOpacity>
-      </View>
-    );
+              <TouchableOpacity style={styles.loginBtn} onPress={() => {
+                  Keyboard.dismiss()
+                  this.handleSubmit()
+              }}>
+                  <Text style={styles.loginText}>LOGIN</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.props.navigation.navigate("Sign up")}>
+                  <Text style={styles.loginText}>Signup</Text>
+              </TouchableOpacity>
+          </View>
+      );
   }
 }
 
