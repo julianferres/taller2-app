@@ -119,7 +119,7 @@ class SignUp extends React.Component {
                 <KeyboardAvoidingView
                     enabled={false}
                     style={styles.container}
-                    behavior={Platform.OS == "ios" ? "padding" : "height"}
+                    behavior={Platform.OS === "ios" ? "padding" : "height"}
                 >
                     <Text style={styles.logo}>Sign up</Text>
                     <View style={styles.inputView}>
