@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:613294928522:android:c84b17105bf881e48ff373",
+        "mobilesdk_app_id": "1:613294928522:android:43dfa2835df312108ff373",
         "android_client_info": {
-          "package_name": "com.taller2_grupo6.chotuve_app"
+          "package_name": "com.chotuve.chotuve"
         }
       },
       "oauth_client": [

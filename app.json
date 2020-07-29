@@ -26,7 +26,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.taller2_grupo6.chotuve_app",
+      "package": "com.chotuve.chotuve",
       "googleServicesFile": "./google-services.json"
     },
     "web": {
