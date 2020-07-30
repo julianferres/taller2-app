@@ -7,6 +7,7 @@ import * as VideoThumbnails from "expo-video-thumbnails";
 import {Notifications} from "expo";
 import {USER_INFORMATION, SET_PROFILE} from "../../../reducers/appReducer";
 import {connect} from "react-redux";
+import {showMessage} from "react-native-flash-message";
 
 
 class _HomeScreen extends React.Component {
@@ -18,6 +19,7 @@ class _HomeScreen extends React.Component {
             thumbnails: [],
         }
 
+        this.alertProfile = this.alertProfile.bind(this)
         this.onResponseNotification = this.onResponseNotification.bind(this)
     }
 
@@ -127,6 +129,15 @@ class _HomeScreen extends React.Component {
 
     componentWillUnmount() {
         this._unsuscribe()
+    }
+
+    alertProfile(errorMessage) {
+        showMessage({
+            message: errorMessage,
+            type: "danger",
+            icon: "danger",
+            animationDuration: 500
+        });
     }
 
     fetchingComponent() {

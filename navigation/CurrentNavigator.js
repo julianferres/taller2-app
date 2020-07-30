@@ -26,7 +26,7 @@ class Navigator extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    return { loggedIn: state.appReducer.loggedIn };
+    return { loggedIn: state.appReducer.token !== "" };
 };
 
 const CurrentNavigator = connect(mapStateToProps)(Navigator);

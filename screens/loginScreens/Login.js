@@ -13,7 +13,7 @@ import {
 import {styles} from "../../constants/InitStackStylesheet";
 import {showMessage} from "react-native-flash-message";
 import {app} from "../../app/app";
-import {ADD_TOKEN, USER_EMAIL, WAITING_RESPONSE} from "../../reducers/appReducer";
+import {ADD_TOKEN, WAITING_RESPONSE} from "../../reducers/appReducer";
 import {connect} from "react-redux";
 import {AntDesign} from "@expo/vector-icons";
 
@@ -59,8 +59,7 @@ class Login extends React.Component {
         if (response.ok) {
             response.json()
                 .then(json => {
-                    this.props.setUserEmail(this.state.email)
-                    this.props.setToken(json.login_token)
+                    this.props.setToken(json.login_token, this.state.email)
                 })
         } else {
             response.json()
@@ -88,7 +87,19 @@ class Login extends React.Component {
         app.apiClient().login(data, this.onResponse.bind(this))
     }
 
+    fetchingComponent(){
+        return (
+            <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+                <Text style={{color:"#00335c", paddingBottom:25, fontSize: 25}}>Loading ...</Text>
+                <ActivityIndicator color={"#00335c"} size={55} />
+            </View>
+        )
+    }
+
     render() {
+        if(this.props.isFetchingCredentials){
+            return this.fetchingComponent()
+        }
         return (
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <KeyboardAvoidingView
@@ -147,15 +158,15 @@ class Login extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        showWaitingResponse: state.appReducer.waitingResponse
+        showWaitingResponse: state.appReducer.waitingResponse,
+        isFetchingCredentials: state.appReducer.isFetchingCredentials
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         setWaitingResponse: value => dispatch({type: WAITING_RESPONSE, payload: value}),
-        setToken: token => dispatch({type: ADD_TOKEN, payload: token}),
-        setUserEmail: email => dispatch({type: USER_EMAIL, payload: email})
+        setToken: (token, email) => dispatch({type: ADD_TOKEN, payload: {token: token, userEmail: email}}),
     }
 }
 
