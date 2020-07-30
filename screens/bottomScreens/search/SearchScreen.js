@@ -99,7 +99,7 @@ class _SearchScreen extends React.Component {
             this.alertSearch("Search is Empty");
             return;
         }
-        this.setState({isSearching: true, isHistory: false})
+        this.setState({isSearching: true, isHistory: false, thumbnails: []})
         app.apiClient().searchVideos({query: this.state.searchTerm}, this.onResponse.bind(this))
         this.props.addSearchToHistory(this.state.searchTerm)
         this._storeHistoryBis(this.state.searchTerm, this.props.searchHistory)
@@ -120,7 +120,7 @@ class _SearchScreen extends React.Component {
             this.alertSearch("Search is Empty");
             return;
         }
-        this.setState({isSearching: true, isHistory: false})
+        this.setState({isSearching: true, isHistory: false, thumbnails: []})
         app.apiClient().searchVideos({query: historySearch}, this.onResponse.bind(this))
         this.props.addSearchToHistory(historySearch)
         this._storeHistoryBis(historySearch, this.props.searchHistory)
