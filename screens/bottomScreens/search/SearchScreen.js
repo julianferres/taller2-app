@@ -49,21 +49,17 @@ class _SearchScreen extends React.Component {
 
     componentDidMount() {
         this._loadFontsAsync()
-        this._retrieveHistory()
+
+        this.props.navigation.addListener("focus", () => {
+            this._retrieveHistory()
+        })
     }
 
-    _storeHistory = async () => {
-        try {
-            await AsyncStorage.setItem('@SearchHistory:key', this.props.searchHistory);
-        } catch (error) {
-            console.log(error);
-        }
-    };
     _retrieveHistory = async () => {
         try {
-            const value = await AsyncStorage.getItem('SearchHistory');
+            const value = await AsyncStorage.getItem(`SearchHistory_${this.props.userEmail}`);
             if (value !== null) {
-                this.props.initHistory(value);
+                this.props.initHistory(JSON.parse(value));
             }
         } catch (error) {
             console.log(error);
@@ -106,7 +102,17 @@ class _SearchScreen extends React.Component {
         this.setState({isSearching: true, isHistory: false})
         app.apiClient().searchVideos({query: this.state.searchTerm}, this.onResponse.bind(this))
         this.props.addSearchToHistory(this.state.searchTerm)
-        this._storeHistory()
+        this._storeHistoryBis(this.state.searchTerm, this.props.searchHistory)
+    }
+
+    async _storeHistoryBis(historySearch, lastHistory){
+        if(lastHistory.includes(historySearch)) return;
+
+        try {
+            await AsyncStorage.setItem(`SearchHistory_${this.props.userEmail}`, JSON.stringify([historySearch].concat(lastHistory)));
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     handleHistorySubmit(historySearch) {
@@ -117,7 +123,7 @@ class _SearchScreen extends React.Component {
         this.setState({isSearching: true, isHistory: false})
         app.apiClient().searchVideos({query: historySearch}, this.onResponse.bind(this))
         this.props.addSearchToHistory(historySearch)
-        this._storeHistory()
+        this._storeHistoryBis(historySearch, this.props.searchHistory)
     }
 
 
@@ -190,6 +196,10 @@ class _SearchScreen extends React.Component {
         );
     }
 
+    async deleteHistory(){
+        await AsyncStorage.setItem(`SearchHistory_${this.props.userEmail}`, JSON.stringify([]));
+    }
+
     historyComponent() {
         const azulMarino = "#00335c";
         return (
@@ -215,7 +225,7 @@ class _SearchScreen extends React.Component {
                         <TouchableOpacity style={{flexDirection: 'row'}}
                                           onPress={() => {
                                               this.props.clearHistory()
-                                              this._storeHistory()
+                                              this.deleteHistory()
                                           }}>
                             <Ionicons name="ios-close-circle-outline" size={30} color={"#fb5b5a"} style={{
                                 paddingLeft: 20,
@@ -298,7 +308,8 @@ class _SearchScreen extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        searchHistory: state.appReducer.searchHistory
+        searchHistory: state.appReducer.searchHistory,
+        userEmail: state.appReducer.userEmail
     }
 }
 

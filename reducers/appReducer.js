@@ -31,7 +31,7 @@ const appReducer = (state = initialState, action) => {
         case ADD_TOKEN:
             return {...state, token: action.payload, loggedIn: true};
         case REMOVE_TOKEN:
-            return {...state, token: null, loggedIn: false};
+            return initialState;
         case WAITING_RESPONSE:
             return {...state, waitingResponse: action.payload};
         case EMAIL_TO_RECOVER:
