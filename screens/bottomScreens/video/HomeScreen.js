@@ -16,7 +16,8 @@ class _HomeScreen extends React.Component {
         this.state = {
             isFetching: true,
             videos: [],
-            thumbnails: [],
+            thumbnails: [undefined, undefined, undefined, undefined, undefined,
+                undefined, undefined, undefined, undefined, undefined],
         }
 
         this.alertProfile = this.alertProfile.bind(this)
@@ -31,9 +32,11 @@ class _HomeScreen extends React.Component {
                     time: 15000,
                 }
             );
-            var actualThumbnails = this.state.thumbnails
-            this.setState({thumbnails: actualThumbnails.concat(uri)})
-            if (videoIndex > (totalVideos / 2 - 1)) {
+            let actualThumbnails = this.state.thumbnails
+            actualThumbnails.splice(videoIndex, 1, uri)
+            this.setState({thumbnails: actualThumbnails})
+
+            if (actualThumbnails.slice(0, 4).filter(t => t === undefined).length === 0) {
                 this.setState({isFetching: false})
             }
         } catch (e) {
@@ -114,7 +117,8 @@ class _HomeScreen extends React.Component {
         this.setState({
                 isFetching: true,
                 videos: [],
-                thumbnails: [],
+                thumbnails: [undefined, undefined, undefined, undefined, undefined,
+                    undefined, undefined, undefined, undefined, undefined],
             }
         )
     }
