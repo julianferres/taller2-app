@@ -129,12 +129,13 @@ class _ProfileScreen extends React.Component {
     }
 
     editProfileComponent() {
+
         return (
             <>
                 <TouchableOpacity style={[styles.inputView, {marginTop: 50}]} activeOpacity={0.9}>
                     <TextInput
                         style={styles.inputText}
-                        value={this.state.email}
+                        value={this.props.userEmail}
                         placeholderTextColor="#cad6eb"
                         editable={false}
                     />
@@ -211,7 +212,8 @@ class _ProfileScreen extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        showWaitingResponse: state.appReducer.waitingResponse
+        showWaitingResponse: state.appReducer.waitingResponse,
+        userEmail: state.appReducer.userEmail
     }
 }
 
