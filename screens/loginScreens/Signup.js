@@ -64,10 +64,8 @@ class SignUp extends React.Component {
             this.showSuccessfulMessage()
             this.props.navigation.popToTop()
         } else {
-            response.json()
-                .then(json => {
-                    this.alertSignup("Sign up problem, try again!")
-                })
+            this.alertSignup("Sign up problem, try again!")
+
         }
         this.props.setWaitingResponse(false);
     }
@@ -77,6 +75,12 @@ class SignUp extends React.Component {
             this.alertSignup("Please enter a valid email");
             return;
         }
+
+        if(this.state.password.length < 4 || !/\d/.test(this.state.password)){
+            this.alertLogin("Your password should have at least four characters and a number.")
+            return;
+        }
+
         this.props.setWaitingResponse(true);
         app.apiClient().signUp(this.state, this.onResponse.bind(this))
     }

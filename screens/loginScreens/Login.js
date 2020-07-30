@@ -76,8 +76,16 @@ class Login extends React.Component {
             this.alertLogin("Please enter a valid email");
             return;
         }
+
+        if(this.state.password.length < 4 || !/\d/.test(this.state.password)){
+            this.alertLogin("Your password should have at least four characters and a number.")
+            return;
+        }
+
         this.props.setWaitingResponse(true);
-        app.apiClient().login(this.state, this.onResponse.bind(this))
+        let data = this.state
+        data.notification_token = this.props.notificationToken;
+        app.apiClient().login(data, this.onResponse.bind(this))
     }
 
     render() {
