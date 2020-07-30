@@ -79,7 +79,7 @@ class SignUp extends React.Component {
         }
 
         if(this.state.password.length < 4 || !/\d/.test(this.state.password)){
-            this.alertLogin("Your password should have at least four characters and a number.")
+            this.alertSignup("Your password should have at least four characters and a number.")
             return;
         }
 
